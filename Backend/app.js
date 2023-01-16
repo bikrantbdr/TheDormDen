@@ -21,4 +21,13 @@ app.use(cors());
 app.use(express.json());
 app.use(middleware.requestLogger);
 
+/*
+    import Routes
+*/
+const userRouter = require('./routers/userRouter');
+const hostelRouter = require('./routers/hostelRouter');
+
+app.use('/api/users', userRouter);
+app.use('/api/hostels', hostelRouter);
+
 module.exports = app
