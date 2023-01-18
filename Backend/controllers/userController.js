@@ -3,6 +3,38 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
 /*
+    @desc gets token from request header
+    @access Private
+*/
+const getToken = (req) => {
+    const authorization = req.headers.authorization;
+    if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+        return authorization.substring(7);
+    }
+    return null;
+}
+
+/*
+    @route GET /api/users
+    @desc Get all users
+    @access Public
+*/
+exports.get_users = async (req, res, next) => {
+    const users = await User.find({});
+    res.status(200).json(users);
+}
+
+/*
+    @route GET /api/users/:id
+    @desc Get a user
+    @access Public
+*/
+exports.get_user = async (req, res, next) => {
+    const user = await User.findById(req.params.id);
+    res.status(200).json(user);
+}
+
+/*
     @route POST /api/users/register
     @desc Register a new user
     @access Public
@@ -64,4 +96,30 @@ exports.login_user = async (req, res, next) => {
     const token = jwt.sign(userForToken, process.env.SECRET);
 
     res.status(200).send({ token, username: user.username, id: user._id });
+}
+
+/*
+    @route PUT /api/users/update/:id
+    @desc Update a user
+    @access Private
+*/
+exports.update_user = async (req, res, next) => {
+    const body = req.body;
+
+    const token = getToken(req);
+    const decodedToken = jwt.verify(token, process.env.SECRET);
+    if (!token || !decodedToken.id) {
+        return res.status(401).json({ error: 'token missing or invalid' });
+    }
+
+    const user = await User.findById(decodedToken.id);
+
+    if(user) {
+        const updatedUser = await User.findByIdAndUpdate(req.params.id, body, {
+            new: true,
+            runValidators: true,
+            useFindAndModify: false
+        });
+        res.status(200).json(updatedUser);
+    }
 }

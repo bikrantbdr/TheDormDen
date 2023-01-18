@@ -65,38 +65,8 @@ const hostelSchema = new mongoose.Schema({
     } ],
     reviews: [
         {
-            review_id: {
-                type: String,
-                required: true
-            },
-            overall_rating: {
-                type: Number,
-                required: true
-            },
-            cleanliness: {
-                type: Number,
-                required: true
-            },
-            food: {
-                type: Number,
-                required: true
-            },
-            staff: {
-                type: Number,
-                required: true
-            },
-            amenities: {
-                type: Number,
-                required: true
-            },
-            comment: {
-                type: String,
-                required: false
-            },
-            user: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'User'
-            }
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Review'
         }
     ]
 }, { timestamps: true });

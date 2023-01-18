@@ -60,10 +60,13 @@ const userSchema = new mongoose.Schema({
             required: false
         }
     },
-    reviews: [ {
-        type: String,
-        required: false
-    } ],
+    reviews: [ 
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Review',
+            required: false
+        }
+    ],
     hostel_listings: [
         {
             type: mongoose.Schema.Types.ObjectId,
