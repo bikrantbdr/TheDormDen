@@ -8,9 +8,9 @@ const Review = require('../models/review');
     @access Private
 */
 const getToken = (req) => {
-    const authorization = req.headers.authorization;
-    if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-        return authorization.substring(7);
+    const { token } = req.cookies;
+    if (token) {
+        return token
     }
     return null;
 }

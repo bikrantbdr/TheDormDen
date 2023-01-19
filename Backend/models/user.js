@@ -73,7 +73,15 @@ const userSchema = new mongoose.Schema({
             ref: 'Hostel',
             required: false
         }
-    ]
+    ],
+    reset_password_token: {
+        type: String,
+        required: false
+    },
+    reset_token_expires: {
+        type: Date,
+        required: false
+    }
 });
 
 userSchema.set('toJSON', {

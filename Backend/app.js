@@ -4,6 +4,7 @@ const middleware = require('./utils/middleware');
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const cookie_parser = require('cookie-parser');
 
 app = express();
 
@@ -19,6 +20,7 @@ mongoose.connect(config.MONGODB_URI)
 
 app.use(cors());
 app.use(express.json());
+app.use(cookie_parser());
 app.use(middleware.requestLogger);
 
 /*
