@@ -66,11 +66,11 @@ exports.register_hostel = async (req, res, next) => {
         rooms: body.rooms || [],
         reviews: []
     });
+    await hostel.compute_availability();
 
     const savedHostel = await hostel.save();
     user.hostel_listings = user.hostel_listings.concat(savedHostel._id);
     await user.save();
-
     res.status(201).json(savedHostel);
 }
 
@@ -122,7 +122,7 @@ exports.post_review = async (req, res, next) => {
 
     const user = await User.findById(decodedToken.id);
     console.log(user);
-    const hostel = await Hostel.findById(req.params.id);
+    const hostel = await Hostel.findById(req.params.id).populate('reviews');
     console.log(hostel);
     const review = new Review({
         cleanliness: Number(body.cleanliness),
@@ -137,6 +137,7 @@ exports.post_review = async (req, res, next) => {
     console.log(review);
     const savedReview = await review.save();
     hostel.reviews = hostel.reviews.concat(savedReview._id);
+    await hostel.compute_rating(review.overall_rating);
     await hostel.save();
     user.reviews = user.reviews.concat(savedReview._id);
     await user.save();

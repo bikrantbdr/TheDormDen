@@ -38,7 +38,7 @@ const hostelSchema = new mongoose.Schema({
     ],
     rooms: [ {
         room_type: {
-            type: Number,
+            type: String,
             required: true
         },
         availability: {
@@ -63,6 +63,36 @@ const hostelSchema = new mongoose.Schema({
             default: false
         }
     } ],
+    available_rooms: {
+       one_seater:{
+            type: Number,
+            default: 0
+       },
+       two_seater:{
+            type: Number,
+            default: 0
+       },
+       three_seater:{
+            type: Number,
+            default: 0
+       },
+       four_seater:{
+            type: Number,
+            default: 0
+       }
+    },
+    number_of_reviews: {
+        type: Number,
+        default: 0
+    },
+    hostel_rating:{
+        type: Number,
+        default: 0
+    },
+    ranking:{
+        type: Number,
+        default: 0
+    },
     reviews: [
         {
             type: mongoose.Schema.Types.ObjectId,
@@ -78,6 +108,22 @@ hostelSchema.set('toJSON', {
       delete returnedObject.__v
     }
 })
+
+hostelSchema.methods.compute_availability = function() {
+    this.rooms.forEach(room => {
+        if (room.availability) {
+            this.available_rooms[room.room_type]++;
+        }
+    })
+    // return(this.available_rooms);
+    console.log(this.available_rooms);
+}
+
+hostelSchema.methods.compute_rating = function(overall_rating) {
+    this.hostel_rating = (this.hostel_rating * (this.reviews.length-1) + overall_rating) / (this.reviews.length);
+    this.number_of_reviews = this.reviews.length;
+}
+
 
 module.exports = mongoose.model('Hostel', hostelSchema);
 
