@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const Hostel = require('../models/hostel');
 const Review = require('../models/review');
+const QueryHandler = require('../utils/queryHandler');
 
 /*
     @desc gets token from request header
@@ -21,7 +22,8 @@ const getToken = (req) => {
     @access Public
 */
 exports.get_hostels = async (req, res, next) => {
-    const hostels = await Hostel.find({});
+    const queryhandler = new QueryHandler(Hostel.find(), req.query).search().filter();
+    const hostels = await queryhandler.query;
     res.status(200).json(hostels);
 }
 
