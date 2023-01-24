@@ -115,7 +115,6 @@ hostelSchema.methods.compute_availability = function() {
             this.available_rooms[room.room_type]++;
         }
     })
-    // return(this.available_rooms);
     console.log(this.available_rooms);
 }
 
