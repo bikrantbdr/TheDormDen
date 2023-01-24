@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Review = require('./review');
 
 const hostelSchema = new mongoose.Schema({
     name: {
@@ -115,7 +116,6 @@ hostelSchema.methods.compute_availability = function() {
             this.available_rooms[room.room_type]++;
         }
     })
-    console.log(this.available_rooms);
 }
 
 hostelSchema.methods.compute_rating = function(overall_rating) {
@@ -123,6 +123,27 @@ hostelSchema.methods.compute_rating = function(overall_rating) {
     this.number_of_reviews = this.reviews.length;
 }
 
+hostelSchema.methods.compute_ranking = async function() {
+/* 
+    R – The item's own rating. R is the average of the item's votes. (For example, if an item has no votes, its R is 0. If someone gives it 5 stars, R becomes 5. If someone else gives it 1 star, R becomes 3, the average of [1, 5]. And so on.)
+    C – The average item's rating. Find the R of every single item in the database, including the current one, and take the average of them; that is C. (Suppose there are 4 items in the database, and their ratings are [2, 3, 5, 5]. C is 3.75, the average of those numbers.)
+    v – The number of votes for an item. (To given another example, if 5 people have cast votes on an item, v is 5.)
+    m – The tuneable parameter. The amount of "smoothing" applied to the rating is based on the number of votes (v) in relation to m. Adjust m until the results satisfy you. And don't misinterpret IMDb's description of m as "minimum votes required to be listed" – this system is perfectly capable of ranking items with less votes than m.
+    rating = (R * v + C * m) / (v + m); 
+
+    For our case, we will take m = 15
+*/
+    const m = 15;
+    const R = this.hostel_rating;
+    const v = this.number_of_reviews;
+    reviews = await Review.find({})
+    let C = 0;
+    reviews.forEach(review => {
+        C += review.overall_rating;
+    })
+    C /= reviews.length;
+    this.ranking = (R * v + C * m) / (v + m);
+}
 
 module.exports = mongoose.model('Hostel', hostelSchema);
 

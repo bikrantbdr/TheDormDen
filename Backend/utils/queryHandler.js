@@ -20,9 +20,7 @@ class QueryHandler {
         const removeFields = ['name', 'limit', 'page'];
 
         removeFields.forEach(param => delete queryFiltered[param]);
-        // this.queryString = JSON.stringify(queryFiltered);
-        // this.queryString = this.queryString.replace(/\b(gt|gte|lt|lte)\b/g, match => `$${match}`);
-        // this.queryString = JSON.parse(this.queryString);
+        
         let room_type_query = []
         if (true) {
             this.queryString["room_types"].forEach(room_type => {
@@ -53,9 +51,20 @@ class QueryHandler {
                                              {"rooms.availability": true},
                                              {$and: pricing_query}
                                             ]});
-        console.log(this.query, room_type_query);
-        // this.queryString = this.queryString.replace(/\b(gt|gte|lt|lte)\b/g, match => `$${match}`);
-        // this.query = this.query.find(JSON.parse(this.queryString));
+        //console.log(this.query, room_type_query);
+        return this;
+    }
+
+    sort() {
+        console.log(this.query)
+        this.query = this.query.sort({ ranking: -1 });
+        return this;
+    }
+
+    pagination(results_per_page) {
+        const currentPage = Number(this.queryString.page) || 1;
+        const skip = results_per_page * (currentPage - 1);
+        this.query = this.query.limit(results_per_page).skip(skip);
         return this;
     }
 }

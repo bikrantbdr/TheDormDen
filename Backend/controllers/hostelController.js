@@ -22,7 +22,7 @@ const getToken = (req) => {
     @access Public
 */
 exports.get_hostels = async (req, res, next) => {
-    const queryhandler = new QueryHandler(Hostel.find(), req.query).search().filter();
+    const queryhandler = new QueryHandler(Hostel.find(), req.query).search().filter().sort().pagination(10);
     const hostels = await queryhandler.query;
     res.status(200).json(hostels);
 }
@@ -135,9 +135,11 @@ exports.post_review = async (req, res, next) => {
         hostel: hostel._id
     })
     console.log(review);
+
     const savedReview = await review.save();
     hostel.reviews = hostel.reviews.concat(savedReview._id);
     await hostel.compute_rating(review.overall_rating);
+    await hostel.compute_ranking();
     await hostel.save();
     user.reviews = user.reviews.concat(savedReview._id);
     await user.save();
