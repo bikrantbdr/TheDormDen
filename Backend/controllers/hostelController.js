@@ -22,7 +22,7 @@ const getToken = (req) => {
     @access Public
 */
 exports.get_hostels = async (req, res, next) => {
-    const queryhandler = new QueryHandler(Hostel.find(), req.query).search().filter().sort().pagination(10);
+    const queryhandler = new QueryHandler(Hostel.find(), req.query).locate().search().filter().sort().pagination(10);
     const hostels = await queryhandler.query;
     res.status(200).json(hostels);
 }

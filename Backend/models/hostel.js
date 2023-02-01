@@ -7,8 +7,15 @@ const hostelSchema = new mongoose.Schema({
         required: true
     },
     location: {
-        type: String,
-        required: true
+        type: {
+            type: String,
+            enum: ['Point'],
+            required: true
+        },
+        coordinates: {
+            type: [Number], // longitude and latitude  format !extremely important
+            require: true
+        }
     },
     description: {
         type: String,
