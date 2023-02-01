@@ -4,6 +4,25 @@ class QueryHandler {
         this.queryString = queryString
     }
 
+    locate() {
+        const longitude = this.queryString.longitude
+        const latitude = this.queryString.latitude
+
+        this.query = this.query.find({
+            location: {
+                $near: {
+                    $geometry: {
+                        type: "Point",
+                        coordinates: [longitude, latitude]
+                    },
+                    $maxDistance: 10000
+                }
+            }
+        })
+
+        return this
+    }
+
     search() {
         const name = this.queryString.name ? {
             name: {
