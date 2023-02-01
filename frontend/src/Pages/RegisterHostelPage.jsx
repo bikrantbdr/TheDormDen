@@ -1,7 +1,8 @@
 import React , {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import { Map, Marker, Draggable } from "pigeon-maps";
-import location from "./location.svg";
+import location from "../images/location.svg";
+import cancel from "../images/cancel.png";
 import axios from 'axios';
 
 const Regis = styled.div`
@@ -14,7 +15,7 @@ const Regis = styled.div`
 const Heading = styled.div`
     font-size: 2rem;
     font-weight: 600;
-    margin-bottom: 1rem;
+    margin: 0.5rem 0 3rem 0;
     text-align: center;
     `
 const Formcomponent = styled.div`
@@ -22,17 +23,56 @@ const Formcomponent = styled.div`
     width: 80vw;
     `
 const Left = styled.div`
-    flex: 1;
+    width: 50%;
 
 `
 const Right = styled.div`
-    flex: 1;
+    width: 50%;
 `
 const Label = styled.label`
     font-size: 1.2rem;
     font-weight: 600;
-    margin-bottom: 0.5rem;
+    margin:0.5rem 0 0.75rem 0;
     display: block;
+`
+
+const ImagesGallery = styled.div`
+height: 205px;
+width: 100%;
+// border: 1px solid #ccc; 
+display: flex;
+align-items: center;
+overflow: auto;
+white-space: nowrap;
+overflow-y: hidden;
+margin: 0.5rem 0;
+`
+
+const Image = styled.div`
+    height: 100%;
+    width:auto;
+    position: relative;
+    padding-right:0.5rem;
+`
+
+const Cancel = styled.div`
+    border: none;
+    position:absolute;
+    top: 0;
+    right: 0;
+    z-index: 5;
+    cursor: pointer;
+    color: Red;
+`
+const Submit = styled.button`
+    width: 100%;
+    height: 3rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 0.5rem;
+    margin-top: 1rem;
+
 `
 
 
@@ -164,15 +204,15 @@ const RegisterHostelPage = () => {
             <Formcomponent>
                 <Left>
                     <Label>Hostel Name:
-                    <input type="text" name="name" onChange={(e) =>{setHostelname(e.target.value)}} placeholder="Enter Hostel Name" />
                     </Label>
+                    <input type="text" name="name" onChange={(e) =>{setHostelname(e.target.value)}} placeholder="Enter Hostel Name" />
                     <Label> Gender: 
+                    </Label>
                     <select name="gender" id="gender" onChange={(e) => {setGender(e.target.value)}}>
                         <option value="male">Male</option>
                         <option value="female">Female</option>
                     </select>
-                    </Label>
-                    <Label>Location
+                    <Label>Location</Label>
                         <Map height={300} width={500} center={center} zoom={zoom} onClick={onmapclickhandler}>
                         <Draggable
                             offset={[25, 50]}
@@ -182,9 +222,9 @@ const RegisterHostelPage = () => {
                             <img src={location} width={50} height={50} alt="Pigeon!" />
                         </Draggable>
                         </Map>
-                    </Label>
                     <Label>
                         Hostel Document:
+                    </Label>
                         <div className="hosteldocumentimage">
                             {
                             hosteldocumentimage.length>0 && hosteldocumentimage.map((image,index) => {
@@ -200,16 +240,16 @@ const RegisterHostelPage = () => {
                                 hosteldocumentimage.length<1 && <input type="file" name="hosteldoc" id="hosteldoc" onChange={hosteldocumentHandler} />
                             }
                         </div>
-                    </Label>
                 </Left>
                 <Right> 
                     <Label>Hostel Description:
                     <textarea name="description" id="description" cols="30" rows="10" style={{display:"block"}}></textarea>
                     </Label>
 
-                    <label>
-                        + Add Images
-                        <br />
+                    <Label>
+                        Hostel Images:
+                        <br/>
+                    </Label>
                         <input
                         type="file"
                         name="images"
@@ -217,23 +257,22 @@ const RegisterHostelPage = () => {
                         multiple
                         accept="image/png , image/jpeg, image/webp."
                         />
-                    </label>
 
-                    <div className="images">
+                    <ImagesGallery>
                         {hostelGalleryImages &&
                         hostelGalleryImages.map((image, index) => {
                             return (
-                            <div key={image} className="image">
-                                <img src={image} height="200" alt="upload" />
-                                <button onClick={() => deleteImagesHandler(image,index)}>
-                                X
-                                </button>
-                            </div>
+                            <Image key={image} className="image">
+                                <img src={image} height="100%" alt="upload" />
+                                <Cancel onClick={() => deleteImagesHandler(image,index)}>
+                                <img src={cancel} alt="cancel" />
+                                </Cancel>
+                            </Image>
                             );
                         })}
-                    </div>
+                    </ImagesGallery>
 
-                    <input type="submit" value="Submit" onClick={submithandler}/>
+                    <Submit type="submit" value="Submit" onClick={submithandler}>Save</Submit>
 
                 </Right>
             </Formcomponent>
