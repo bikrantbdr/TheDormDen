@@ -1,7 +1,6 @@
 import RegisterUser from './Pages/RegisterUser';
 import RegisterHostelPage from './Pages/RegisterHostelPage';
 import Homepage from './Pages/Homepage';
-import SearchPage from './Pages/SearchPage';
 import Loginpage from './Pages/Loginpage';
 import ForgotPassword from './Pages/ForgotPassword';
 import ChangePassword from './Components/ForgotPassword/ChangePassword';
@@ -13,14 +12,12 @@ import Cookies from "universal-cookie";
 function App() {
   const cookies = new Cookies();
   const [ userInfo, setUserInfo ] = useState(null);
-  const  [hostels, setHostels] = useState([]);
 
   return (
     <>
     <Routes>
 
-      <Route path="/" element={ <Homepage hostels ={hostels} setHostels={setHostels}  /> }/>
-      <Route path="/search_results" element={ <SearchPage hostels ={hostels} setHostels={setHostels}  /> }/>
+      <Route path="/" element={ <Homepage /> }/>
       <Route path="/register/user" element={<RegisterUser/>}/>
       <Route path="/register/hostel" element={<RegisterHostelPage/>}/>
       <Route path="/login" element={<Loginpage cookies={ cookies } setUserInfo={ setUserInfo } />}/>

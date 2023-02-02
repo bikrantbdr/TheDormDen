@@ -4,7 +4,6 @@ import { Map, Marker, Draggable } from "pigeon-maps";
 import location from "../images/location.svg";
 import cancel from "../images/cancel.png";
 import axios from 'axios';
-import {registerHostel_backend} from '../services/hostel'
 
 const Regis = styled.div`
     width: 100%;
@@ -80,17 +79,10 @@ const Submit = styled.button`
 
 const RegisterHostelPage = () => {
     const [hostelname, setHostelname] = useState('')
-    const [gender, setGender] = useState(0)
+    const [gender, setGender] = useState('')
     const [center, setCenter] = useState([27.694582657545205, 85.32046340409931]);
     const [zoom, setZoom] = useState(14);
     const [locationanchor, setAnchor] = useState([25, 85]);
-    const [latitude, setLatitude] = useState(null);
-    const [longitude, setLongitude] = useState(null);
-    const [description, setDescription] = useState('')
-    // const [forGender, setForGender] = useState(0)
-    const [verified, setVerified] = useState(false)
-
-
 
     const [hosteldocument, setHosteldocument] = useState([])
     const [hosteldocumentimage, setHosteldocumentimage] = useState([])
@@ -99,30 +91,10 @@ const RegisterHostelPage = () => {
     const [hostelGallery, setHostelGallery] = useState([])
     const [hostelGalleryImages, setHostelGalleryImages] = useState([])
     const [cloudHostelGallery, setCloudHostelGallery] = useState([]);
-    const [cloud, setCloud] = useState(false);
 
     const onmapclickhandler = async(e) => {
       setAnchor(e.latLng)
-        setLatitude(e.latLng[0])
-        setLongitude(e.latLng[1])
     }
-    useEffect(() => {
-        if(cloud){
-            console.log("request sending")
-            const data={
-                id:"63c7d0c049204374e4d008ae",
-                name: hostelname,
-                longitude: longitude,
-                latitude: latitude,
-                description: description,
-                for_gender: gender,
-                verified: verified,
-                document: cloudDocumentimages,
-                images:cloudHostelGallery
-            }
-            registerHostel_backend(data)
-        }
-    }, [cloud])
 
     // useEffect(() => {
     //     console.log(locationanchor)
@@ -213,9 +185,8 @@ const RegisterHostelPage = () => {
                     .post("https://api.cloudinary.com/v1_1/dxhwnryud/image/upload", formData)
                     .then((res) => {
                         console.log(res.data.secure_url);
-                        setCloudHostelGallery((previousImages) => previousImages.concat(res.data.secure_url));
+                        setCloudDocumentImages((previousImages) => previousImages.concat(res.data.secure_url));
                         console.log(cloudDocumentimages);
-                        setCloud(true);
                     })
                     .catch((err) => {
                         console.log(err);
@@ -232,16 +203,16 @@ const RegisterHostelPage = () => {
         <form action="">
             <Formcomponent>
                 <Left>
-                    <Label htmlFor='name'>Hostel Name:
+                    <Label>Hostel Name:
                     </Label>
                     <input type="text" name="name" onChange={(e) =>{setHostelname(e.target.value)}} placeholder="Enter Hostel Name" />
                     <Label> Gender: 
-                    </Label >
+                    </Label>
                     <select name="gender" id="gender" onChange={(e) => {setGender(e.target.value)}}>
-                        <option value="0">Male</option>
-                        <option value="1">Female</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
                     </select>
-                    <Label htmlFor='location'>Location</Label>
+                    <Label>Location</Label>
                         <Map height={300} width={500} center={center} zoom={zoom} onClick={onmapclickhandler}>
                         <Draggable
                             offset={[25, 50]}
@@ -251,7 +222,7 @@ const RegisterHostelPage = () => {
                             <img src={location} width={50} height={50} alt="Pigeon!" />
                         </Draggable>
                         </Map>
-                    <Label htmlFor='document'>
+                    <Label>
                         Hostel Document:
                     </Label>
                         <div className="hosteldocumentimage">
@@ -271,8 +242,8 @@ const RegisterHostelPage = () => {
                         </div>
                 </Left>
                 <Right> 
-                    <Label htmlFor='description'>Hostel Description:
-                    <textarea name="description" id="description" cols="30" rows="10" style={{display:"block"}} onChange={(e)=>setDescription(e.target.value)} ></textarea>
+                    <Label>Hostel Description:
+                    <textarea name="description" id="description" cols="30" rows="10" style={{display:"block"}}></textarea>
                     </Label>
 
                     <Label>
