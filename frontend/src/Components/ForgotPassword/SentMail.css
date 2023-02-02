@@ -1,0 +1,35 @@
+.sent-mail-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+    width: 500px;
+    
+}
+
+.sent-mail-container > img {
+    width: 75px;
+}
+
+.sent-mail__title {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.sent-mail__to, .sent-mail_didnt-receive {
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.sent-mail__open-mail {
+    width: 300px;
+    border: none;
+    border-radius: 4px;
+    background-color: #D179FF;
+    padding: 6px 16px;
+    color: #fff;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}

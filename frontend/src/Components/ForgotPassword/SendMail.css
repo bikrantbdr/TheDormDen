@@ -1,0 +1,43 @@
+.send-mail-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+    width: 500px;
+    
+}
+
+.send-mail-container > img {
+    width: 75px;
+}
+
+.send-mail__title {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.send-mail__input {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+}
+
+.send-mail__input > input {
+    border: 2px solid #E4E5EB;
+    border-radius: 4px;
+    padding: 8px 8px;
+    margin-top: 4px;
+}
+
+.send-mail__reset-btn {
+    width: 300px;
+    border: none;
+    border-radius: 4px;
+    background-color: #D179FF;
+    padding: 6px 16px;
+    color: #fff;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
