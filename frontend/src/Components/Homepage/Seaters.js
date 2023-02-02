@@ -4,12 +4,13 @@ import { useState } from 'react'
 import './Seaters.css'
 
 function Seaters({ setSeaters }) {
-    const [ value, setValue ] = useState('')
-
+    const [ value, setValue ] = useState('any')
+    setSeaters(value)
     const handleChange = (e) => {
         setValue(e.target.value)
         setSeaters(e.target.value)
     }
+
   return (
     <div className="select-seater">
         <label htmlFor="seaters">Seater</label>

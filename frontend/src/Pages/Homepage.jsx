@@ -29,12 +29,10 @@ function Homepage() {
     const response = await searchHostels(options)
     console.log(response)
     setHostels(response.data)
-    Navigate('/')
-    
   }
   return (
     <>
-    { hostels.length==0 && 
+    { hostels.length===0 && 
          <>
         <Header />
         <SubHeader />
