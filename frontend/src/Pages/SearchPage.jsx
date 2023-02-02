@@ -91,6 +91,7 @@ const SearchPage = ({hostels,setHostels}) => {
                                 </Link>
                             </Details>
                         </CardContent>
+                        
                     </Card>
                 )
             })
