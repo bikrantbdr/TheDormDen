@@ -177,29 +177,24 @@ exports.update_password = async (req, res, next) => {
 }
 
 /*
-    @route FORGOT PASSWORD /api/users/update/password/forgot/:id
+    @route FORGOT PASSWORD /api/users/update/password/forgot
     @desc Send a user a password reset link
     @access Private
 */
 exports.forgot_password = async (req, res, next) => {
     const body = req.body
 
-    const token = getToken(req);
-    const decodedToken = jwt.verify(token, process.env.SECRET);
-    if (!token || !decodedToken.id) {
-        return res.status(401).json({ error: 'token missing or invalid' });
-    }
-
-    const user = await User.findById(decodedToken.id);
+    const user = await User.findOne({ email: body.email })
+    console.log(user._id)
     const { resetToken, reset_password_token, reset_token_expires } = await createResetPasswordToken();
-    const updatedUserResetToken = await User.findByIdAndUpdate(req.params.id, { reset_password_token, reset_token_expires }, {
+    const updatedUserResetToken = await User.findByIdAndUpdate(user._id, { reset_password_token, reset_token_expires }, {
         new: true,
         runValidators: true,
         useFindAndModify: false
     });
 
     /* mail options configured */
-    const resetPasswordLink = `${req.protocol}://${req.get('host')}/api/users/update/password/reset/${resetToken}`;
+    const resetPasswordLink = `${req.protocol}://${req.get('host')}/new_password/${resetToken}`;
     const message = `
         You are receiving this email because you (or someone else) have requested the reset of the password for your account.\n\n
         Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it:\n\n
@@ -207,7 +202,7 @@ exports.forgot_password = async (req, res, next) => {
         If you did not request this, please ignore this email and your password will remain unchanged.\n
     `;
     const options = {
-        email: user.email,
+        email: body.email,
         subject: 'Reset Password',
         message
     }
@@ -227,18 +222,12 @@ exports.forgot_password = async (req, res, next) => {
 exports.reset_password = async (req, res, next) => {
     const body = req.body;
 
-    const token = getToken(req);
-    const decodedToken = jwt.verify(token, process.env.SECRET);
-    if (!token || !decodedToken.id) {
-        return res.status(401).json({ error: 'token missing or invalid' });
-    }
-
     const reset_password_token = crypto
         .createHash('sha256')
         .update(req.params.token)
         .digest('hex');
 
-    const user = User.findOne({ 
+    const user = await User.findOne({ 
         reset_password_token,
         reset_token_expires: { $gt: Date.now() }
     });
@@ -246,14 +235,15 @@ exports.reset_password = async (req, res, next) => {
     if(user) {
         const saltRounds = 10;
         const passwordHash = bcrypt.hashSync(body.new_password, saltRounds);
-        const updatedUser = await User.findByIdAndUpdate(decodedToken.id, { 
+        const updatedUser = await User.findByIdAndUpdate(user._id, { 
             passwordHash,
             reset_password_token: undefined,
             reset_token_expires: undefined }, {
                 new: true,
                 runValidators: true,
                 useFindAndModify: false
-        });
-        res.status(200).json(updatedUser);
+            });
+            await res.status(200).json(updatedUser);
+        }
     }
-}
+    

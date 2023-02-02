@@ -44,3 +44,13 @@ export const registerUser_backend = async (user) => {
                             })
     // return response;
 }
+
+export const loginUser_backend = async (options) => {
+    const response = await axios.post(`${baseUrl}/api/users/login`, options);
+    return response
+}
+
+export const send_reset_password_email_backend = async (options) => {
+    const response = await axios.put(`${baseUrl}/api/users/update/password/forgot`, options);
+    return response
+}

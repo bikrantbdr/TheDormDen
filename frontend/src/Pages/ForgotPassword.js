@@ -8,7 +8,6 @@ function ForgotPassword() {
   return (
     <div class='forgot-password-container'>
       <SendMail />
-      {/* <SentMail /> */}
     </div>
   )
 }
