@@ -14,3 +14,9 @@ export const searchHostels = async (options) => {
     const response = await axios.get(`${baseUrl}/api/hostels?${query_str}`);
     return response;
 }
+
+export const registerHostel_backend = async (hostel) => {
+
+    const response = await axios.post(`${baseUrl}/api/hostels/register`, hostel);
+    return response;
+}
