@@ -1,0 +1,10 @@
+.loginpage__main {
+    background: url('../images/bg-intro-desktop.png') no-repeat center/cover;
+    height: 87.2vh;
+    background-color: #D179FF;
+
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    padding: 72px 150px;
+}
+
