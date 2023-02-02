@@ -1,0 +1,15 @@
+.hostel-name {
+    display: flex;
+    flex-direction: column;
+}
+
+.hostel-name > label {
+    margin-bottom: 4px;
+}
+
+.hostel-name > input {
+    width: 300px;
+    padding: 4px 8px;
+    font-weight: 600;
+    font-size: 1.2rem;
+}

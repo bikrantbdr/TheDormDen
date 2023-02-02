@@ -1,0 +1,38 @@
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 16px 34px 8px 34px;
+}
+
+.links {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+a {
+    text-decoration: none;
+    color: #000;
+    font-weight: bold;
+}
+
+.primary-btn {
+    background-color: #D179FF;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 6px;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+}
+
+.primary-btn > span {
+    color: #fff;
+    font-family: inherit;
+    font-weight: bold;
+    letter-spacing: 0.1rem;
+}

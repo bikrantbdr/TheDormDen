@@ -1,0 +1,15 @@
+.select-seater {
+    display: flex;
+    flex-direction: column;
+}
+
+.select-seater > label {
+    margin-bottom: 4px;
+}
+
+.select-seater > select {
+    width: 200px;
+    padding: 4px 8px;
+    font-weight: 600;
+    font-size: 1.2rem;
+}
