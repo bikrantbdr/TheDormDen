@@ -18,8 +18,8 @@ router.route('/:id').get(get_user);
 router.route('/register').post(register_user);
 router.route('/login').post(login_user);
 router.route('/update/:id').put(update_user);
-router.route('/update/password/:id').put(update_password);
-router.route('/update/password/forgot/:id').put(forgot_password);
 router.route('/update/password/reset/:token').put(reset_password);
+router.route('/update/password/forgot').put(forgot_password);
+router.route('/update/password/:id').put(update_password);
 
 module.exports = router 

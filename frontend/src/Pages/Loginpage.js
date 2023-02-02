@@ -5,13 +5,13 @@ import LoginForm from './../Components/Loginpage/LoginForm';
 
 import './Loginpage.css'
 
-function Loginpage() {
+function Loginpage({ setUserInfo, cookies }) {
   return (
     <>
         <Header />
         <div className='loginpage__main'>
           <Article />
-          <LoginForm />
+          <LoginForm setUserInfo={ setUserInfo } cookies={ cookies }/>
         </div>
     </>
   )
