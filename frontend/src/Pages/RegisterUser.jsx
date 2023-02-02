@@ -157,23 +157,6 @@ const RegisterUser = () => {
                         // console.log(res.data.secure_url);
 
                         setIdCloudinaryURL(res.data.secure_url);
-                        // const data = {
-                        //     first_name:firstname,
-                        //     middle_name:middlename,
-                        //     last_name:lastname,
-                        //     email:email,
-                        //     username:username,
-                        //     password:password,
-                        //     gender:gender,
-                        //     phone_number:phoneNumber,
-                        //     profile_picture:avatarCloudinaryURL,
-                        //     document:idCloudinaryURL,
-                        //     typeof_user:"student",
-                        //     address:"hetauda"
-                        // }
-                        // console.log(data)
-                        // const response =registerUser(data)
-                        // console.log(response)
                     })
                     .catch((err) => {
                         console.log(err);

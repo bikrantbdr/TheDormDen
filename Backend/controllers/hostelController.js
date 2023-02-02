@@ -53,6 +53,7 @@ exports.register_hostel = async (req, res, next) => {
     }
 
     const user = await User.findById(decodedToken.id);
+    // const user = await User.findById(body.id);
 
     const hostel = new Hostel({
         name: body.name,
@@ -65,6 +66,7 @@ exports.register_hostel = async (req, res, next) => {
         images: body.images || [],
         verified: body.verified,
         owner: user._id,
+        // owner: body.id,
         amenities: body.amenities || [],
         rooms: body.rooms || [],
         reviews: []
