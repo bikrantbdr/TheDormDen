@@ -5,6 +5,9 @@ import HostelName from '../Components/Homepage/HostelName'
 import Seaters from '../Components/Homepage/Seaters'
 import Location from '../Components/Homepage/Location'
 
+import { searchHostels } from '../services/hostel'
+import { Navigate } from 'react-router-dom'
+
 import './Homepage.css'
 
 function Homepage() {
@@ -12,21 +15,50 @@ function Homepage() {
   const [ seaters, setSeaters ] = useState('')
   const [ latitude, setLatitude ] = useState('')
   const [ longitude, setLongitude ] = useState('')
+  const [ hostels, setHostels ] = useState([])
 
-  const onSubmit = (e) => {
+  const onSubmit = async(e) => {
     e.preventDefault()
     console.log(hostelName, seaters, ' lat ', latitude, ' long ', longitude)
+    const options = {
+      hostelName: hostelName,
+      seaters: seaters,
+      latitude: latitude,
+      longitude: longitude
+    }
+    const response = await searchHostels(options)
+    console.log(response)
+    setHostels(response.data)
+    Navigate('/')
+    
   }
   return (
     <>
+    { hostels.length==0 && 
+         <>
         <Header />
         <SubHeader />
-        <form onSubmit={ (e) => e.preventDefault() } className='search-bar'>
+        <form className='search-bar'>
             <HostelName setHostelName={ setHostelName }/>
             <Seaters setSeaters={ setSeaters }/>
             <Location setLatitude={ setLatitude} setLongitude={ setLongitude }/>
             <button type='button' onClick={ onSubmit }>Search</button>
         </form>
+        </>
+}
+{
+  hostels.length>0 &&
+  <>
+  {hostels.map((hostel) => {
+    return (
+      <div>
+        <h1>{ hostel.name }</h1>
+      </div>
+  )}
+  )
+    }
+  </>
+}
     </>
   )
 }

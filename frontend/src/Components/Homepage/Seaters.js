@@ -14,11 +14,11 @@ function Seaters({ setSeaters }) {
     <div className="select-seater">
         <label htmlFor="seaters">Seater</label>
         <select value={ value } name='seater' onChange={ handleChange }>
-            <option value="0">Any</option>
-            <option value="1">One Seater</option>
-            <option value="2">Two Seater</option>
-            <option value="3">Three Seater</option>
-            <option value="4">Four Seater</option>
+            <option value="any">Any</option>
+            <option value="one_seater">One Seater</option>
+            <option value="two_seater">Two Seater</option>
+            <option value="three_seater">Three Seater</option>
+            <option value="four_seater">Four Seater</option>
         </select>
     </div>
   )
