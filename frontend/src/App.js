@@ -17,7 +17,7 @@ function App() {
     </Routes>
 
     {/* <RegisterUser/> */}
-    <RegisterHostelPage/>
+    {/* <RegisterHostelPage/> */}
     </>
   );
 }

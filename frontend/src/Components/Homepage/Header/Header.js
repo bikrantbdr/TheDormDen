@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom'
 
 import './Header.css'
 
-import Logo from '../../../assets/images/Logo.svg'
-import UserIcon from '../../../assets/images/User_Icon.svg'
+import Logo from '../../../images/Logo.svg'
+import UserIcon from '../../../images/User_Icon.svg'
 
 function Header() {
   return (

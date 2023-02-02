@@ -1,9 +1,9 @@
 import React from 'react'
-import Header from '../components/Homepage/Header/Header'
-import SubHeader from '../components/Homepage/SubHeader/SubHeader'
-import HostelName from '../components/Homepage/HostelName'
-import Seaters from '../components/Homepage/Seaters'
-import Location from '../components/Homepage/Location'
+import Header from '../Components/Homepage/Header/Header'
+import SubHeader from '../Components/Homepage/SubHeader/SubHeader'
+import HostelName from '../Components/Homepage/HostelName'
+import Seaters from '../Components/Homepage/Seaters'
+import Location from '../Components/Homepage/Location'
 
 import './Homepage.css'
 
