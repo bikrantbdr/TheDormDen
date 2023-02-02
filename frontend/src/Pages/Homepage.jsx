@@ -10,12 +10,12 @@ import { Navigate } from 'react-router-dom'
 
 import './Homepage.css'
 
-function Homepage() {
+function Homepage({ hostels, setHostels}) {
   const [ hostelName, setHostelName ] = useState('')
   const [ seaters, setSeaters ] = useState('')
   const [ latitude, setLatitude ] = useState('')
   const [ longitude, setLongitude ] = useState('')
-  const [ hostels, setHostels ] = useState([])
+  // const [ hostels, setHostels ] = useState([])
 
   const onSubmit = async(e) => {
     e.preventDefault()
@@ -46,19 +46,7 @@ function Homepage() {
         </form>
         </>
 }
-{
-  hostels.length>0 &&
-  <>
-  {hostels.map((hostel) => {
-    return (
-      <div>
-        <h1>{ hostel.name }</h1>
-      </div>
-  )}
-  )
-    }
-  </>
-}
+        { hostels.length>0 && <Navigate to='/search_results' />        }
     </>
   )
 }
