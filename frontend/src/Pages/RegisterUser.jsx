@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import axios from 'axios'
+import { Navigate } from 'react-router-dom'
 
 import avatarDefault from '../images/avatar.png'
+import {registerUser_backend} from '../services/user'
 
 const Container = styled.div`
   width: 80vw;
@@ -58,6 +60,7 @@ const Button = styled.button`
     margin: 20px 0px;`
 const ErrorMsg = styled.span``
 
+
 const RegisterUser = () => {
     
     const [avatarImages, setAvatarImages] = React.useState(null)
@@ -75,10 +78,37 @@ const RegisterUser = () => {
     const [email, setEmail] = React.useState("")
     const [username, setUsername] = React.useState("")
     const [password, setPassword] = React.useState("")
-    const [gender, setGender] = React.useState("")
+    const [gender, setGender] = React.useState("0")
     const [phoneNumber, setPhoneNumber] = React.useState("")
     const [error, setError] = React.useState(null)
     const [loading, setLoading] = React.useState(false)
+    const [success, setSuccess] = React.useState(false)
+
+
+    useEffect(() => {
+        if (avatarCloudinaryURL && idCloudinaryURL) {
+            const data = {
+                first_name:firstname,
+                            middle_name:middlename,
+                            last_name:lastname,
+                            email:email,
+                            username:username,
+                            password:password,
+                            gender:gender,
+                            phone_number:phoneNumber,
+                            profile_picture:avatarCloudinaryURL,
+                            document:idCloudinaryURL,
+                            typeof_user:"student",
+                            address:"hetauda"
+            }
+            console.log("Data:",data)
+            const response =registerUser_backend(data)
+            console.log("response:",response)
+            setSuccess(true)
+        }
+    }, [avatarCloudinaryURL, idCloudinaryURL])
+
+
 
 
     const avatarclickhandler = (e) => {
@@ -110,7 +140,7 @@ const RegisterUser = () => {
                 axios
                     .post("https://api.cloudinary.com/v1_1/dxhwnryud/image/upload", formData)
                     .then((res) => {
-                        console.log(res.data.secure_url);
+                        // console.log(res.data.secure_url);
                         setAvatarCloudinaryURL(res.data.secure_url);
                     })
                     .catch((err) => {
@@ -124,19 +154,36 @@ const RegisterUser = () => {
                 axios
                     .post("https://api.cloudinary.com/v1_1/dxhwnryud/image/upload", IdData)
                     .then((res) => {
-                        console.log(res.data.secure_url);
+                        // console.log(res.data.secure_url);
+
                         setIdCloudinaryURL(res.data.secure_url);
+                        // const data = {
+                        //     first_name:firstname,
+                        //     middle_name:middlename,
+                        //     last_name:lastname,
+                        //     email:email,
+                        //     username:username,
+                        //     password:password,
+                        //     gender:gender,
+                        //     phone_number:phoneNumber,
+                        //     profile_picture:avatarCloudinaryURL,
+                        //     document:idCloudinaryURL,
+                        //     typeof_user:"student",
+                        //     address:"hetauda"
+                        // }
+                        // console.log(data)
+                        // const response =registerUser(data)
+                        // console.log(response)
                     })
                     .catch((err) => {
                         console.log(err);
                         setError(err)
                     }
                     );
-            
-    setLoading(false)
     }
   return (
     <Container>
+        {success && <Navigate to="/" />}
         <Title>Register</Title>
         <AvatarContainer>
             {
@@ -170,8 +217,8 @@ const RegisterUser = () => {
                     <Input type="text" id="lastname" name="lastname" placeholder="last name" onChange={(e)=>{setLastname(e.target.value)}}  />
                     <Label htmlFor="gender">Gender</Label>
                     <select name="gender" id="gender" onChange={(e)=>{setGender(e.target.value)}}  >
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
+                        <option value="0">Male</option>
+                        <option value="1">Female</option>
                     </select>
                     <Label htmlFor="phone">Phone</Label>
                     <Input type="text" id="phone" name="phone" placeholder="Enter your phone number" onChange={(e)=>{setPhoneNumber(e.target.value)}}  />
@@ -193,8 +240,8 @@ const RegisterUser = () => {
                 }
 
             </LowerForm>
-            <Button onClick={registerUser}>Register</Button>
-            
+            {/* <Button type onClick={registerUser}>Register</Button> */}
+            <button type='button' onClick={ registerUser }>Search</button>
         </Form>
     </Container>
   )

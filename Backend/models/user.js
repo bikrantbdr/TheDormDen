@@ -39,12 +39,12 @@ const userSchema = new mongoose.Schema({
             required: true
         },
         gender: {
-            type: Number,
+            type: String,
             required: true
         },
         phone_number: {
             type: String,
-            required: true
+            required: false
         },
         address: {
             type: String,
