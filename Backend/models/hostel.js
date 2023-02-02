@@ -109,6 +109,8 @@ const hostelSchema = new mongoose.Schema({
     ]
 }, { timestamps: true });
 
+hostelSchema.index({ "location": "2dsphere" });
+
 hostelSchema.set('toJSON', {
     transform: (document, returnedObject) => {
       returnedObject.id = returnedObject._id.toString()

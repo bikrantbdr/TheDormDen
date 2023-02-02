@@ -3,9 +3,13 @@ import { useState } from 'react'
 
 import './HostelName.css'
 
-function HostelName() {
+function HostelName({ setHostelName }) {
     const [ value, setValue ] = useState('')
 
+    const handleChange = (e) => {
+        setValue(e.target.value)
+        setHostelName(e.target.value)
+    }
   return (
     <div className='hostel-name'>
         <label htmlFor="hostel-name">Hostel Name</label>
@@ -13,7 +17,7 @@ function HostelName() {
             value={ value }
             type="text"
             name="hostel-name"
-            onChange={ (e) => setValue(e.target.value) }
+            onChange={ handleChange }
         />
     </div>
   )

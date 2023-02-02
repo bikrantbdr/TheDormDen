@@ -5,7 +5,7 @@ import './Location.css'
 
 import { autocomplete_query } from '../../services/geoapify'
 
-function Location() {
+function Location({ setLatitude, setLongitude }) {
     const [ value, setValue ] = useState('')
     const [ showSuggestions, setShowSuggestions ] = useState(false)
     const [ suggestions, setSuggestions ] = useState([])
@@ -20,7 +20,8 @@ function Location() {
     const handleSuggestionClick = (item) => {
         setValue(item.properties.formatted)
         setShowSuggestions(false)
-        // we need to set the latitude and longitude for the application
+        setLatitude(item.properties.lat)
+        setLongitude(item.properties.lon)
     }
 
   return (

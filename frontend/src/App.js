@@ -3,7 +3,6 @@ import RegisterHostelPage from './Pages/RegisterHostelPage';
 import Homepage from './Pages/Homepage';
 import Loginpage from './Pages/Loginpage';
 import ForgotPassword from './Pages/ForgotPassword';
-
 import ChangePassword from './Components/ForgotPassword/ChangePassword';
 
 import {Routes , Route} from 'react-router-dom';

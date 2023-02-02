@@ -56,7 +56,10 @@ exports.register_hostel = async (req, res, next) => {
 
     const hostel = new Hostel({
         name: body.name,
-        location: body.location,
+        location: {
+            type: 'Point',
+            coordinates: [body.longitude, body.latitude]
+        },
         description: body.description,
         for_gender: body.for_gender,
         images: body.images || [],

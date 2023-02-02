@@ -3,11 +3,12 @@ import { useState } from 'react'
 
 import './Seaters.css'
 
-function Seaters() {
+function Seaters({ setSeaters }) {
     const [ value, setValue ] = useState('')
 
     const handleChange = (e) => {
         setValue(e.target.value)
+        setSeaters(e.target.value)
     }
   return (
     <div className="select-seater">
