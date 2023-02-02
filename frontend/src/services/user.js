@@ -54,3 +54,8 @@ export const send_reset_password_email_backend = async (options) => {
     const response = await axios.put(`${baseUrl}/api/users/update/password/forgot`, options);
     return response
 }
+
+export const reset_password_backend = async (option, resetToken) => {
+    const response = await axios.put(`${baseUrl}/api/users/update/password/reset/${resetToken}`, option);
+    return response
+}

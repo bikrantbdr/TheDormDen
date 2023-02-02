@@ -243,7 +243,11 @@ exports.reset_password = async (req, res, next) => {
                 runValidators: true,
                 useFindAndModify: false
             });
-            await res.status(200).json(updatedUser);
+            
+            res.status(200).json({
+                status: 'success',
+                message: 'Password updated successfully'
+            });
         }
     }
     

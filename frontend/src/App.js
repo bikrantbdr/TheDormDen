@@ -22,7 +22,7 @@ function App() {
       <Route path="/register/hostel" element={<RegisterHostelPage/>}/>
       <Route path="/login" element={<Loginpage cookies={ cookies } setUserInfo={ setUserInfo } />}/>
       <Route path='/forgot_password' element={ <ForgotPassword /> }/>
-      <Route path='/reset_password/:id' element={ <ChangePassword /> }/>
+      <Route path='/reset_password/:resetToken' element={ <ChangePassword /> }/>
 
     {/* <Route path="/hostels/:id" element={}/>
     <Route path="/search_results" element={}/> */}
