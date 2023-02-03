@@ -224,7 +224,7 @@ const RegisterUser = () => {
 
             </LowerForm>
             {/* <Button type onClick={registerUser}>Register</Button> */}
-            <button type='button' onClick={ registerUser }>Search</button>
+            <button type='button' onClick={ registerUser }>Save</button>
         </Form>
     </Container>
   )
