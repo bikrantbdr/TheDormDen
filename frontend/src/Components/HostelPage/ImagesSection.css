@@ -8,3 +8,8 @@
     flex-direction: column;
     gap: 16px;
 }
+.images__map {
+    background-color: aqua;
+    width: 30vw;
+    height: 100%;
+}
