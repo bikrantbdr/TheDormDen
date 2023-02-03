@@ -2,6 +2,11 @@ import axios from "axios";
 
 const baseUrl = 'http://localhost:5000';
 
+export const getHostel = async (id) => {
+    const response = await axios.get(`${baseUrl}/api/hostels/${id}`);
+    return response;
+}
+
 export const searchHostels = async (options) => {
     const name = options.name ? `name=${options.name}&` : '';
     const longitude = `longitude=${options.longitude}&`;
@@ -20,3 +25,4 @@ export const registerHostel_backend = async (hostel) => {
     const response = await axios.post(`${baseUrl}/api/hostels/register`, hostel);
     return response;
 }
+

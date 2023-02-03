@@ -9,6 +9,7 @@ import ChangePassword from './Components/ForgotPassword/ChangePassword';
 import {Routes , Route} from 'react-router-dom';
 import { useState } from 'react';
 import Cookies from "universal-cookie"; 
+import HostelPage from './Pages/HostelPage';
 
 function App() {
   const cookies = new Cookies();
@@ -26,6 +27,7 @@ function App() {
       <Route path="/login" element={<Loginpage cookies={ cookies } setUserInfo={ setUserInfo } />}/>
       <Route path='/forgot_password' element={ <ForgotPassword /> }/>
       <Route path='/reset_password/:id' element={ <ChangePassword /> }/>
+      <Route path='/hostels/:id' element={ <HostelPage /> } />  
 
     {/* <Route path="/hostels/:id" element={}/>
     <Route path="/search_results" element={}/> */}

@@ -1,0 +1,10 @@
+.images__section {
+    display: flex;
+    gap: 16px;
+}
+
+.images__gallery {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
