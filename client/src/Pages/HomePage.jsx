@@ -3,6 +3,7 @@ import Navbar from '../Components/Navbar'
 import Sidebar from '../Components/Sidebar'
 import styled from 'styled-components'
 import background from '../assets/background.png'
+import HeroSection from '../Components/HeroSection'
 
 
 const HomeContainer = styled.div`
@@ -41,7 +42,7 @@ const HomePage = () => {
         </HomeBackground>
         <Navbar toggle={toggle} />
         <Sidebar isOpen={isOpen} toggle={toggle}/>
-        <div>Home Page</div>
+        <HeroSection/>
     </HomeContainer>
   )
 }
