@@ -7,9 +7,9 @@ import cancelimg from '../assets/cancel.png'
 
 const DocumentDiv = styled.div`
 background-color: #fff;
-min-height: 15%;
-width: ${({size}) => (size ? "100%" : "30%")};
-margin: ${({center}) => (center ? "0rem auto" : "1rem 0 0 0")};
+min-height: 25%;
+width: 90%;
+margin: 1rem 0 0 0;
 border: 1px dashed #D179FF;
 border-radius: 6px;
 
@@ -35,7 +35,7 @@ const Cancel = styled.div`
   z-index: 10;
 `
 
-const DocumentDropzone = ({document, setDocument,size,center}) => {
+const HosteldocsDropzone = ({document, setDocument,size,center}) => {
     const onDrop = useCallback(acceptedFiles => {
         const file = acceptedFiles[0]
         const reader = new FileReader()
@@ -76,4 +76,4 @@ const DocumentDropzone = ({document, setDocument,size,center}) => {
   )
 }
 
-export default DocumentDropzone
+export default HosteldocsDropzone

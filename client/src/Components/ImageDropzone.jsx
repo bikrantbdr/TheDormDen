@@ -2,39 +2,41 @@ import React,{useCallback} from 'react'
 import styled from 'styled-components'
 import {useDropzone} from 'react-dropzone'
 
-import Avatar from '../assets/avatar.png'
-import cancelimg from '../assets/cancel.png'
-
-const ProfilePicDiv = styled.div`
-  height: 100px;
-  width: 100px;
-  border-radius: 50%;
-  // background-color: #000;
-  // overflow: hidden;
+const Container = styled.div`
+width: 90%;
+height:30%;
+border: 1px dashed #D179FF;
+border-radius: 6px;
 `
 
-const ProfileDropzone = ({profilePic,setProfilePic}) => {
+const ImageDropzone = ({hostelGallery,setHostelGallery}) => {
+
     const onDrop = useCallback(acceptedFiles => {
-        const file = acceptedFiles[0]
+        acceptedFiles.forEach(file => {
         const reader = new FileReader()
         reader.onabort = () => console.log('file reading was aborted')
         reader.onerror = () => console.log('file reading has failed')
         reader.onload = () => {
           // Do whatever you want with the file contents
           const binaryStr = reader.result
-          setProfilePic(binaryStr)
+          setHostelGallery(previous => { return [...previous, binaryStr] })
         }
         reader.readAsDataURL(file)
+        })
       }, [])
     
       const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
-
   return (
-    <ProfilePicDiv {...getRootProps()} >
-        <input {...getInputProps()} id="profilepic"/>
-        <img src={profilePic} alt="Profile Pic" style={{height:"90px", width:"90px"}}  />
-      </ProfilePicDiv>
+    <Container {...getRootProps()} >
+        <input {...getInputProps()} id="images"/>
+        {
+        isDragActive ?
+          <p>Drop the files here ...</p> :
+          <p>Drag 'n' drop some files here, or click to select files</p>
+      }
+    </Container>
+
   )
 }
 
-export default ProfileDropzone
+export default ImageDropzone

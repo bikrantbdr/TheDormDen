@@ -1,11 +1,13 @@
 import React,{useState, useEffect} from 'react'
 import styled from 'styled-components'
+import axios from "axios"
 
-import Navbar from '../Components/Navbar'
-import DocumentDropzone from '../Components/DocumentDropzone'
-import ProfileDropzone from '../Components/ProfileDropzone'
 
 import Avatar from '../assets/avatar.png'
+import DocumentDropzone from '../Components/DocumentDropzone'
+import ProfileDropzone from '../Components/ProfileDropzone'
+import NavAndSidebar from '../Components/NavAndSidebar'
+
 
 const Container = styled.div`
   box-sizing: border-box;
@@ -81,9 +83,15 @@ const Gender = styled.select`
 
 
 const Button = styled.button`
-  width: 50%;
+  width: 35%;
   height: 2rem;
   margin: 0.5rem;
+  background-color: #D179FF;
+  border: none;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 6px;
 `
 
 
@@ -100,16 +108,43 @@ const UserRegistrationPage = () => {
   const [phoneNumber, setPhoneNumber] = useState("")
   const [profilePic, setProfilePic] = useState(`${Avatar}`)
   const [document, setDocument] = useState("")
+  const baseUrl = 'http://localhost:5000'
 
 
   useEffect(() => {
-    console.log(document)
+    // console.log(document)
   }, [document])
+
+  const submitHandler = async(e) => {
+    e.preventDefault()
+    const user = 
+    {
+      first_name:firstname,
+      middle_name:middlename,
+      last_name:lastname,
+      email:email,
+      username:username,
+      password:password,
+      gender:gender,
+      phone_number:phoneNumber,
+      profile_picture:profilePic,
+      document:document,
+      typeof_user:"student",
+      address:"hetauda"
+    }
+    await axios.post(`${baseUrl}/api/users/register?$`,user)
+    .then(res => {
+        // console.log(res);
+    })
+    .catch(err => {
+        // console.log(err);
+    })
+  }
 
 
   return (
     <>
-    <Navbar />
+    <NavAndSidebar/>
     <Container>
       <TitleDiv>
         <h1>Register Your Account</h1>
@@ -162,8 +197,8 @@ const UserRegistrationPage = () => {
           </Row>
         </Form>
       </FormDiv>
-      <DocumentDropzone document={document} setDocument={setDocument}/>
-      <Button>Submit</Button>
+      <DocumentDropzone document={document} setDocument={setDocument} size={false} center={true}/>
+      <Button onClick={submitHandler}>Submit</Button>
     </Container>
     </>
   )
