@@ -32,4 +32,14 @@ const hostelRouter = require('./routers/hostelRouter');
 app.use('/api/users', userRouter);
 app.use('/api/hostels', hostelRouter);
 
+app.use((err, req, res, next) => {
+    err.status = err.status || 500
+    err.message = err.message || 'Internal Server Error'
+    res.status(err.status).json({
+        success: false,
+        message: err.message,
+        stack: err.stack
+    })
+})
+
 module.exports = app

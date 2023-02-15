@@ -5,8 +5,8 @@ class QueryHandler {
     }
 
     locate() {
-        const longitude = this.queryString.longitude
-        const latitude = this.queryString.latitude
+        const longitude = this.queryString.longitude || 85.318810
+        const latitude = this.queryString.latitude || 27.694654
 
         this.query = this.query.find({
             location: {
@@ -70,7 +70,6 @@ class QueryHandler {
                                              {"rooms.availability": true},
                                              {$and: pricing_query}
                                             ]});
-        //console.log(this.query, room_type_query);
         return this;
     }
 
