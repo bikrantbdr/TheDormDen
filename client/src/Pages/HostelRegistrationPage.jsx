@@ -150,7 +150,6 @@ const HostelRegistrationPage = () => {
           setLatitude(e.latLng[0])
           setLongitude(e.latLng[1])
       }
-
     const submitHandler = async(e) => {
         const data={
             name: hostelname,
