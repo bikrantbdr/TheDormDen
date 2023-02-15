@@ -1,7 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
 import styled from 'styled-components';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom'
+
 import { FaSearch } from "react-icons/fa";
+import { useFetch } from '../hooks/useFetch';
 
 const Container = styled.div`
     width: fit-content;
@@ -133,38 +137,70 @@ function SearchBar() {
     const [openSearchOptions, setOpenSearchOptions] = useState(false)
     const [openLocationOptions, setOpenLocationOptions] = useState(false)
 
+    const [name, setName] = useState('')
+    const [options, setOptions] = useState('any')
+    const [location, setLocation] = useState('')
+    const [destination, setDestination] = useState({
+        longitude: null,
+        latitude: null
+    })
+
+    const [res, setRes] = useState('')
+
+    useEffect(() => {
+        const API_KEY = '769f09ef503a44d1bcb4218675c23b0c'
+        if (location.length > 0) {
+            axios.get(`https://api.geoapify.com/v1/geocode/autocomplete?text=${location}&apiKey=${API_KEY}`).then( (res) => {
+                setRes(res.data)
+        })
+        } else {
+            console.log("location length is not maximum dude")
+        }
+    }, [location])
+
+    const handleDestination = (address) => {
+        setDestination({ longitude: address.properties.lon, latitude: address.properties.lat })
+        console.log(destination)
+        setLocation(address.properties.formatted)
+        setOpenLocationOptions(false)
+    }
+
+    const navigate = useNavigate()
+    const handleSearch = () => {
+        navigate('/hostels', { state: { name, options, destination}})
+    }
+
   return (
     <Container>
         <Content>
             <label>Hostel Name</label>
-            <input type="text" placeholder='Does it have a name?'/>
+            <input type="text" placeholder='Does it have a name?' value={name} onChange={ (e) => setName(e.target.value)} />
         </Content>
 
         <Content>
             <label>Seaters</label>
-            <span onClick={ () => setOpenSearchOptions(!openSearchOptions)}>Any</span>
+            <span onClick={ () => setOpenSearchOptions(!openSearchOptions)}>{options}</span>
         </Content>
         {openSearchOptions && <SeatersOptions>
-            <div>Any</div>
-            <div>One Seater</div>
-            <div>Two Seater</div>
-            <div>Three Seater</div>
-            <div>Four Seater</div>
+            <div onClick={ () => setOptions('any')}>Any</div>
+            <div onClick={ () => setOptions('one')}>One Seater</div>
+            <div onClick={ () => setOptions('two')}>Two Seater</div>
+            <div onClick={ () => setOptions('three')}>Three Seater</div>
+            <div onClick={ () => setOptions('four')}>Four Seater</div>
         </SeatersOptions>}
 
         <Content>
             <label>Location</label>
-            <input type="text" placeholder='Where are you staying?' onClick={ () => setOpenLocationOptions(!openLocationOptions)}/>
+            <input type="text" placeholder='Where are you staying?' onClick={ () => setOpenLocationOptions(!openLocationOptions)} value={ location } onChange={ (e) => setLocation(e.target.value) } />
         </Content>
-        {openLocationOptions && <LocationOptions>
-            <div>Kathmandu, Nepal</div>
-            <div>Bhairavpur, Nepal</div>
-            <div>Homeland, Nepal</div>
-            <div>Dummy, Nepal</div>
-            <div>Mula, Nepal</div>
+        {openLocationOptions && (location.length > 0) && <LocationOptions>
+            { res ? res.features.map((address) => (
+                <div key={address.properties.place_id} onClick={ () => handleDestination(address) }>{address.properties.formatted}</div>
+            )) : "loading please await"
+        }
         </LocationOptions>}
 
-        <Button><FaSearch /> Search</Button>
+        <Button onClick={ handleSearch }><FaSearch /> Search</Button>
     </Container>
   )
 }
