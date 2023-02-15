@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const crypto = require('crypto');
 const sendEmail = require('../utils/mailing');
+const cloudinary = require("cloudinary");
 
 /*
     @desc gets token from request header
@@ -59,6 +60,17 @@ exports.get_user = async (req, res, next) => {
 exports.register_user = async (req, res, next) => {
     const body = req.body;
 
+    const profilecloud = await cloudinary.v2.uploader.upload(body.profile_picture, {
+        folder: "avatars",
+        width: 150,
+        crop: "scale",
+      });
+    const documentcloud = await cloudinary.v2.uploader.upload(body.document, {
+        folder: "studentdocuments",
+        width: 150,
+        crop: "scale",
+      });
+
     const saltRounds = 10;
     const passwordHash = bcrypt.hashSync(body.password, saltRounds);
     
@@ -76,8 +88,8 @@ exports.register_user = async (req, res, next) => {
             gender: body.gender,
             phone_number: body.phone_number,
             address: body.address,
-            profile_picture: body.profile_picture,
-            document: body.document || null,
+            profile_picture: profilecloud.secure_url,
+            document: documentcloud.secure_url || null,
         },
         reviews: [],
         hostel_listings: []
