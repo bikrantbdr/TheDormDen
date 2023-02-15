@@ -6,7 +6,7 @@ import logo from '../assets/Logo.svg'
 
 const Nav = styled.nav`
     background: ${({scrollNav}) => (scrollNav ? '#fff' : '#fff0 ')};
-    height: 80px;
+    height: 10vh;
     width: 100%;
     display: flex;
     justify-content: space-between;
