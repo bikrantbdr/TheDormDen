@@ -205,3 +205,31 @@ exports.update_review = async (req, res, next) => {
         next(err)
     }
 }
+
+/*
+    @route GET /api/hostels/featured
+    @desc Get all hostels that might be featured or top rated
+    @access Public
+*/
+exports.get_featured_hostels = async (req, res, next) => {
+    try {
+        const hostels = await Hostel.find({ featured: true }).limit(3);
+        res.status(200).json(hostels);
+    } catch (err) {
+        next(err)
+    }
+}
+
+/*
+    @route GET /api/hostels/all
+    @desc Get all hostels
+    @access Public
+*/
+exports.get_all_hostels = async (req, res, next) => {
+    try {
+        const hostels = await Hostel.find({}).sort({ ranking: -1 }).limit(5);
+        res.status(200).json(hostels);
+    } catch (err) {
+        next(err)
+    }
+}

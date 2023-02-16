@@ -42,7 +42,7 @@ class QueryHandler {
         
         let room_type_query = []
         if (true) {
-            this.queryString["room_types"].forEach(room_type => {
+            this.queryString["room_types"].split(',').map(room_type => {
                 switch(room_type){
                     case 'one_seater':
                         room_type_query.push({"rooms.room_type": "one_seater"})
@@ -65,6 +65,9 @@ class QueryHandler {
         if (this.queryString["price_upper"] && this.queryString["price_lower"]) {
             pricing_query.push({"rooms.price": {$gte: this.queryString["price_lower"]}})
             pricing_query.push({"rooms.price": {$lte: this.queryString["price_upper"]}})
+        } else {
+            pricing_query.push({"rooms.price": {$gte: 0}})
+            pricing_query.push({"rooms.price": {$lte: 100000}})
         }
         this.query = this.query.find({$and: [{$or: room_type_query},
                                              {"rooms.availability": true},

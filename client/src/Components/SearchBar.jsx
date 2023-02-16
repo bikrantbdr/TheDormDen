@@ -167,7 +167,7 @@ function SearchBar() {
 
     const navigate = useNavigate()
     const handleSearch = () => {
-        navigate('/hostels', { state: { name, options, destination}})
+        navigate('/hostels', { state: { name, options, location, destination}})
     }
 
   return (
