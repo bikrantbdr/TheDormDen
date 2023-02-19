@@ -106,7 +106,7 @@ const Images = styled.div`
     background-color: #fff;
 `
 const ImageContainer = styled.div`
-    dispaly: flex;
+    display: flex;
     position: relative;
 `
 const Image = styled.img`
