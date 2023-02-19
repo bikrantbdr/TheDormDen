@@ -6,6 +6,7 @@ import background from '../assets/background.png'
 import Navbar from '../Components/Navbar'
 import HostelDetails from './../Components/HostelDetails';
 import MailList from './../Components/MailList';
+import CustomerReview from '../Components/CustomerReview'
 
 const DetailContainer = styled.div`
   display: flex;
@@ -36,7 +37,8 @@ const HostelIndividualPage = () => {
     <DetailContainer>
         <Wrapper>
           <HostelDetails />
-          <div style={{flex: 1}}>Review Section here</div>
+          {/* reviews ra hostel_rating backend bata pass garna parxa */}
+          {/* <CustomerReview reviews={reviews} overallRating={hostel_rating} /> */}
         </Wrapper>
       </DetailContainer>
       <MailList />

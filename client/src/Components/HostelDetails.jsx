@@ -71,7 +71,7 @@ const Tabs = styled.div`
         display: block;
         position: absolute;
         bottom: -9px;
-        left: ;
+        /* left: ; */
         width: 100%;
         height: 2px;
         background-color: #d179ff;

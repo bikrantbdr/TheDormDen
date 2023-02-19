@@ -195,7 +195,7 @@ const HostelDescription = () => {
             </RoomsContainer>}
 
             <h2>{openFourSeaterOption ? <AiFillMinusSquare onClick={ () => setOpenFourSeaterOption(!openFourSeaterOption)}  size={20}/> : <AiFillPlusSquare onClick={ () => setOpenFourSeaterOption(!openFourSeaterOption)} size={20}/>} Four Seater Rooms</h2>
-            {openThreeSeaterOption && <RoomsContainer>
+            {openFourSeaterOption && <RoomsContainer>
                 <Room>
                     <Heading>
                         <h1>Four Seater</h1>
