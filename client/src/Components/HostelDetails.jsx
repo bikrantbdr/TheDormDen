@@ -1,0 +1,122 @@
+import React from 'react'
+import { useState } from 'react';
+import styled from 'styled-components';
+
+import HostelDescription from './HostelDescription';
+import HostelAmenities from './HostelAmenities';
+
+const Wrapper = styled.div`
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    &>h1 {
+        font-size: 1.6rem;
+    }
+
+    &>h2 {
+        font-size: 1rem;
+    }
+
+    &>p {
+        font-size: 0.8rem;
+        color: #b7bac6;
+    }
+`
+
+const TabsWrapper = styled.div`
+    display: flex;
+    justify-content: space-between;
+    margin-top: 24px;
+
+    color: #838990;
+    font-weight: bold;
+    padding-bottom: 8px;
+    border-bottom: 1.5px solid #eaedec;
+`
+
+const ActiveTab = styled.div`
+    cursor: pointer;
+    color: #d179ff;
+    position: relative;
+
+    &::after {
+        content: '';
+        display: block;
+        position: absolute;
+        bottom: -9px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: #d179ff;
+    }
+`
+
+const Tabs = styled.div`
+    display: flex;
+    gap: 46px;
+
+    &>p {
+        cursor: pointer;
+        position: relative;
+    }
+
+    &>p:hover {
+        color: #d179ff;
+    }
+
+    &>p:hover::after {
+        content: '';
+        display: block;
+        position: absolute;
+        bottom: -9px;
+        left: ;
+        width: 100%;
+        height: 2px;
+        background-color: #d179ff;
+    }
+`
+
+
+const HostelDetails = () => {
+    const [openDescriptionOption, setOpenDescriptionOption] = useState(true);
+    const [openOfferOption, setOpenOfferOption] = useState(false);
+    const [openReviewOption, setOpenReviewOption] = useState(false);
+
+    const handleActiveTab = (toSetActive) => {
+        if (toSetActive === "d") {
+            setOpenDescriptionOption(true);
+            setOpenOfferOption(false);
+            setOpenReviewOption(false);
+        } else if (toSetActive === "w") {
+            setOpenDescriptionOption(false);
+            setOpenOfferOption(true);
+            setOpenReviewOption(false);
+        } else if (toSetActive === "r") {
+            setOpenDescriptionOption(false);
+            setOpenOfferOption(false);
+            setOpenReviewOption(true);
+        }
+    }
+
+  return (
+    <Wrapper>
+        <h1>Name of the Hostel</h1>
+        <h2>Address of the Hostel</h2>
+        <p>Feature one • Feature two • Feature three • Feature four</p>
+        <TabsWrapper>
+            <Tabs>
+                {openDescriptionOption ? <ActiveTab>Description</ActiveTab> : <p onClick={ () => handleActiveTab("d") }>Description</p>}
+                {openOfferOption ? <ActiveTab>What we offer</ActiveTab> : <p onClick={ () => handleActiveTab("w") }>What we offer</p>}
+                {openReviewOption ? <ActiveTab>Reviews</ActiveTab> : <p onClick={ () => handleActiveTab("r") }>Reviews</p>}
+            </Tabs>
+            <p>Published Aug 25, 2022</p>
+        </TabsWrapper>
+        {openDescriptionOption && <HostelDescription />}
+        {openOfferOption && <HostelAmenities />}
+    </Wrapper>
+  )
+}
+
+export default HostelDetails
