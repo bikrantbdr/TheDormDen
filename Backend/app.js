@@ -28,7 +28,9 @@ app.use(middleware.requestLogger);
 */
 const userRouter = require('./routers/userRouter');
 const hostelRouter = require('./routers/hostelRouter');
+const reviewRouter = require('./routers/reviewRouter');
 
+app.use('/api/reviews', reviewRouter);
 app.use('/api/users', userRouter);
 app.use('/api/hostels', hostelRouter);
 
