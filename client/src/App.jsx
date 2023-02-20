@@ -5,6 +5,7 @@ import UserRegistrationPage from './Pages/UserRegistrationPage'
 import HostelRegistrationPage from './Pages/HostelRegistrationPage'
 import HostelSearchResultPage from './Pages/HostelSearchResultPage'
 import HostelIndividualPage from './Pages/HostelIndividualPage';
+import AdminDashboardPage from './Pages/AdminDashboardPage'
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
       <Route path="/hostels/:id" element={<HostelIndividualPage />} />
       <Route path="/register/user" element={<UserRegistrationPage/>} />
       <Route path="/register/hostel" element={<HostelRegistrationPage/>} />
+      <Route path="/admin" element={<AdminDashboardPage/>} />
     </Routes>
   )
 }
