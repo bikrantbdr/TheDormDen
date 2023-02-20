@@ -4,8 +4,10 @@ import styled from 'styled-components';
 
 import HostelDescription from './HostelDescription';
 import HostelAmenities from './HostelAmenities';
+import HostelReviewsAndComments from './HostelReviewsAndComments';
 
 const Wrapper = styled.div`
+    margin-top: 24px;
     flex: 3;
     display: flex;
     flex-direction: column;
@@ -115,6 +117,7 @@ const HostelDetails = () => {
         </TabsWrapper>
         {openDescriptionOption && <HostelDescription />}
         {openOfferOption && <HostelAmenities />}
+        {openReviewOption && <HostelReviewsAndComments />}
     </Wrapper>
   )
 }
