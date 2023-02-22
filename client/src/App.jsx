@@ -9,6 +9,7 @@ import AdminDashboardPage from './Pages/AdminDashboardPage'
 import AdminDashboardHomeComponent from './Components/AdminDashboardHomeComponent'
 import AdminDashboardUserComponent from './Components/AdminDashboardUserComponent'
 import AdminDashboardHostelComponent from './Components/AdminDashboardHostelComponent'
+import LoginPage from './Pages/LoginPage'
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
       <Route path="/" element={<HomePage/>} />
       <Route path="/hostels" element={<HostelSearchResultPage />} />
       <Route path="/hostels/:id" element={<HostelIndividualPage />} />
+      <Route path="/login" element={<LoginPage />} />
       <Route path="/register/user" element={<UserRegistrationPage/>} />
       <Route path="/register/hostel" element={<HostelRegistrationPage/>} />
       <Route path="/admin" element={<AdminDashboardPage/>} >
