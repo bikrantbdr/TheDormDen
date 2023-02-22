@@ -13,7 +13,7 @@ import {RiFeedbackLine} from "react-icons/ri"
 
 const Wrapper = styled.div`
     flex:1;
-    height: calc(100vh - 50px);
+    height: 90vh;
     background-color: rgb(251, 251, 255);
     position: sticky;
     top: 50px;
