@@ -36,7 +36,7 @@ function HostelSearchResultPage() {
     const [searchLocation, setSearchLocation] = useState(location.state.location)
     const [destination, setDestination] = useState(location.state.destination)
 
-    const [url, setUrl] = useState(`http://localhost:5000/api/hostels?name=${name}&room_types=${ options === "any" ? "one_seater,two_seater,three_seater,four_seater" : options+"_seater" }&longitude=${destination.longitude}&latitude=${destination.latitude}`)
+    const [url, setUrl] = useState(`http://localhost:5000/api/hostels?name=${name}&room_types=${ options === "any" ? "one_seater,two_seater,three_seater,four_seater" : options+"_seater" }&longitude=${destination.longitude || ''}&latitude=${destination.latitude || ''}`)
     const { data, loading, error } = useFetch(url)
 
   return (

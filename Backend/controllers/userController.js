@@ -133,6 +133,7 @@ exports.login_user = async (req, res, next) => {
         const userForToken = {
             username: user.username,
             id: user._id,
+            isAdmin: user.usertype.typeof_user === "admin" ? true : false
         };
     
         const token = jwt.sign(userForToken, process.env.SECRET);
