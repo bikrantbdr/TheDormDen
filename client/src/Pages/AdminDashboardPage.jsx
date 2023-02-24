@@ -2,9 +2,13 @@ import React from 'react'
 import { Outlet,useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import DashboardSidebar from '../Components/DashboardSidebar'
+import AdminDashboardHomeComponent from '../Components/AdminDashboardHomeComponent'
+import NavAndSidebar from '../Components/NavAndSidebar'
 
 const Wrapper = styled.div`
     display: flex;
+    width:100%;
+    margin: 0 auto;
 `
 const Content = styled.div`
     flex: 5;
@@ -13,12 +17,15 @@ const Content = styled.div`
 const AdminDashboardPage = () => {
     const location = useLocation()
   return (
+    <>
+    <NavAndSidebar/>
     <Wrapper>
         <DashboardSidebar />
         <Content>
-            {location.pathname === '/admin' ? <h1>Admin Dashboard</h1> : <Outlet/>}
+            {location.pathname === '/admin' ? <AdminDashboardHomeComponent/> : <Outlet/>}
         </Content>
     </Wrapper>
+    </>
   )
 }
 
