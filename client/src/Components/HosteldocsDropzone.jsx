@@ -55,11 +55,11 @@ const HosteldocsDropzone = ({document, setDocument,size,center}) => {
         
     <input {...getInputProps()} id="iddoc"/>
     {
-      document !== "" ?
+      document !== null ?
       <Displaydiv>
         <DocumentImage src={document} alt="document" />
         <Cancel>
-          <img src={cancelimg} alt="cancel" style={{height:"25px", width:"25px", }} onClick={()=>{setDocument("")}}  />
+          <img src={cancelimg} alt="cancel" style={{height:"25px", width:"25px", }} onClick={()=>{setDocument(null)}}  />
         </Cancel>
       </Displaydiv>:
       isDragActive ?

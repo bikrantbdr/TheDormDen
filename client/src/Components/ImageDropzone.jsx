@@ -1,12 +1,20 @@
 import React,{useCallback} from 'react'
 import styled from 'styled-components'
 import {useDropzone} from 'react-dropzone'
+import addImage from '../assets/addImage.png'
 
 const Container = styled.div`
 width: 90%;
 height:30%;
 border: 1px dashed #D179FF;
 border-radius: 6px;
+background-color: #fff;
+
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+
 `
 
 const ImageDropzone = ({hostelGallery,setHostelGallery}) => {
@@ -31,8 +39,14 @@ const ImageDropzone = ({hostelGallery,setHostelGallery}) => {
         <input {...getInputProps()} id="images"/>
         {
         isDragActive ?
-          <p>Drop the files here ...</p> :
-          <p>Drag 'n' drop some files here, or click to select files</p>
+        <div>Drop the files here ...</div> :
+        <div>
+          <div  style={{display:"flex", justifyContent:"center",marginBottom:"0.5rem"}}>
+          <img src={addImage} alt="add" style={{height:"25px", width:"25px", }}  />
+          </div>
+          <div>Upload your Images</div>
+
+        </div>
       }
     </Container>
 

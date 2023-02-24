@@ -98,6 +98,9 @@ const Description = styled.textarea`
 const Images = styled.div`
     display: flex;
     flex-direction: row;
+    /* justify-content: center; */
+    padding-left: 10px;
+    align-items: center;
     flex-wrap: wrap;
     gap: 0.5rem;
     margin: 0.5rem 0;
@@ -112,6 +115,7 @@ const ImageContainer = styled.div`
 const Image = styled.img`
     width: 100px;
     height: 100px;
+    object-fit: cover;
 `
 const Canceldiv = styled.div`
     position: absolute;
@@ -140,7 +144,7 @@ const HostelRegistrationPage = () => {
     const [longitude, setLongitude] = useState(null);
     const [description, setDescription] = useState('')
     const [verified, setVerified] = useState(false)
-    const [document, setDocument] = useState("")
+    const [document, setDocument] = useState(null)
     const [hostelGallery, setHostelGallery] = useState([])
     const baseUrl = 'http://localhost:5000'
 
@@ -162,6 +166,7 @@ const HostelRegistrationPage = () => {
             images: hostelGallery
         }
         const response = await axios.post(`${baseUrl}/api/hostels/register`, data)
+        console.log(response)
     }
   return (
     <>
@@ -213,7 +218,7 @@ const HostelRegistrationPage = () => {
                                     <ImageContainer key={index}>
                                         <Image src={image} alt="hostel"/>
                                         <Canceldiv>
-                                        <img src={cancelimg} alt="cancel" style={{height:"25px", width:"25px", }} onClick={()=>{setHostelGallery("")}}  />
+                                        <img src={cancelimg} alt="cancel" style={{height:"25px", width:"25px" }} onClick={()=>{setHostelGallery("")}}  />
                                         </Canceldiv>
                                         
                                     </ImageContainer>

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Outlet,useLocation } from 'react-router-dom'
 import styled from 'styled-components'
-import DashboardSidebar from '../Components/DashboardSidebar'
+import DashboardSidebarAdmin from '../Components/DashboardSidebarAdmin'
 import AdminDashboardHomeComponent from '../Components/AdminDashboardHomeComponent'
 import NavAndSidebar from '../Components/NavAndSidebar'
 
@@ -20,7 +20,7 @@ const AdminDashboardPage = () => {
     <>
     <NavAndSidebar/>
     <Wrapper>
-        <DashboardSidebar />
+        <DashboardSidebarAdmin />
         <Content>
             {location.pathname === '/admin' ? <AdminDashboardHomeComponent/> : <Outlet/>}
         </Content>

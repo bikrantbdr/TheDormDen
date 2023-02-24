@@ -6,9 +6,9 @@ import HostelRegistrationPage from './Pages/HostelRegistrationPage'
 import HostelSearchResultPage from './Pages/HostelSearchResultPage'
 import HostelIndividualPage from './Pages/HostelIndividualPage';
 import AdminDashboardPage from './Pages/AdminDashboardPage'
-import AdminDashboardHomeComponent from './Components/AdminDashboardHomeComponent'
 import AdminDashboardUserComponent from './Components/AdminDashboardUserComponent'
 import AdminDashboardHostelComponent from './Components/AdminDashboardHostelComponent'
+import UserDashboardPage from './Pages/UserDashboardPage'
 import LoginPage from './Pages/LoginPage'
 import UserVerificationDashboard from './Components/UserVerificationDashboard';
 
@@ -26,6 +26,8 @@ const App = () => {
         <Route path="userverification" element={<UserVerificationDashboard />} />
         <Route path="users" element={<AdminDashboardUserComponent/>} />
         <Route path="hostels" element={<AdminDashboardHostelComponent/>} />
+      </Route>
+      <Route path="/user" element={<UserDashboardPage/>} >
       </Route>
     </Routes>
   )

@@ -57,7 +57,7 @@ const SidebarItemDiv = styled.div`
     align-items: center;
 `
 
-const DashboardSidebar = () => {
+const DashboardSidebarUser = () => {
 
     const iconStyle = {
         marginRight: "10px",
@@ -69,22 +69,28 @@ const DashboardSidebar = () => {
                 <SidebarMenu>
                     <SidebarTitle>Menu</SidebarTitle>
                     <SidebarList>
-                        <SidebarListItem to="/admin">
+                        <SidebarListItem to="/user">
                             <SidebarItemDiv >
                                 <FaHome style={iconStyle} />
-                                Home
+                                Profile
                             </SidebarItemDiv>
                         </SidebarListItem>
-                        <SidebarListItem to="/admin/users">
+                        <SidebarListItem to="/user/edit">
                             <SidebarItemDiv >
                                 <FaRegUser style={iconStyle} />
-                                Users
+                                Edit Profile
                             </SidebarItemDiv>
                         </SidebarListItem>
-                        <SidebarListItem to="/admin/hostels">
+                        <SidebarListItem to="/user/changepassword">
                             <SidebarItemDiv >
                                 <FaBed style={iconStyle} />
-                                Hostel
+                                Change Password
+                            </SidebarItemDiv>
+                        </SidebarListItem>
+                        <SidebarListItem to="/user/reviews">
+                            <SidebarItemDiv >
+                                <FaBed style={iconStyle} />
+                                Reviews
                             </SidebarItemDiv>
                         </SidebarListItem>
                     </SidebarList>
@@ -118,4 +124,4 @@ const DashboardSidebar = () => {
     )
 }
 
-export default DashboardSidebar
+export default DashboardSidebarUser
