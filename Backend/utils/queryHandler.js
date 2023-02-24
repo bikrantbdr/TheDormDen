@@ -5,8 +5,13 @@ class QueryHandler {
     }
 
     locate() {
-        const longitude = this.queryString.longitude || 85.318810
-        const latitude = this.queryString.latitude || 27.694654
+        const longitude = this.queryString.longitude
+        const latitude = this.queryString.latitude
+
+        if (!longitude || !latitude) {
+            console.log("No location provided")
+            return this
+        }
 
         this.query = this.query.find({
             location: {
@@ -77,7 +82,7 @@ class QueryHandler {
     }
 
     sort() {
-        console.log(this.query)
+        // console.log(this.query)
         this.query = this.query.sort({ ranking: -1 });
         return this;
     }
