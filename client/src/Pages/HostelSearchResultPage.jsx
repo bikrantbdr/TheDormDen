@@ -6,6 +6,7 @@ import NavAndSidebar from '../Components/NavAndSidebar'
 import FilterComponent from '../Components/FilterComponent'
 import SearchResult from '../Components/SearchResult'
 import { useFetch } from './../hooks/useFetch';
+import SearchMap from '../Components/SearchMap'
 
 const Container = styled.div`
     margin-top: 20px;
@@ -16,6 +17,7 @@ const Container = styled.div`
 const Wrapper = styled.div`
     width: 100%;
     max-width: 1024px;
+    height: 85vh;
     display: flex;
     gap: 20px;
 `
@@ -26,10 +28,36 @@ const ResultSection = styled.div`
     @media (max-width: 768px) {
       flex: 1
     }
+
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+`
+const SearchHeader = styled.div`
+    display: flex;
+    height : 3rem;
+    padding:1rem 0;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #febb02;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    `
+const Title = styled.h1`
+    font-size: 1.2rem;
+    `
+const MapButtonConainer = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 5px;
+`
+const Button = styled.button`
+    height: 1.5rem;
 `
 
 function HostelSearchResultPage() {
     const location = useLocation()
+    const [toggleMap, setToggleMap] = useState(false)
 
     const [name, setName] = useState(location.state.name)
     const [options, setOptions] = useState(location.state.options)
@@ -39,6 +67,9 @@ function HostelSearchResultPage() {
     const [url, setUrl] = useState(`http://localhost:5000/api/hostels?name=${name}&room_types=${ options === "any" ? "one_seater,two_seater,three_seater,four_seater" : options+"_seater" }&longitude=${destination.longitude}&latitude=${destination.latitude}`)
     const { data, loading, error } = useFetch(url)
 
+    const handleMap = () => {
+        setToggleMap(!toggleMap)
+    }
   return (
     <>
         <NavAndSidebar />
@@ -46,11 +77,22 @@ function HostelSearchResultPage() {
           <Wrapper>
           <FilterComponent setUrl={setUrl} />
           <ResultSection>  
-          { loading ? "Loading text here please..." : (
+            <SearchHeader>
+              <Title> 20 results found</Title>
+              <MapButtonConainer>
+                Map view
+                <Button onClick={handleMap}>Map</Button>
+              </MapButtonConainer>
+            </SearchHeader>
+          { loading ? "Loading text here please..." : !toggleMap &&(
               data.map((hostel, index) => (
                 <SearchResult hostel={hostel} key={index}/>
               ))
-          )}
+          )
+          }
+          { loading ? "Loading text here please..." : toggleMap &&
+              <SearchMap hostels={data} />       
+        }
           </ResultSection>
           </Wrapper>
         </Container>
