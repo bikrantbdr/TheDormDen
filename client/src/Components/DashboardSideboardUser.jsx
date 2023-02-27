@@ -57,7 +57,7 @@ const SidebarItemDiv = styled.div`
     align-items: center;
 `
 
-const DashboardSidebarUser = () => {
+const DashboardSidebarUser = ({user}) => {
 
     const iconStyle = {
         marginRight: "10px",
