@@ -250,7 +250,7 @@ exports.get_featured_hostels = async (req, res, next) => {
 */
 exports.get_all_hostels = async (req, res, next) => {
     try {
-        const hostels = await Hostel.find({}).sort({ ranking: -1 }).limit(5);
+        const hostels = await Hostel.find({}).populate('owner').sort({ ranking: -1 });
         res.status(200).json(hostels);
     } catch (err) {
         next(err)

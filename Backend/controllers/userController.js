@@ -156,19 +156,46 @@ exports.login_user = async (req, res, next) => {
 */
 exports.update_user = async (req, res, next) => {
     try{
-        const body = req.body;
-    
+        const body = req.body;    
+        console.log("body passed", body);
+        const SecureURL = ""
         const token = getToken(req);
         const decodedToken = jwt.verify(token, process.env.SECRET);
         if (!token || !decodedToken.id) {
             return res.status(401).json({ error: 'token missing or invalid' });
         }
-    
         const user = await User.findById(decodedToken.id);
+
+        if(body.profile_picture) {
+            if(typeof body.profile_picture === "string") {
+                SecureURL = body.profile_picture;
+            } else {
+                const profilecloud = await cloudinary.v2.uploader.upload(body.profile_picture, {
+                    folder: "avatars",
+                    width: 150,
+                    crop: "scale",
+                });
+                SecureURL = profilecloud.secure_url;
+            }
+        }
+        const data = {
+            username: body.username,
+            email: body.email,
+            profile: {
+                first_name: body.first_name,
+                middle_name: body.middle_name,
+                last_name: body.last_name,
+                gender: body.gender,
+                phone_number: body.phone_number,
+                address: body.address,
+                profile_picture: SecureURL,
+            }
+
+        }
     
         /* if user is updating username we have to update the token */
         if(user) {
-            const updatedUser = await User.findByIdAndUpdate(req.params.id, body, {
+            const updatedUser = await User.findByIdAndUpdate(req.params.id, data, {
                 new: true,
                 runValidators: true,
                 useFindAndModify: false
@@ -207,6 +234,9 @@ exports.update_password = async (req, res, next) => {
                 useFindAndModify: false
             });
             res.status(200).json(updatedUser);
+        }
+        else{
+            res.status(401).json({ error: 'Incorrect password' });
         }
     } catch(err) {
         next(err)

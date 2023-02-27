@@ -46,6 +46,10 @@ const Row = styled.div`
   flex-direction: row;
   width: 100%;
   justify-content: space-between;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `
 
 const LabelInput = styled.div`
@@ -132,7 +136,7 @@ const UserRegistrationPage = () => {
       typeof_user:"student",
       address:"hetauda"
     }
-    await axios.post(`${baseUrl}/api/users/register?$`,user)
+    await axios.post(`${baseUrl}/api/users/register/$`,user)
     .then(res => {
         // console.log(res);
     })

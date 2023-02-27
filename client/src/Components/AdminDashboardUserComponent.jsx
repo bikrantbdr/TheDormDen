@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import styled from 'styled-components'
+import axios from 'axios'
 
 import { DataGrid } from '@mui/x-data-grid';
 import { Link } from "react-router-dom";
@@ -30,13 +31,14 @@ width: 32px;
 `
 
 const Edit = styled.button`
-  border: none;
+    border: none;
     border-radius: 10px;
-    padding: 5px 10px;
+    padding: 8px 20px;
     background-color: #3bb077;
     color: white;
     cursor: pointer;
     margin-right: 20px;
+    font-weight: 500;
 `
 
 
@@ -46,37 +48,35 @@ const Edit = styled.button`
 
 
 const AdminDashboardUserComponent = () => {
-  const rows = [
-    {
-      id: 1,
-      username: "Jon Snow",
-      avatar:
-        "https://images.pexels.com/photos/1152994/pexels-photo-1152994.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
-      email: "jon@gmail.com",
-      status: "active",
-      usertype: "admin",
-      gender : "Female"
-    },
-    {
-      id: 2,
-      username: "Jon Snow",
-      avatar:
-        "https://images.pexels.com/photos/1152994/pexels-photo-1152994.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500",
-      email: "jon@gmail.com",
-      status: "active",
-      usertype: "user",
-      gender:"Male"
+  const [users, setUsers] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(false)
+  const baseURL = 'http://localhost:5000'
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        setError(false)
+        setUsers([])
+        setLoading(true)
+        const { data } = await axios.get(`${baseURL}/api/users`)
+        setUsers(data)
+        console.log(data[0])
+      } catch (error) {
+        setError(error.response.data.message)
+      }
+      setLoading(false)
     }
-  ];
-  const [data, setData] = useState(rows);
+    fetchUsers()
+  }, [])
   const [pageSize, setPageSize] = useState(25);
   
   const columns = [
-    { field: "id", headerName: "ID", width: 90 },
+    { field: "id", headerName: "ID", width:220 },
     {
       field: "user",
       headerName: "User",
-      width: 200,
+      width: 170,
       renderCell: (params) => {
         return (
           <User>
@@ -86,21 +86,30 @@ const AdminDashboardUserComponent = () => {
         );
       },
     },
-    { field: "email", headerName: "Email", width: 200 },
-    {
-      field: "status",
-      headerName: "Status",
-      width: 120,
-    },
+    { field: "email", headerName: "Email", width: 220 },
     {
       field: "usertype",
       headerName: "User Type",
       width: 110,
+      renderCell: (params) => {
+        return (
+          <span>
+            {params.row.usertype.typeof_user}
+          </span>
+        );
+      }
     },
     {
       field: "gender",
       headerName: "Gender",
       width: 110,
+      renderCell: (params) => {
+        return(
+          <span>
+            {params.row.profile.gender==0?"Male":"Female"}
+          </span>
+        )
+      }
     },
     {
       field: "action",
@@ -110,11 +119,15 @@ const AdminDashboardUserComponent = () => {
         return (
           <>
             <Link to={"/user/" + params.row.id}>
-              <Edit>Edit</Edit>
+              <Edit>View</Edit>
             </Link>
             <DeleteOutline
               style={{ color: "red",
-                cursor: "pointer"}}
+                cursor: "pointer",
+                height:"20px",
+                width:"20px",
+                }
+              }
               onClick={() => handleDelete(params.row.id)}
             />
           </>
@@ -124,7 +137,7 @@ const AdminDashboardUserComponent = () => {
   ];
 
   const handleDelete = (id) => {
-    setData(data.filter(item => item.id !== id));
+    setUsers(users.filter(item => item.id !== id));
   };
 
 
@@ -132,7 +145,7 @@ const AdminDashboardUserComponent = () => {
   return (
     <Wrapper>
       <Container>
-      <DataGrid rows={data} columns={columns} pageSize={pageSize} onPageSizeChange={(newPage) => setPageSize(newPage)}/>
+      <DataGrid rows={users} columns={columns} pageSize={pageSize} onPageSizeChange={(newPage) => setPageSize(newPage)}/>
       </Container>
     </Wrapper>
   )

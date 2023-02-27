@@ -75,12 +75,6 @@ const DashboardSidebarUser = ({user}) => {
                                 Profile
                             </SidebarItemDiv>
                         </SidebarListItem>
-                        <SidebarListItem to="/user/edit">
-                            <SidebarItemDiv >
-                                <FaRegUser style={iconStyle} />
-                                Edit Profile
-                            </SidebarItemDiv>
-                        </SidebarListItem>
                         <SidebarListItem to="/user/changepassword">
                             <SidebarItemDiv >
                                 <FaBed style={iconStyle} />
