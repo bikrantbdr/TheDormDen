@@ -12,6 +12,7 @@ import '@djthoms/pretty-checkbox';
 
 import {AiFillMinusSquare, AiFillPlusSquare } from 'react-icons/ai'
 import { useFetch } from './../hooks/useFetch';
+import UserDashboardOpenModalEditRoom from './UserDashboardOpenModalEditRoom';
 
 const Container = styled.div`
   display: flex;
@@ -90,6 +91,7 @@ const MapContainer = styled.div`
 `
 
 const AvailableRooms = styled.div`
+    width: 500px;
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -121,7 +123,7 @@ const Room = styled.div`
     display: flex;
     flex-direction: column;
     gap: 8px;
-    padding: 8px;
+    padding: 12px;
     border: 1.5px solid #eaedec;
     border-radius: 4px;
 `
@@ -154,28 +156,45 @@ const Options = styled.div`
     }
 `
 
+const EditButton = styled.button`
+    padding: 8px 16px;
+    background-color: #386bc0;
+    border: none;
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+`
+
+const DeleteButton = styled.button`
+    padding: 8px 16px;
+    background-color: #d1485f;
+    border: none;
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+`
+
 const UserDashboardHostelEdit = () => {
-  const  [hostel, setHostel] = useState(null);
+  const [hostel, setHostel] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [openModal, setOpenModal] = useState(true);
   const [openOneSeaterOption, setOpenOneSeaterOption] = useState(true)
   const [openTwoSeaterOption, setOpenTwoSeaterOption] = useState(false)
   const [openThreeSeaterOption, setOpenThreeSeaterOption] = useState(false)
   const [openFourSeaterOption, setOpenFourSeaterOption] = useState(false)
 
-  const { data, loading, error } = useFetch("http://localhost:5000/api/hostels/63dc7276e547623e0cff4a8c");
-
   useEffect(() => {
-    setHostel(data)
-  }, [data])
-
-  // useEffect(() => {
-  //   const fetchHostel = async () => {
-  //     const response = await axios.get('http://localhost:5000/api/hostels/63dc7276e547623e0cff4a8c');
-  //     const data = response.data
-  //     setHostel(data);
-  //   }
-  //   fetchHostel();
-  // }, [])
-
+    setLoading(true)
+    axios.get("http://localhost:5000/api/hostels/63dc7276e547623e0cff4a8c")
+        .then(res => {
+            setHostel(res.data)
+        })
+        .finally(() => setLoading(false))
+  }, [])
 
   const amenities = ['Wifi', '24hr Electricity', 'CCTV', 'Laundry', 'Hotwater', 'Parking', 'Terrace'];
   const checkbox = useCheckboxState({ state: [] });
@@ -185,11 +204,23 @@ const UserDashboardHostelEdit = () => {
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
 
-  const onmapclickhandler = async(e) => {
-    setAnchor(e.latLng)
-      setLatitude(e.latLng[0])
-      setLongitude(e.latLng[1])
-  }
+    const onmapclickhandler = async(e) => {
+        setAnchor(e.latLng)
+        setLatitude(e.latLng[0])
+        setLongitude(e.latLng[1])
+    }
+
+    const [currentRoom, setCurrentRoom] = useState(null)
+    const editRoomDetails = (e, room) => {
+        e.preventDefault()
+        setOpenModal(true)
+        setCurrentRoom(room)
+    }
+
+    const deleteRoom = (e, room) => {
+        const afterDeletion = hostel.rooms.filter(r => r.id !== room)
+        setHostel({...hostel, rooms: afterDeletion})
+    }
 
   return (
     <Container>
@@ -240,7 +271,7 @@ const UserDashboardHostelEdit = () => {
                     
                     <h2>{openOneSeaterOption ? <AiFillMinusSquare onClick={ () => setOpenOneSeaterOption(!openOneSeaterOption)} size={20}/> : <AiFillPlusSquare onClick={ () => setOpenOneSeaterOption(!openOneSeaterOption)}  size={20}/>}One Seater Rooms</h2>
                     {openOneSeaterOption && <RoomsContainer>
-                        {data.rooms.filter(room => room.room_type === 'one_seater').map(room => {
+                        {hostel.rooms.filter(room => room.room_type === 'one_seater').map(room => {
                             return (<Room key={room.id}>
                                 <Heading>
                                     <h1>Room No. {room.room_number}</h1>
@@ -250,13 +281,17 @@ const UserDashboardHostelEdit = () => {
                                     <p><small>available seats </small>( {room.available_seats || 0} )</p>
                                     <p><small>price </small>Rs. {room.price}</p>
                                 </Options>
+                                <div style={{display: "flex", gap: "10px"}}>
+                                    <EditButton onClick={ (e) => editRoomDetails(e, room.id) }>Edit</EditButton>
+                                    <DeleteButton onClick={ (e) => deleteRoom(e, room.id) }>Delete</DeleteButton>
+                                </div>
                             </Room>)
                         })}
                     </RoomsContainer>}
 
                     <h2>{openTwoSeaterOption ? <AiFillMinusSquare onClick={ () => setOpenTwoSeaterOption(!openTwoSeaterOption)}  size={20}/> : <AiFillPlusSquare onClick={ () => setOpenTwoSeaterOption(!openTwoSeaterOption)} size={20}/>} Two Seater Rooms</h2>
                     {openTwoSeaterOption && <RoomsContainer>
-                        {data.rooms.filter(room => room.room_type === 'two_seater').map(room => {
+                        {hostel.rooms.filter(room => room.room_type === 'two_seater').map(room => {
                             return (<Room key={room.id}>
                                 <Heading>
                                     <h1>Room No. {room.room_number}</h1>
@@ -266,13 +301,17 @@ const UserDashboardHostelEdit = () => {
                                     <p><small>available seats </small>( {room.available_seats || 0} )</p>
                                     <p><small>price </small>Rs. {room.price}</p>
                                 </Options>
+                                <div style={{display: "flex", gap: "10px"}}>
+                                    <EditButton onClick={ (e) => editRoomDetails(e, room.id) }>Edit</EditButton>
+                                    <DeleteButton onClick={ (e) => deleteRoom(e, room.id) }>Delete</DeleteButton>
+                                </div>
                             </Room>)
                         })}
                     </RoomsContainer>}
         
                     <h2>{openThreeSeaterOption ? <AiFillMinusSquare onClick={ () => setOpenThreeSeaterOption(!openThreeSeaterOption)}  size={20}/> : <AiFillPlusSquare onClick={ () => setOpenThreeSeaterOption(!openThreeSeaterOption)} size={20}/>} Three Seater Rooms</h2>
                     {openThreeSeaterOption && <RoomsContainer>
-                        {data.rooms.filter(room => room.room_type === 'three_seater').map(room => {
+                        {hostel.rooms.filter(room => room.room_type === 'three_seater').map(room => {
                             return (<Room key={room.id}>
                                 <Heading>
                                     <h1>Room No. {room.room_number}</h1>
@@ -282,13 +321,17 @@ const UserDashboardHostelEdit = () => {
                                     <p><small>available seats </small>( {room.available_seats || 0} )</p>
                                     <p><small>price </small>Rs. {room.price}</p>
                                 </Options>
+                                <div style={{display: "flex", gap: "10px"}}>
+                                    <EditButton onClick={ (e) => editRoomDetails(e, room.id) }>Edit</EditButton>
+                                    <DeleteButton onClick={ (e) => deleteRoom(e, room.id) }>Delete</DeleteButton>
+                                </div>
                             </Room>)
                         })}
                     </RoomsContainer>}
 
                     <h2>{openFourSeaterOption ? <AiFillMinusSquare onClick={ () => setOpenFourSeaterOption(!openFourSeaterOption)}  size={20}/> : <AiFillPlusSquare onClick={ () => setOpenFourSeaterOption(!openFourSeaterOption)} size={20}/>} Four Seater Rooms</h2>
                     {openFourSeaterOption && <RoomsContainer>
-                        {data.rooms.filter(room => room.room_type === 'four_seater').map(room => {
+                        {hostel.rooms.filter(room => room.room_type === 'four_seater').map(room => {
                             return (<Room key={room._id}>
                                 <Heading>
                                     <h1>Room No. {room.room_number}</h1>
@@ -298,6 +341,10 @@ const UserDashboardHostelEdit = () => {
                                     <p><small>available seats </small>( {room.available_seats || 0} )</p>
                                     <p><small>price </small>Rs. {room.price}</p>
                                 </Options>
+                                <div style={{display: "flex", gap: "10px"}}>
+                                    <EditButton onClick={ (e) => editRoomDetails(e, room.id) }>Edit</EditButton>
+                                    <DeleteButton onClick={ (e) => deleteRoom(e, room.id) }>Delete</DeleteButton>
+                                </div>
                             </Room>)
                         })}
                     </RoomsContainer>}
@@ -305,6 +352,8 @@ const UserDashboardHostelEdit = () => {
                 </LabelInput>}
             </Row>
         </Form>
+        
+        { openModal && <UserDashboardOpenModalEditRoom setOpenModal={ setOpenModal } hostel={ hostel } setHostel={ setHostel } roomId={ currentRoom }/>}
     </Container>
   )
 }
