@@ -56,6 +56,11 @@ const SidebarItemDiv = styled.div`
     display: flex;
     align-items: center;
 `
+const SidebarItemText = styled.div`
+    @media screen and (max-width: 768px) {
+        display: none;
+    }
+`
 
 const DashboardSidebarUser = ({user}) => {
 
@@ -72,45 +77,36 @@ const DashboardSidebarUser = ({user}) => {
                         <SidebarListItem to="/user">
                             <SidebarItemDiv >
                                 <FaHome style={iconStyle} />
-                                Profile
+                                <SidebarItemText>Profile</SidebarItemText>
                             </SidebarItemDiv>
                         </SidebarListItem>
                         <SidebarListItem to="/user/changepassword">
                             <SidebarItemDiv >
                                 <FaBed style={iconStyle} />
+                                <SidebarItemText>
                                 Change Password
+                                </SidebarItemText>
                             </SidebarItemDiv>
                         </SidebarListItem>
                         <SidebarListItem to="/user/reviews">
                             <SidebarItemDiv >
                                 <FaBed style={iconStyle} />
+                                <SidebarItemText>
                                 Reviews
+                                </SidebarItemText>
                             </SidebarItemDiv>
                         </SidebarListItem>
-                    </SidebarList>
-                </SidebarMenu>
-
-                <SidebarMenu>
-                    <SidebarTitle>Verification</SidebarTitle>
-                    <SidebarList>
-                        <SidebarListItem to="/admin/userverification">
+                        {console.log(user)}
+                        {user.hostel_listings !== null && user.hostel_listings.length > 0 &&
+                        <SidebarListItem to="/user/reviews">
                             <SidebarItemDiv >
-                                <FaUserCheck style={iconStyle} />
-                                User Verification
+                                <FaBed style={iconStyle} />
+                                <SidebarItemText>
+                                Hostels
+                                </SidebarItemText>
                             </SidebarItemDiv>
                         </SidebarListItem>
-                        <SidebarListItem to="/admin/hostelverification">
-                            <SidebarItemDiv >
-                                <FaHotel style={iconStyle} />
-                                Hostel Verification
-                            </SidebarItemDiv>
-                        </SidebarListItem>
-                        <SidebarListItem to="/admin/feedback">
-                            <SidebarItemDiv >
-                                <RiFeedbackLine style={iconStyle} />
-                                Reviews
-                            </SidebarItemDiv>
-                        </SidebarListItem>
+                        }
                     </SidebarList>
                 </SidebarMenu>
             </Container>

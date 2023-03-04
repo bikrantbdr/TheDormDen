@@ -12,6 +12,10 @@ const Wrapper = styled.div`
 `
 const Content = styled.div`
     flex: 5;
+
+    @media (max-width: 768px) {
+        flex: 6;
+    }
 `
 
 const AdminDashboardPage = () => {

@@ -15,6 +15,10 @@ flex-direction: column;
 justify-content: center;
 align-items: center;
 
+@media (max-width: 768px) {
+  height: 20vh;
+}
+
 `
 
 const ImageDropzone = ({hostelGallery,setHostelGallery}) => {
