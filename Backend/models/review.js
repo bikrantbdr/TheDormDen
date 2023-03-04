@@ -32,6 +32,10 @@ const reviewSchema = new mongoose.Schema({
     hostel: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Hostel'
+    },
+    reported: {
+        type: Boolean,
+        default: false
     }
 }
 , { timestamps: true });

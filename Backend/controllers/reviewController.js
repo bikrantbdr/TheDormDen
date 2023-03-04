@@ -14,3 +14,64 @@ exports.get_reviews = async (req, res, next) => {
         next(err)
     }
 }
+
+/*
+    @desc flags review as inappropriate
+    @access Private
+*/
+exports.flag_review = async (req, res, next) => {
+    try {
+        const review = await Review.findById(req.params.reviewId);
+        review.reported = true;
+        await review.save();
+        res.status(200).json({ message: 'Review flagged as inappropriate' });
+    } catch(err) {
+        next(err);
+    }
+}
+
+/*
+    @desc access all the flagged reviews
+    @access Private
+*/
+exports.get_flagged_reviews = async (req, res, next) => {
+    try {
+        const reviews = await Review.find({ reported: true }).populate('user hostel');
+        res.status(200).json(reviews);
+    } catch(err) {
+        next(err);
+    }
+}
+
+/*
+    @desc verifies a flagged review
+    @access Private
+*/
+exports.verify_review = async (req, res, next) => {
+    try {
+        const review = await Review.findById(req.params.reviewId);
+        review.reported = false;
+        await review.save();
+        res.status(200).json({ message: 'Review verified' });
+    } catch(err) {
+        next(err);
+    }
+}
+
+/* 
+    @desc removes a review
+    @access Private
+*/
+exports.remove_review = async (req, res, next) => {
+    try {
+        const review = await Review.findById(req.params.reviewId);
+        await User.findByIdAndUpdate(review.user, { $pull: { reviews: review._id } });
+        await Hostel.findByIdAndUpdate(review.hostel, { $pull: { reviews: review._id } });
+        await Hostel.findById(review.hostel).compute_rating_after_delete(review.overall_rating);
+        await Hostel.findById(review.hostel).compute_ranking();   
+        await review.remove();
+        res.status(200).json({ message: 'Review removed' });
+    } catch(err) {
+        next(err);
+    }
+}

@@ -88,7 +88,7 @@ const Options = styled.div`
     }
 `
 
-const HostelDescription = () => {
+const HostelDescription = ({ hostelInfo }) => {
     const [openOneSeaterOption, setOpenOneSeaterOption] = useState(true)
     const [openTwoSeaterOption, setOpenTwoSeaterOption] = useState(false)
     const [openThreeSeaterOption, setOpenThreeSeaterOption] = useState(false)
@@ -98,124 +98,72 @@ const HostelDescription = () => {
     <Container>
         <DescriptionText>
             <h1>Our Hostel</h1>
-            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Repudiandae delectus odit consequuntur impedit officia voluptate, illo, ad ab neque quas dolore tempore iure! Tempora soluta eius facere, eos nisi minus! Lorem ipsum dolor sit, amet consectetur adipisicing elit. Fugiat sunt voluptate, et vero cupiditate necessitatibus. Aspernatur voluptatibus accusamus fugiat culpa tempore quasi minima recusandae, illo, ullam voluptates quae eius iusto? Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nobis, laudantium nulla consequatur sapiente ipsa, assumenda eligendi praesentium facere non magni explicabo excepturi, asperiores quod voluptatibus impedit iusto culpa! Et, fugiat.</p>
+            <p>{hostelInfo.description}</p>
         </DescriptionText>
         <AvailableRooms>
             <h1>Available Rooms</h1>
             <h2><div>{openOneSeaterOption ? <AiFillMinusSquare onClick={ () => setOpenOneSeaterOption(!openOneSeaterOption)} size={20}/> : <AiFillPlusSquare onClick={ () => setOpenOneSeaterOption(!openOneSeaterOption)}  size={20}/>}</div> One Seater Rooms</h2>
             {openOneSeaterOption && <RoomsContainer>
-                <Room>
-                    <Heading>
-                        <h1>One Seater</h1>
-                        <p>balcony • direct sunlight • attached bathroom</p>
-                    </Heading>
-                    <Options>
-                        <p><small>available seats </small>( 5 )</p>
-                        <p><small>price </small>Rs. 11000</p>
-                    </Options>
-                </Room>
-                <Room>
-                    <Heading>
-                        <h1>One Seater</h1>
-                        <p>balcony • direct sunlight</p>
-                    </Heading>
-                    <Options>
-                        <p><small>available seats </small>( 3 )</p>
-                        <p><small>price </small>Rs. 10500</p>
-                    </Options>
-                </Room>
+                {hostelInfo.rooms.filter(room => room.room_type === 'one_seater').map(room => {
+                    return (<Room key={room._id}>
+                        <Heading>
+                            <h1>One Seater</h1>
+                            <p>{room.balcony ? 'balcony • ' : ''} {room.attached_bathroom ? 'attached bathroom • ' : ''} {room.direct_sunlight ? 'direct sunlight • ' : ''}</p>
+                        </Heading>
+                        <Options>
+                            <p><small>available seats </small>( {room.available_seats || 0} )</p>
+                            <p><small>price </small>Rs. {room.price}</p>
+                        </Options>
+                    </Room>)
+                })}
             </RoomsContainer>}
             
             <h2>{openTwoSeaterOption ? <AiFillMinusSquare onClick={ () => setOpenTwoSeaterOption(!openTwoSeaterOption)}  size={20}/> : <AiFillPlusSquare onClick={ () => setOpenTwoSeaterOption(!openTwoSeaterOption)} size={20}/>} Two Seater Rooms</h2>
             {openTwoSeaterOption && <RoomsContainer>
-                <Room>
-                    <Heading>
-                        <h1>Two Seater</h1>
-                        <p>balcony • direct sunlight</p>
-                    </Heading>
-                    <Options>
-                        <p><small>available seats </small>( 3 )</p>
-                        <p><small>price </small>Rs. 10000</p>
-                    </Options>
-                </Room>
-                <Room>
-                    <Heading>
-                        <h1>Two Seater</h1>
-                        <p>balcony</p>
-                    </Heading>
-                    <Options>
-                        <p><small>available seats </small>( 2 )</p>
-                        <p><small>price </small>Rs. 10000</p>
-                    </Options>
-                </Room>
+                {hostelInfo.rooms.filter(room => room.room_type === 'two_seater').map(room => {
+                    return (<Room key={room._id}>
+                        <Heading>
+                            <h1>Two Seater</h1>
+                            <p>{room.balcony ? 'balcony • ' : ''} {room.attached_bathroom ? 'attached bathroom • ' : ''} {room.direct_sunlight ? 'direct sunlight • ' : ''}</p>
+                        </Heading>
+                        <Options>
+                            <p><small>available seats </small>( {room.available_seats || 0} )</p>
+                            <p><small>price </small>Rs. {room.price}</p>
+                        </Options>
+                    </Room>)
+                })}
             </RoomsContainer>}
         
             <h2>{openThreeSeaterOption ? <AiFillMinusSquare onClick={ () => setOpenThreeSeaterOption(!openThreeSeaterOption)}  size={20}/> : <AiFillPlusSquare onClick={ () => setOpenThreeSeaterOption(!openThreeSeaterOption)} size={20}/>} Three Seater Rooms</h2>
             {openThreeSeaterOption && <RoomsContainer>
-                <Room>
-                    <Heading>
-                        <h1>Three Seater</h1>
-                        <p>balcony • direct sunlight</p>
-                    </Heading>
-                    <Options>
-                        <p><small>available seats </small>( 3 )</p>
-                        <p><small>price </small>Rs. 10000</p>
-                    </Options>
-                </Room>
-                <Room>
-                    <Heading>
-                        <h1>Three Seater</h1>
-                        <p>balcony</p>
-                    </Heading>
-                    <Options>
-                        <p><small>available seats </small>( 2 )</p>
-                        <p><small>price </small>Rs. 10000</p>
-                    </Options>
-                </Room>
-                <Room>
-                    <Heading>
-                        <h1>Three Seater</h1>
-                        <p>balcony • direct sunlight</p>
-                    </Heading>
-                    <Options>
-                        <p><small>available seats </small>( 2 )</p>
-                        <p><small>price </small>Rs. 10000</p>
-                    </Options>
-                </Room>
-                <Room>
-                    <Heading>
-                        <h1>Three Seater</h1>
-                        <p>balcony • attached bathroom</p>
-                    </Heading>
-                    <Options>
-                        <p><small>available seats </small>( 2 )</p>
-                        <p><small>price </small>Rs. 10000</p>
-                    </Options>
-                </Room>
+                {hostelInfo.rooms.filter(room => room.room_type === 'three_seater').map(room => {
+                    return (<Room key={room._id}>
+                        <Heading>
+                            <h1>Three Seater</h1>
+                            <p>{room.balcony ? 'balcony • ' : ''} {room.attached_bathroom ? 'attached bathroom • ' : ''} {room.direct_sunlight ? 'direct sunlight • ' : ''}</p>
+                        </Heading>
+                        <Options>
+                            <p><small>available seats </small>( {room.available_seats || 0} )</p>
+                            <p><small>price </small>Rs. {room.price}</p>
+                        </Options>
+                    </Room>)
+                })}
             </RoomsContainer>}
 
             <h2>{openFourSeaterOption ? <AiFillMinusSquare onClick={ () => setOpenFourSeaterOption(!openFourSeaterOption)}  size={20}/> : <AiFillPlusSquare onClick={ () => setOpenFourSeaterOption(!openFourSeaterOption)} size={20}/>} Four Seater Rooms</h2>
             {openFourSeaterOption && <RoomsContainer>
-                <Room>
-                    <Heading>
-                        <h1>Four Seater</h1>
-                        <p>balcony • direct sunlight • attached bathroom</p>
-                    </Heading>
-                    <Options>
-                        <p><small>available seats </small>( 5 )</p>
-                        <p><small>price </small>Rs. 11000</p>
-                    </Options>
-                </Room>
-                <Room>
-                    <Heading>
-                        <h1>Four Seater</h1>
-                        <p>balcony • direct sunlight</p>
-                    </Heading>
-                    <Options>
-                        <p><small>available seats </small>( 3 )</p>
-                        <p><small>price </small>Rs. 10500</p>
-                    </Options>
-                </Room>
+                {hostelInfo.rooms.filter(room => room.room_type === 'four_seater').map(room => {
+                    return (<Room key={room._id}>
+                        <Heading>
+                            <h1>Four Seater</h1>
+                            <p>{room.balcony ? 'balcony • ' : ''} {room.attached_bathroom ? 'attached bathroom • ' : ''} {room.direct_sunlight ? 'direct sunlight • ' : ''}</p>
+                        </Heading>
+                        <Options>
+                            <p><small>available seats </small>( {room.available_seats || 0} )</p>
+                            <p><small>price </small>Rs. {room.price}</p>
+                        </Options>
+                    </Room>)
+                })}
             </RoomsContainer>}
         </AvailableRooms>
     </Container>

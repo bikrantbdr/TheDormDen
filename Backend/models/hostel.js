@@ -132,6 +132,12 @@ hostelSchema.methods.compute_rating = function(overall_rating) {
     this.number_of_reviews = this.reviews.length;
 }
 
+// after deleting review from hostel compute rating
+hostelSchema.methods.compute_rating_after_delete = function(overall_rating) {
+    this.hostel_rating = (this.hostel_rating * (this.reviews.length+1) - overall_rating) / (this.reviews.length);
+    this.number_of_reviews = this.reviews.length;
+}
+
 hostelSchema.methods.compute_ranking = async function() {
 /* 
     R – The item's own rating. R is the average of the item's votes. (For example, if an item has no votes, its R is 0. If someone gives it 5 stars, R becomes 5. If someone else gives it 1 star, R becomes 3, the average of [1, 5]. And so on.)
@@ -153,6 +159,4 @@ hostelSchema.methods.compute_ranking = async function() {
     C /= reviews.length;
     this.ranking = (R * v + C * m) / (v + m);
 }
-
-module.exports = mongoose.model('Hostel', hostelSchema);
 

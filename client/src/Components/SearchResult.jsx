@@ -193,7 +193,7 @@ function ResultItem({ hostel }) {
             <DetailText>
                 <span>Rs.{ hostel.rooms[0].price }</span>
                 <span>Includes taxes and fees</span>
-                <Link to={`/hotels/${hostel.id}`}>
+                <Link to={`/hostels/${hostel.id}`}>
                     <button>See availability</button>
                 </Link>
             </DetailText>

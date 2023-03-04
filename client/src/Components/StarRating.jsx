@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import { IoIosStar } from 'react-icons/io'
 
-const StarRating = () => {
-    const [rating, setRating] = useState(null);
+const StarRating = ({ rating, setRating }) => {
     const [hover, setHover] = useState(null);
 
   return (
@@ -11,7 +10,7 @@ const StarRating = () => {
             const ratingValue = i + 1;
 
             return (
-                <label>
+                <label key={i}>
                     <input 
                         type="radio" 
                         name="rating" 

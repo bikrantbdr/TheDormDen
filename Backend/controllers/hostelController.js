@@ -233,3 +233,43 @@ exports.get_all_hostels = async (req, res, next) => {
         next(err)
     }
 }
+
+/*
+    @route UNVERIFIED HOSTELS /api/hostels/unverified
+    @desc Get all unverified hostels
+    @access Admin
+*/
+exports.get_unverified_hostels = async (req, res, next) => {
+    try {
+        const hostels = await Hostel.find({ 'verified': false }).populate('owner');
+        res.status(200).json(hostels);
+    } catch(err) {
+        next(err)
+    }
+}
+
+/*
+    @route DELETE /api/hostels/delete/:id
+    @desc Delete a hostel
+    @access Owner
+*/
+exports.delete_hostel = async (req, res, next) => {
+    try {
+        const hostel = await Hostel.findById(req.params.id);
+        const hostelOwner = await User.findById(hostel.owner);
+        const reviews = await Review.find({ hostel: req.params.id });
+
+        await Promise.all(reviews.map(review => {
+            User.findByIdAndUpdate(review.user, { $pull: { reviews: review._id } });
+            review.remove();
+        }))
+        User.findByIdAndUpdate(hostelOwner._id, { $pull: { hostels: hostel._id } });
+        await hostel.remove();
+        res.status(200).json({ 
+            status: "success",
+            message: 'Hostel deleted successfully'
+        });
+    } catch (err) {
+        next(err)
+    }
+}

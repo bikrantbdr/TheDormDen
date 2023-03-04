@@ -65,8 +65,8 @@ function HighestRatingHostels() {
 
   return (
     <Container>
-        { loading ? "Loading please wait" : (
-            data.map((hostel, index) => (
+        {/* { loading ? "Loading please wait" : 
+            (data.map((hostel, index) => (
                 <PropertyItem key={index} >
                     <PropertyImage src={ images[index] } />
                     <PropertyName>{ hostel.name }</PropertyName>
@@ -78,7 +78,7 @@ function HighestRatingHostels() {
                     </div>
                 </PropertyItem>
             ))
-        )}
+        )} */}
     </Container>
   )
 }

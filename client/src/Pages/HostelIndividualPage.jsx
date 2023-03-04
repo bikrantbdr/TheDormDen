@@ -7,6 +7,8 @@ import Navbar from '../Components/Navbar'
 import HostelDetails from './../Components/HostelDetails';
 import MailList from './../Components/MailList';
 import CustomerReview from '../Components/CustomerReview'
+import { useFetch } from './../hooks/useFetch';
+import { useParams } from 'react-router-dom'
 
 const DetailContainer = styled.div`
   display: flex;
@@ -26,6 +28,9 @@ const Wrapper = styled.div`
 `
 
 const HostelIndividualPage = () => {
+    const hostelId = useParams().id
+    const { data, loading, error } = useFetch(`http://localhost:5000/api/hostels/${hostelId}`)
+
     const [images,setImages] = useState([background,background,background,background,background])
     const [longitude,setLongitude] = useState(85.32046340409931)
     const [latitude,setLatitude] = useState(27.694582657545205)
@@ -33,16 +38,17 @@ const HostelIndividualPage = () => {
     <>
     <Navbar />
     <Container>
-    <HostelImageSection images={images} longitude={longitude} latitude={latitude}/>
+    {loading ? "loading please wait" : <><HostelImageSection images={images} longitude={longitude} latitude={latitude}/>
     <DetailContainer>
         <Wrapper>
-          <HostelDetails />
+          <HostelDetails hostelInfo={ data }/>
           {/* reviews ra hostel_rating backend bata pass garna parxa */}
           {/* <CustomerReview reviews={reviews} overallRating={hostel_rating} /> */}
         </Wrapper>
       </DetailContainer>
       <MailList />
-
+    </>
+    }
     </Container>
     </>
 

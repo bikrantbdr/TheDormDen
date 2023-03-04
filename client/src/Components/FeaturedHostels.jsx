@@ -53,7 +53,7 @@ function FeaturedHostels() {
         {loading? "Loading please wait" : <><FeaturedItem>
             <FeaturedImage src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"/>
             <FeaturedTitle>
-                <h1>{data[0].name}</h1>
+                {/* <h1>{data[0].name}</h1> */}
                 <h3>Thapathali, Kathmandu</h3>
             </FeaturedTitle>
         </FeaturedItem>
@@ -61,7 +61,7 @@ function FeaturedHostels() {
         <FeaturedItem>
             <FeaturedImage src="https://images.unsplash.com/photo-1557335200-a65f7f032602?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80"/>
             <FeaturedTitle>
-                <h1>{data[1].name}</h1>
+                {/* <h1>{data[1].name || "none"}</h1> */}
                 <h3>Thapathali, Kathmandu</h3>
             </FeaturedTitle>
         </FeaturedItem>
@@ -69,7 +69,7 @@ function FeaturedHostels() {
         <FeaturedItem>
             <FeaturedImage src="https://images.unsplash.com/photo-1547406683-88dd1d03c425?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80"/>
             <FeaturedTitle>
-                <h1>{data[2].name}</h1>
+                {/* <h1>{data[2].name || "none"}</h1> */}
                 <h3>Biavav, Kathmandu</h3>
             </FeaturedTitle>
         </FeaturedItem></>}

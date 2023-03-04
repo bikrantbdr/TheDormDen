@@ -81,10 +81,10 @@ const Tabs = styled.div`
 `
 
 
-const HostelDetails = () => {
-    const [openDescriptionOption, setOpenDescriptionOption] = useState(true);
+const HostelDetails = ({ hostelInfo }) => {
+    const [openDescriptionOption, setOpenDescriptionOption] = useState(false);
     const [openOfferOption, setOpenOfferOption] = useState(false);
-    const [openReviewOption, setOpenReviewOption] = useState(false);
+    const [openReviewOption, setOpenReviewOption] = useState(true);
 
     const handleActiveTab = (toSetActive) => {
         if (toSetActive === "d") {
@@ -104,20 +104,20 @@ const HostelDetails = () => {
 
   return (
     <Wrapper>
-        <h1>Name of the Hostel</h1>
-        <h2>Address of the Hostel</h2>
-        <p>Feature one • Feature two • Feature three • Feature four</p>
+        <h1>{hostelInfo.name}</h1>
+        {/* <h2>{hostelInfo.address}</h2> */}
+        {/* <p>{hostelInfo.amenities[0]} • {hostelInfo.amenities[1]} • {hostelInfo.amenities[2]} • {hostelInfo.amenities[3]}</p> */}
         <TabsWrapper>
             <Tabs>
                 {openDescriptionOption ? <ActiveTab>Description</ActiveTab> : <p onClick={ () => handleActiveTab("d") }>Description</p>}
                 {openOfferOption ? <ActiveTab>What we offer</ActiveTab> : <p onClick={ () => handleActiveTab("w") }>What we offer</p>}
                 {openReviewOption ? <ActiveTab>Reviews</ActiveTab> : <p onClick={ () => handleActiveTab("r") }>Reviews</p>}
             </Tabs>
-            <p>Published Aug 25, 2022</p>
+            <p>Published { new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(hostelInfo.createdAt)) }</p>
         </TabsWrapper>
-        {openDescriptionOption && <HostelDescription />}
-        {openOfferOption && <HostelAmenities />}
-        {openReviewOption && <HostelReviewsAndComments />}
+        {openDescriptionOption && <HostelDescription hostelInfo={ hostelInfo }/>}
+        {openOfferOption && <HostelAmenities hostelInfo={ hostelInfo }/>}
+        {openReviewOption && <HostelReviewsAndComments hostelInfo={ hostelInfo }/>}
     </Wrapper>
   )
 }

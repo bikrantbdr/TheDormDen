@@ -1,7 +1,12 @@
 import React from 'react'
+import { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import { RiFolderWarningFill } from 'react-icons/ri';
 import StarRating from './StarRating';
+import { useFetch } from './../hooks/useFetch';
+import axios from 'axios';
+import { AuthContext } from './../context/AuthContext';
+import UserReviewComponent from './UserReviewComponent';
 
 const Container = styled.div`
     display: flex;
@@ -82,11 +87,14 @@ const ReportButton = styled.button`
     color: #838990;
 `
 
-const RateHostel = styled.div`
+export const RateHostel = styled.div`
     margin-top: 8px;
     display: flex;
     flex-direction: column;
     gap: 8px;
+    padding: 12px;
+    border: 2px dashed #eaedec;
+    border-radius: 8px;
 
     &>h1 {
         font-size: 1rem;
@@ -97,7 +105,7 @@ const RateHostel = styled.div`
     }
 `
 
-const Rating = styled.div`
+export const Rating = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -107,7 +115,7 @@ const Rating = styled.div`
     }
 `
 
-const WriteReview = styled.div`
+export const WriteReview = styled.div`
     &>h2 {
         font-size: 0.9rem;
     }
@@ -127,7 +135,7 @@ const WriteReview = styled.div`
     }
 `
 
-const ReviewFooter = styled.div`
+export const ReviewFooter = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -151,64 +159,97 @@ const ReviewFooter = styled.div`
 `
 
 
-const HostelReviewsAndComments = () => {
+const HostelReviewsAndComments = ({ hostelInfo }) => {
+    const { data, loading, error, reFetchData } = useFetch(`http://localhost:5000/api/reviews/${hostelInfo.id}`);
+    
+    const [existingReview, setExistingReview] = useState([])
+    const [cleanlinessRating, setCleanlinessRating] = useState(null)
+    const [foodRating, setFoodRating] = useState(null)
+    const [staffRating, setStaffRating] = useState(null)
+    const [amenitiesRating, setAmenitiesRating] = useState(null)
+    const [comment, setComment] = useState("")
+
+    const { user_id } = useContext(AuthContext)
+    useEffect(() => {
+        if (data) {
+            const userReview = data.filter(review => review.user !== null && review.user.id === user_id)
+            setExistingReview(userReview)
+            if (userReview.length > 0) {
+                setCleanlinessRating(userReview[0].cleanliness)
+                setFoodRating(userReview[0].food)
+                setStaffRating(userReview[0].staff)
+                setAmenitiesRating(userReview[0].amenities)
+                setComment(userReview[0].comment)
+            }
+        }
+    }, [data])
+
+    const handleSubmitReview = async (e) => {
+        e.preventDefault()
+        const review = {
+            cleanliness: cleanlinessRating,
+            food: foodRating,
+            staff: staffRating,
+            amenities: amenitiesRating,
+            comment: comment
+        }
+        if (existingReview.length > 0) {
+            try {
+                const response = await axios.put(`http://localhost:5000/api/hostels/review/update/${existingReview[0].id}`, review, { withCredentials: true })
+                console.log(response)
+                reFetchData()
+            } catch (err) {
+                console.log(err)
+            }
+        } else if (existingReview.length === 0 && comment.length > 0) {
+            try {
+                const response = await axios.post(`http://localhost:5000/api/hostels/review/${hostelInfo.id}`, review, { withCredentials: true })
+                console.log(response)
+                reFetchData()
+            } catch (err) {
+                console.log(err)
+            }
+        }
+    }
+
+    const reportReview = async (review_id) => {
+        try {
+            if (window.confirm("Are you sure you want to report this review?")) {
+                console.log("Flagging the review")
+            } else {
+                return null
+            }
+            const response = await axios.put(`http://localhost:5000/api/reviews/flag/${review_id}`, {}, { withCredentials: true })
+            console.log(response)
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
   return (
     <Container>
-        <Reviews>
+        {loading ? "loading" : <Reviews>
             <h1>Reviews</h1>
-            <Comment>
-                <CommentHeading>
-                    <div>
-                        <h1>Jason Fried</h1>
-                        <p>Nov 10, 2022</p>
-                    </div>
-                    <Star style={{"--rating": 3.5}}/>
-                </CommentHeading>
-                <CommentText>
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Obcaecati accusamus iusto aliquid quae, consequuntur est. Repudiandae quo nemo ut obcaecati mollitia, doloremque voluptatum expedita, saepe ex dignissimos iusto inventore minima.    
-                </CommentText>
-                <ReportButton>
-                    <RiFolderWarningFill /> Report
-                </ReportButton>
-            </Comment>
-            <Comment>
-                <CommentHeading>
-                    <div>
-                        <h1>Marko Lopo</h1>
-                        <p>Nov 15, 2022</p>
-                    </div>
-                    <Star style={{"--rating": 2}}/>
-                </CommentHeading>
-                <CommentText>
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod voluptatum voluptates, quae molestiae nihil ipsum harum beatae tempora totam recusandae unde praesentium provident exercitationem distinctio sapiente, nobis, aperiam modi voluptatem!
-                </CommentText>
-                <ReportButton>
-                    <RiFolderWarningFill /> Report
-                </ReportButton>
-            </Comment>
-            <RateHostel>
-                <h1>Write a Review</h1>
-                <h2>Rating</h2>
-                <Rating>
-                    <h3>Cleanliness</h3>
-                    <StarRating />
-                    <h3>Food</h3>
-                    <StarRating />
-                    <h3>Staff</h3>
-                    <StarRating />
-                    <h3>Amenities</h3>
-                    <StarRating />
-                </Rating>
-                <WriteReview>
-                    <h2>Write a Review</h2>
-                    <textarea rows="10" column="30" placeholder='Share your experience'/>
-                </WriteReview>
-                <ReviewFooter>
-                    <p>Your review must be atleast 50 characters long</p>
-                    <button>Submit review</button>
-                </ReviewFooter>
-            </RateHostel>
-        </Reviews>
+            {data.map(review => {
+                return (
+                    <Comment key={review.id}>
+                        <CommentHeading>
+                            <div>
+                                <h1>{review.user !== null ? review.user.username : "Anonymous"}</h1>
+                                <p>{ new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(review.createdAt)) }</p>
+                            </div>
+                            <Star style={{"--rating": review.overall_rating}}/>
+                        </CommentHeading>
+                        <CommentText>
+                            {review.comment}
+                        </CommentText>
+                        <ReportButton onClick={ () => reportReview(review.id)}>
+                            <RiFolderWarningFill /> Report
+                        </ReportButton>
+                    </Comment>)
+            }) }
+            <UserReviewComponent existingReview={ existingReview } cleanlinessRating={ cleanlinessRating } setCleanlinessRating={ setCleanlinessRating } foodRating={ foodRating } setFoodRating={ setFoodRating } staffRating={ staffRating } setStaffRating={ setStaffRating } amenitiesRating={ amenitiesRating } setAmenitiesRating={ setAmenitiesRating } comment={ comment } setComment={ setComment } handleSubmitReview={ handleSubmitReview } />
+        </Reviews>}
     </Container>
   )
 }

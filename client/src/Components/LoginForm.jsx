@@ -6,15 +6,16 @@ import axios from 'axios';
 
 import InputComponent from './InputComponent';
 import { AuthContext } from '../context/AuthContext';
+import { NotificationContext } from '../context/NotificationContext';
 
-const Container = styled.div`
+export const Container = styled.div`
     margin-top: 74px;
     width: 100%;
     display: flex;
     justify-content: center;
 `
 
-const FormContainer = styled.form`
+export const FormContainer = styled.form`
     width: 220px;
     display: flex;
     flex-direction: column;
@@ -34,7 +35,7 @@ const FormContainer = styled.form`
     }
 `
 
-const Button = styled.button`
+export const Button = styled.button`
     width: 100%;
     font-weight: bold;
     padding: 8px 12px;
@@ -45,6 +46,11 @@ const Button = styled.button`
     border: none;
     cursor: pointer;
     box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+
+    &>a {
+        text-decoration: none;
+        color: #fff;
+    }
 `
 
 const RegistrationButtonLink = styled(Link)`
@@ -93,6 +99,7 @@ const LoginForm = () => {
     }
 
     const { loading, error, dispatch } = useContext(AuthContext)
+    const { dispatch: notificationDispatch } = useContext(NotificationContext)
     const navigate = useNavigate()
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -108,6 +115,7 @@ const LoginForm = () => {
             navigate("/")
         } catch (error) {
             dispatch({ type: "LOGIN_FAILURE", payload: error.response.data })
+            notificationDispatch({ type: "NOTIFICATION_START", payload: { display: true, message: `${error.response.data.error}`, status: "error" } })
         }
     }
 
@@ -118,7 +126,7 @@ const LoginForm = () => {
             <InputComponent key={ inputs[0].id } { ...inputs[0] } value={ values[inputs[0].name] } onChange={ onChange } />
             <InputComponent key={ inputs[1].id } { ...inputs[1] } value={ values[inputs[1].name] } onChange={ onChange } />
             <Button onClick={ handleSubmit } disabled={loading || (values.username ==='' && values.password ==='') }>Login</Button>
-            <Link to="">Forgot your password?</Link>
+            <Link to="/forgotpassword">Forgot your password?</Link>
             <p>Don't have an account?</p>
             <RegistrationButtonLink to="/register/user" style={{color: "#6e6e70", fontWeight: 'bold', fontSize: '0.9rem'}}>Create new account</RegistrationButtonLink>
         </FormContainer>

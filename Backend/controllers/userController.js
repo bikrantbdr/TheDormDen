@@ -1,6 +1,8 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
+const Hostel = require('../models/hostel');
+const Review = require('../models/review');
 const crypto = require('crypto');
 const sendEmail = require('../utils/mailing');
 const cloudinary = require("cloudinary");
@@ -223,7 +225,6 @@ exports.forgot_password = async (req, res, next) => {
         const body = req.body
     
         const user = await User.findOne({ email: body.email })
-        console.log(user._id)
         const { resetToken, reset_password_token, reset_token_expires } = await createResetPasswordToken();
         const updatedUserResetToken = await User.findByIdAndUpdate(user._id, { reset_password_token, reset_token_expires }, {
             new: true,
@@ -292,4 +293,48 @@ exports.reset_password = async (req, res, next) => {
         next(err)
     }
 }
+
+/*
+    @route GET /api/users/unverified
+    @desc Get all unverified users
+    @access Public
+*/
+
+exports.get_unverified_users = async (req, res, next) => {
+    try {
+        const users = await User.find({ 'usertype.is_verified': false });
+        res.status(200).json(users);
+    } catch(err) {
+        next(err)
+    }
+}
+
+/* 
+    @route DELETE /api/users/delete/:id
+    @desc Delete a user
+    @access Private
+*/
+exports.delete_user = async (req, res, next) => {
+    try{
+        const user = req.params.id;
+        const hostels = await Hostel.find({ owner: user });
+        const reviews = await Review.find({ user: user });
+        
+        await Promise.all(hostels.map(hostel =>  {
+            Hostel.findByIdAndDelete(hostel._id);
+        }))
+        await Promise.all(reviews.map(review =>  {
+            Review.findByIdAndDelete(review._id);
+        }))
+        const deletedUser = await User.findByIdAndDelete(user);
+        res.status(200).json({
+            status: 'success',
+            message: 'User deleted successfully',
+            deletedUser
+        });
+    } catch(err) {
+        next(err)
+    }
+}
+
     
