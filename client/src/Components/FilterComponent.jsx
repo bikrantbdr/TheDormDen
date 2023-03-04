@@ -7,9 +7,9 @@ import { useLocation } from 'react-router-dom';
 
 const SearchSection = styled.div`
     flex: 1;
-    padding: 10px;
+    padding: 1.5rem;
     border-radius: 10px;
-    background-color: #febb02;
+    background-color: #D179FF;
     position: sticky;
     top: 65px;
     height: fit-content;
@@ -22,7 +22,7 @@ const SearchSection = styled.div`
 const SearchTitle = styled.h1`
     font-size: 1.2rem;
     margin-bottom: 10px;
-    color: #555;
+    color: #ffffff;
 `
 
 const ListItem = styled.div`
@@ -35,6 +35,7 @@ const ListItem = styled.div`
         font-size: 0.8rem;
         font-weight: 600;
         margin-bottom: 5px;
+        color: #292929;
     }
 
     &>input {
@@ -58,7 +59,7 @@ const ListOptions = styled.div`
     &>span {
         font-size: 0.8rem;
         font-weight: 600;
-        color: #555;
+        color: #ffffff;
     }
 
     &>input {
@@ -81,7 +82,7 @@ const LocationOptions = styled.div`
     }
 
     &>div:hover {
-        background-color: lightgray;
+        background-color: #f4f2f2;
     }
 
     @media (max-width: 768px) {
@@ -124,8 +125,14 @@ const Button = styled.button`
     padding: 5px;
     border: none;
     cursor: pointer;
+    border-radius: 5px;
+    padding: 0.5rem;
     color: #fff;
-    background-color: #3457D5;
+    background-color: #382b2f79;
+
+    &:hover {
+        background-color: #382b2f;
+    }
 `
 
 function FilterComponent({ setUrl }) {
@@ -176,7 +183,7 @@ function FilterComponent({ setUrl }) {
 
   return (
     <SearchSection>
-            <SearchTitle>Search</SearchTitle>
+            <SearchTitle>Filter</SearchTitle>
             <ListItem>
                 <label>Name</label>
                 <input type="text" value={ name } onChange={ (e) => setName(e.target.value) }/>

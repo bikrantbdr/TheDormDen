@@ -12,6 +12,10 @@ const Container = styled.div`
     @media (max-width: 768px) {
         overflow-x: scroll;
         padding: 0 20px;
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
     }
 `
 
