@@ -1,5 +1,5 @@
 import React from 'react'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import Navbar from './../Components/Navbar';
 import LoginForm from './../Components/LoginForm';
@@ -9,13 +9,17 @@ import { AuthContext } from './../context/AuthContext';
 const LoginPage = () => {
     const { user_id } = useContext(AuthContext);
     const navigate = useNavigate();
-    if (user_id) {
-      navigate("/");
-    }
+
+    useEffect(() => {
+        if (user_id) {
+            console.log("humara jalwa hai yeha", user_id)
+            navigate('/')
+        }
+    }, [user_id])
     
   return (
     <>
-      <NotificationBar message="This is a notification bar" status={"success"}/>
+      <NotificationBar />
       <Navbar />
       <LoginForm />
     </>

@@ -21,9 +21,11 @@ const UserDashboardPage = () => {
     const { user_id } = useContext(AuthContext)
     // console.log(user_id)
     useEffect(() => {
+        console.log(user_id)
         axios.get(`http://localhost:5000/api/users/${user_id}`)
         .then(res => {
             setUser(res.data)
+            console.log(res.data)
         })
         .catch(err => {
             console.log(err)
@@ -35,7 +37,10 @@ const UserDashboardPage = () => {
     <>
     <NavAndSidebar/>
     <Wrapper>
+        {user? 
         <DashboardSidebarUser user={user} />
+        :null
+    }
         <Content>
             {location.pathname === '/user' ? <UserDashboardHomeComponent/> : <Outlet/>}
         </Content>

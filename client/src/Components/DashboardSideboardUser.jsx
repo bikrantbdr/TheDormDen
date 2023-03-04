@@ -98,7 +98,7 @@ const DashboardSidebarUser = ({user}) => {
                         </SidebarListItem>
                         {console.log(user)}
                         {user.hostel_listings !== null && user.hostel_listings.length > 0 &&
-                        <SidebarListItem to="/user/reviews">
+                        <SidebarListItem to="/user/hostels">
                             <SidebarItemDiv >
                                 <FaBed style={iconStyle} />
                                 <SidebarItemText>

@@ -5,17 +5,20 @@ import UserRegistrationPage from './Pages/UserRegistrationPage'
 import HostelRegistrationPage from './Pages/HostelRegistrationPage'
 import HostelSearchResultPage from './Pages/HostelSearchResultPage'
 import HostelIndividualPage from './Pages/HostelIndividualPage';
-import AdminDashboardPage from './Pages/AdminDashboardPage'
-import AdminDashboardHomeComponent from './Components/AdminDashboardHomeComponent'
-import AdminDashboardUserComponent from './Components/AdminDashboardUserComponent'
-import AdminDashboardHostelComponent from './Components/AdminDashboardHostelComponent'
 import LoginPage from './Pages/LoginPage'
-import UserVerificationDashboard from './Components/UserVerificationDashboard';
-import HostelVerificationDashboard from './Components/HostelVerificationDashboard'
-import ReviewVerification from './Components/ReviewVerification'
 import ForgotPasswordPage from './Pages/ForgotPasswordPage'
 import ForgotPasswordSentSuccess from './Pages/ForgotPasswordSentSuccess';
 import SetNewPassword from './Components/SetNewPassword'
+import AdminDashboardPage from './Pages/AdminDashboardPage'
+import AdminDashboardUserComponent from './Components/AdminDashboardUserComponent'
+import AdminDashboardHostelComponent from './Components/AdminDashboardHostelComponent'
+import UserVerificationDashboard from './Components/UserVerificationDashboard';
+import HostelVerificationDashboard from './Components/HostelVerificationDashboard'
+import ReviewVerification from './Components/ReviewVerification'
+import UserDashboardPage from './Pages/UserDashboardPage';
+import UserDashboardPasswordComponent from './Components/UserDashboardPasswordComponent'
+import UserDashboardHostelsComponent from './Components/UserDashboardHostelsComponent'
+import UserDashboardHostelEdit from './Components/UserDashboardHostelEdit';
 
 const App = () => {
   return (
@@ -35,6 +38,11 @@ const App = () => {
         <Route path="feedback" element={<ReviewVerification />} />
         <Route path="users" element={<AdminDashboardUserComponent/>} />
         <Route path="hostels" element={<AdminDashboardHostelComponent/>} />
+      </Route>
+      <Route path="/user" element={<UserDashboardPage/>} >
+        <Route path="changepassword" element={<UserDashboardPasswordComponent/>} />
+        <Route path="hostels" element={<UserDashboardHostelsComponent/>} />
+        <Route path="hostels/:id" element={<UserDashboardHostelEdit />} />
       </Route>
     </Routes>
   )

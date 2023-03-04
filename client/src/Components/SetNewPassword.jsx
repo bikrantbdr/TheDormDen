@@ -1,7 +1,6 @@
 import React from 'react'
-import { useParams } from 'react-router-dom'
-import { Link, useNavigate } from 'react-router-dom'
-import styled from 'styled-components'
+import { useContext } from 'react'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
 import { Container, FormContainer, Button } from '../Components/LoginForm'
 import NotificationBar from './NotificationBar'
@@ -43,32 +42,42 @@ const SetNewPassword = () => {
     ]
 
     const navigate = useNavigate()
+    const { dispatch } = useContext(NotificationContext);
     const handlePasswordReset = async (e) => {
         e.preventDefault()
+        if (values.password !== values.confirmPassword) {
+            dispatch({ type: "NOTIFICATION_START", payload: { message: "Passwords do not match!", status: "error" } })
+            return
+        }
         try {
             if (values.password !== "" && values.confirmPassword !== "") {
                 const data = {
                     new_password: values.password
                 }
+                console.log(`http://localhost:5000/api/users/update/password/reset/${tokenId}`)
                 const response = await axios.put(`http://localhost:5000/api/users/update/password/reset/${tokenId}`, data)
+                dispatch({ type: "NOTIFICATION_START", payload: { message: "Password was successfully reset!", status: "success" } })
                 navigate("/login")
             }
         } catch (error) {
-            console.log(error)
+            dispatch({ type: "NOTIFICATION_START", payload: { message: "Password reset failed. Please try again later.", status: "error" } })
         }
     }
 
   return (
-    <Container>
-        <FormContainer>
-            <h1>Set New Password</h1>
-            <p>Your new password must be different to previously used password</p>
-            <InputComponent key={ inputs[0].id } { ...inputs[0] } value={ values[inputs[0].name] } onChange={ onChange } />
-            <InputComponent key={ inputs[1].id } { ...inputs[1] } value={ values[inputs[1].name] } onChange={ onChange } />
-            <Button onClick={ handlePasswordReset }>Reset Password</Button>
-            <BackButton><Link to="/login"><IoArrowBackOutline />Back to log in</Link></BackButton>
-        </FormContainer>
-    </Container>
+    <>
+        <NotificationBar />
+        <Container>
+            <FormContainer>
+                <h1>Set New Password</h1>
+                <p>Your new password must be different to previously used password</p>
+                <InputComponent key={ inputs[0].id } { ...inputs[0] } value={ values[inputs[0].name] } onChange={ onChange } />
+                <InputComponent key={ inputs[1].id } { ...inputs[1] } value={ values[inputs[1].name] } onChange={ onChange } />
+                <Button onClick={ handlePasswordReset }>Reset Password</Button>
+                <BackButton><Link to="/login"><IoArrowBackOutline />Back to log in</Link></BackButton>
+            </FormContainer>
+        </Container>
+    </>
   )
 }
 

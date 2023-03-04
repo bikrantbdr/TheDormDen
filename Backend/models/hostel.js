@@ -49,6 +49,19 @@ const hostelSchema = new mongoose.Schema({
         }
     ],
     rooms: [ {
+        available_seats: {
+            type: Number,
+            required: true,
+            max: 4
+        },
+        room_number: {
+            type: String,
+            required: true
+        },
+        id: {
+            type: String,
+            required: true
+        },
         room_type: {
             type: String,
             required: true
@@ -163,4 +176,6 @@ hostelSchema.methods.compute_ranking = async function() {
     C /= reviews.length;
     this.ranking = (R * v + C * m) / (v + m);
 }
+
+module.exports = mongoose.model('Hostel', hostelSchema);
 
