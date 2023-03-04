@@ -7,6 +7,7 @@ import FilterComponent from '../Components/FilterComponent'
 import SearchResult from '../Components/SearchResult'
 import { useFetch } from './../hooks/useFetch';
 import SearchMap from '../Components/SearchMap'
+import {Switch } from 'pretty-checkbox-react';
 
 const Container = styled.div`
     margin-top: 20px;
@@ -39,11 +40,11 @@ const SearchHeader = styled.div`
     padding:1rem 0;
     justify-content: space-around;
     align-items: center;
-    background-color: #febb02;
+    background-color: #e1aaf66b;
     border-radius: 10px;
     margin-bottom: 10px;
     `
-const Title = styled.h1`
+const Title = styled.span`
     font-size: 1.2rem;
     `
 const MapButtonConainer = styled.div`
@@ -78,10 +79,11 @@ function HostelSearchResultPage() {
           <FilterComponent setUrl={setUrl} />
           <ResultSection>  
             <SearchHeader>
-              <Title> 20 results found</Title>
+              <Title> {data.length} Results Found</Title>
               <MapButtonConainer>
                 Map view
-                <Button onClick={handleMap}>Map</Button>
+                <Switch shape="fill" color="success" onChange={handleMap} />
+                {/* <Button onClick={handleMap}>Map</Button> */}
               </MapButtonConainer>
             </SearchHeader>
           { loading ? "Loading text here please..." : !toggleMap &&(

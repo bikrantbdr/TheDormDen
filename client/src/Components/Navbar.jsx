@@ -5,7 +5,7 @@ import { FaBars } from 'react-icons/fa'
 import logo from '../assets/Logo.svg'
 
 const Nav = styled.nav`
-    background: ${({scrollNav}) => (scrollNav ? '#fff' : '#fff0 ')};
+    background: ${({scrollNav}) => (scrollNav ? '#fff' : '#eeeeee6e')};
     height: 10vh;
     width: 100%;
     display: flex;
@@ -17,7 +17,8 @@ const Nav = styled.nav`
     z-index:10;
     transition: 0.8s all ease;
 `
-const LogoDiv = styled.div`
+const LogoDiv = styled(Link)`
+    cursor: pointer;
 
 `
 const Navlinks = styled.div`
@@ -77,9 +78,10 @@ const Navbar = ({toggle}) => {
     window.addEventListener('scroll', changeNav)
   }, [])
 
+
   return (
     <Nav scrollNav={scrollNav}>
-        <LogoDiv>
+        <LogoDiv to="/" >
             <img src={logo} alt="logo" />
         </LogoDiv>
         <Navlinks>

@@ -83,9 +83,9 @@ const AdminDashboardHomeComponent = () => {
   return (
     <Wrapper>
         <CardContainer>
-          <Card cardTitle="Total Engagement" value={1234} change={3} />
-          <Card cardTitle="Total Engagement" value={1234} change={-2} />
-          <Card cardTitle="Total Engagement" value={124} change={2} />
+          <Card cardTitle="Total Users" value={123} change={3} />
+          <Card cardTitle="Total Hostels" value={500} change={+200} />
+          <Card cardTitle="Total Engagement" value={50} change={-5} />
         </CardContainer>
         <ChartContainer>
           <Charts data={Data} title="User Analytics" grid dataKey="Active User"/>

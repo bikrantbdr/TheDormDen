@@ -29,11 +29,12 @@ const HomeBackground = styled.div`
 `
 
 const Container = styled.div`
-  margin-top: 50px;
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 30px;
+  
 `
 
 const Title = styled.h1`
@@ -57,7 +58,6 @@ const HomePage = () => {
           </HomeBackground>
           <NavAndSidebar/>
           <HeroSection/>
-      </HomeContainer>
       <Container>
         <Title>Featured Hostels</Title>
         <FeaturedHostels />
@@ -65,6 +65,7 @@ const HomePage = () => {
         <HighestRatingHostels />
       </Container>
       <MailList />
+      </HomeContainer>
       
     </>
   )
