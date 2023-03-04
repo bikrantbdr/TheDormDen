@@ -21,6 +21,12 @@ const Container = styled.div`
     background-color: #F8F8F8;
     border-radius: 18px;
     border: 1px solid #382B2F;
+
+    @media (max-width: 768px) {
+        width: 100%;
+        height: 100%;
+        padding-bottom: 1rem;
+    }
 `
 const TitleDiv = styled.div`
     margin: 1rem 0 1rem 0;
@@ -37,6 +43,12 @@ const FormComponent = styled.div`
     // align-items: center;
     gap: 1rem;
 
+    @media (max-width: 768px) {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
 `
 const Left = styled.div`
     width: 50%;
@@ -44,6 +56,10 @@ const Left = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+
+    @media (max-width: 768px) {
+        width: 80%;
+    }
 
 `
 const Right = styled.div`
@@ -53,6 +69,10 @@ const Right = styled.div`
     flex-direction: column;
     justify-content: space-between;
     gap: 0.5rem;
+
+    @media (max-width: 768px) {
+        width: 80%;
+    }
 
 `
 
@@ -98,6 +118,9 @@ const Description = styled.textarea`
 const Images = styled.div`
     display: flex;
     flex-direction: row;
+    /* justify-content: center; */
+    padding-left: 10px;
+    align-items: center;
     flex-wrap: wrap;
     gap: 0.5rem;
     margin: 0.5rem 0;
@@ -112,6 +135,7 @@ const ImageContainer = styled.div`
 const Image = styled.img`
     width: 100px;
     height: 100px;
+    object-fit: cover;
 `
 const Canceldiv = styled.div`
     position: absolute;
@@ -129,6 +153,10 @@ const Button = styled.button`
     font-size: 1rem;
     font-weight: 600;
 `
+const MapContainer = styled.div`
+    width: 100%;
+    height: 25vh;
+`
 
 const HostelRegistrationPage = () => {
     const [hostelname, setHostelname] = useState('')
@@ -140,7 +168,7 @@ const HostelRegistrationPage = () => {
     const [longitude, setLongitude] = useState(null);
     const [description, setDescription] = useState('')
     const [verified, setVerified] = useState(false)
-    const [document, setDocument] = useState("")
+    const [document, setDocument] = useState(null)
     const [hostelGallery, setHostelGallery] = useState([])
     const baseUrl = 'http://localhost:5000'
 
@@ -162,6 +190,7 @@ const HostelRegistrationPage = () => {
             images: hostelGallery
         }
         const response = await axios.post(`${baseUrl}/api/hostels/register`, data)
+        console.log(response)
     }
   return (
     <>
@@ -187,7 +216,8 @@ const HostelRegistrationPage = () => {
                     </LabelInput>
                     <LabelInput>
                         <Label htmlFor='location'>Location</Label>
-                        <Map height={200} width={400} center={center} zoom={zoom} onClick={onmapclickhandler}>
+                        <MapContainer>
+                        <Map center={center} zoom={zoom} onClick={onmapclickhandler}>
                             <Draggable
                                 offset={[25, 50]}
                                 anchor={locationanchor}
@@ -196,6 +226,7 @@ const HostelRegistrationPage = () => {
                                 <img src={location} width={50} height={50} alt="Pigeon!" />
                             </Draggable>
                         </Map>
+                        </MapContainer>
                     </LabelInput>
                     <HosteldocsDropzone document={document} setDocument={setDocument} />
                 </Left>
@@ -213,7 +244,7 @@ const HostelRegistrationPage = () => {
                                     <ImageContainer key={index}>
                                         <Image src={image} alt="hostel"/>
                                         <Canceldiv>
-                                        <img src={cancelimg} alt="cancel" style={{height:"25px", width:"25px", }} onClick={()=>{setHostelGallery("")}}  />
+                                        <img src={cancelimg} alt="cancel" style={{height:"25px", width:"25px" }} onClick={()=>{setHostelGallery("")}}  />
                                         </Canceldiv>
                                         
                                     </ImageContainer>

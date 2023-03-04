@@ -7,7 +7,7 @@ import cancelimg from '../assets/cancel.png'
 
 const DocumentDiv = styled.div`
 background-color: #fff;
-min-height: 25%;
+height: 25%;
 width: 90%;
 margin: 1rem 0 0 0;
 border: 1px dashed #D179FF;
@@ -18,6 +18,10 @@ flex-direction: column;
 justify-content: center;
 align-items: center;
 gap: 0.5rem;
+
+@media (max-width: 768px) {
+  height: 20vh;
+}
 `
 const Displaydiv = styled.div`
   position: relative;
@@ -25,7 +29,7 @@ const Displaydiv = styled.div`
 const DocumentImage = styled.img`
   height: 100px;
   @media (max-width: 768px) {
-    height: 50px;
+    height: 15vh;
   }
 `
 const Cancel = styled.div`
@@ -55,11 +59,11 @@ const HosteldocsDropzone = ({document, setDocument,size,center}) => {
         
     <input {...getInputProps()} id="iddoc"/>
     {
-      document !== "" ?
+      document !== null ?
       <Displaydiv>
         <DocumentImage src={document} alt="document" />
         <Cancel>
-          <img src={cancelimg} alt="cancel" style={{height:"25px", width:"25px", }} onClick={()=>{setDocument("")}}  />
+          <img src={cancelimg} alt="cancel" style={{height:"25px", width:"25px", }} onClick={()=>{setDocument(null)}}  />
         </Cancel>
       </Displaydiv>:
       isDragActive ?

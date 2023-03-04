@@ -56,8 +56,13 @@ const SidebarItemDiv = styled.div`
     display: flex;
     align-items: center;
 `
+const SidebarItemText = styled.div`
+    @media screen and (max-width: 768px) {
+        display: none;
+    }
+`
 
-const DashboardSidebar = () => {
+const DashboardSidebarUser = ({user}) => {
 
     const iconStyle = {
         marginRight: "10px",
@@ -69,48 +74,39 @@ const DashboardSidebar = () => {
                 <SidebarMenu>
                     <SidebarTitle>Menu</SidebarTitle>
                     <SidebarList>
-                        <SidebarListItem to="/admin">
+                        <SidebarListItem to="/user">
                             <SidebarItemDiv >
                                 <FaHome style={iconStyle} />
-                                Home
+                                <SidebarItemText>Profile</SidebarItemText>
                             </SidebarItemDiv>
                         </SidebarListItem>
-                        <SidebarListItem to="/admin/users">
-                            <SidebarItemDiv >
-                                <FaRegUser style={iconStyle} />
-                                Users
-                            </SidebarItemDiv>
-                        </SidebarListItem>
-                        <SidebarListItem to="/admin/hostels">
+                        <SidebarListItem to="/user/changepassword">
                             <SidebarItemDiv >
                                 <FaBed style={iconStyle} />
-                                Hostel
+                                <SidebarItemText>
+                                Change Password
+                                </SidebarItemText>
                             </SidebarItemDiv>
                         </SidebarListItem>
-                    </SidebarList>
-                </SidebarMenu>
-
-                <SidebarMenu>
-                    <SidebarTitle>Verification</SidebarTitle>
-                    <SidebarList>
-                        <SidebarListItem to="/admin/userverification">
+                        <SidebarListItem to="/user/reviews">
                             <SidebarItemDiv >
-                                <FaUserCheck style={iconStyle} />
-                                User Verification
-                            </SidebarItemDiv>
-                        </SidebarListItem>
-                        <SidebarListItem to="/admin/hostelverification">
-                            <SidebarItemDiv >
-                                <FaHotel style={iconStyle} />
-                                Hostel Verification
-                            </SidebarItemDiv>
-                        </SidebarListItem>
-                        <SidebarListItem to="/admin/feedback">
-                            <SidebarItemDiv >
-                                <RiFeedbackLine style={iconStyle} />
+                                <FaBed style={iconStyle} />
+                                <SidebarItemText>
                                 Reviews
+                                </SidebarItemText>
                             </SidebarItemDiv>
                         </SidebarListItem>
+                        {console.log(user)}
+                        {user.hostel_listings !== null && user.hostel_listings.length > 0 &&
+                        <SidebarListItem to="/user/reviews">
+                            <SidebarItemDiv >
+                                <FaBed style={iconStyle} />
+                                <SidebarItemText>
+                                Hostels
+                                </SidebarItemText>
+                            </SidebarItemDiv>
+                        </SidebarListItem>
+                        }
                     </SidebarList>
                 </SidebarMenu>
             </Container>
@@ -118,4 +114,4 @@ const DashboardSidebar = () => {
     )
 }
 
-export default DashboardSidebar
+export default DashboardSidebarUser

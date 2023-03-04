@@ -20,6 +20,12 @@ const Container = styled.div`
   background-color: #F8F8F8;
   border-radius: 18px;
   border: 1px solid #382B2F;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    height: 100%;
+    padding-bottom: 1rem;
+  }
 `
 const TitleDiv = styled.div`
   margin: 1rem 0 1rem 0;
@@ -46,6 +52,10 @@ const Row = styled.div`
   flex-direction: row;
   width: 100%;
   justify-content: space-between;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `
 
 const LabelInput = styled.div`
@@ -54,6 +64,10 @@ const LabelInput = styled.div`
   flex-direction: column;
   gap:0.25rem;
   margin: 0.5rem;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `
 const Label = styled.label`
   font-size: 0.9rem;
@@ -132,7 +146,7 @@ const UserRegistrationPage = () => {
       typeof_user:"student",
       address:"hetauda"
     }
-    await axios.post(`${baseUrl}/api/users/register?$`,user)
+    await axios.post(`${baseUrl}/api/users/register/$`,user)
     .then(res => {
         // console.log(res);
     })

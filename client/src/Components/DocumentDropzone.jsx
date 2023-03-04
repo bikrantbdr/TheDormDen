@@ -18,6 +18,12 @@ flex-direction: column;
 justify-content: center;
 align-items: center;
 gap: 0.5rem;
+
+@media (max-width: 768px) {
+    height: 20vh;
+    width: 60%;
+    margin-bottom: 1rem;
+  }
 `
 const Displaydiv = styled.div`
   position: relative;

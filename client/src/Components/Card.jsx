@@ -8,6 +8,7 @@ const Container = styled.div`
     border-radius: 10px;
     background-color: #fff;
     margin: 1rem;
+    padding: 1rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -18,6 +19,12 @@ const Container = styled.div`
     transition: all 0.3s ease-in-out;
     &:hover{
         transform: scale(1.05);
+    }
+
+    @media screen and (max-width: 768px) {
+        margin: 0.5rem;
+        height:20vh;
+        width: 80%;
     }
 `
 const CardTitle = styled.h3`

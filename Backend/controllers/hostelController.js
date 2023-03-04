@@ -3,6 +3,7 @@ const User = require('../models/user');
 const Hostel = require('../models/hostel');
 const Review = require('../models/review');
 const QueryHandler = require('../utils/queryHandler');
+const cloudinary = require("cloudinary");
 
 /*
     @desc gets token from request header
@@ -53,6 +54,27 @@ exports.get_hostel = async (req, res, next) => {
 exports.register_hostel = async (req, res, next) => {
     try {
         const body = req.body;
+        const imagescloud =[]
+        const imagescloudURL = []
+
+        const documentcloud = await cloudinary.v2.uploader.upload(body.document, {
+            folder: "Hosteldocuments",
+            width: 150,
+            crop: "scale",
+          });
+
+        for(let i = 0; i < body.images.length; i++) {
+        imagescloud[i] = await cloudinary.v2.uploader.upload(body.images[i], {
+            folder: "hostelimages",
+            width: 150,
+            crop: "scale",
+        })
+        console.log("images in cloud", imagescloud[i]);
+        }
+        for(let i = 0; i < imagescloud.length; i++) {
+            imagescloudURL[i] = imagescloud[i].secure_url;
+        }
+        console.log("images in cloud URL", imagescloudURL);
 
         const token = getToken(req);
         const decodedToken = jwt.verify(token, process.env.SECRET);
@@ -71,7 +93,8 @@ exports.register_hostel = async (req, res, next) => {
             },
             description: body.description,
             for_gender: body.for_gender,
-            images: body.images || [],
+            document: documentcloud.secure_url,
+            images: imagescloudURL || [],
             verified: body.verified,
             owner: user._id,
             amenities: body.amenities || [],
@@ -227,7 +250,7 @@ exports.get_featured_hostels = async (req, res, next) => {
 */
 exports.get_all_hostels = async (req, res, next) => {
     try {
-        const hostels = await Hostel.find({}).sort({ ranking: -1 }).limit(5);
+        const hostels = await Hostel.find({}).populate('owner').sort({ ranking: -1 });
         res.status(200).json(hostels);
     } catch (err) {
         next(err)

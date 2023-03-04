@@ -17,6 +17,11 @@ const CardContainer = styled.div`
     width: 100%;
     height: 30vh;
     margin-top: 1rem;
+
+    @media (max-width: 768px) {
+        flex-direction: column;
+        height: 100%;
+    }
 `
 const ChartContainer = styled.div`
     /* margin-top:1rem; */

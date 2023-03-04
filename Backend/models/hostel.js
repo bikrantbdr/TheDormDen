@@ -6,6 +6,10 @@ const hostelSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    document: {
+        type: String,
+        required: false
+    },
     location: {
         type: {
             type: String,
