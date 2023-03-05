@@ -1,9 +1,11 @@
 import React from 'react'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components'
 import { DataGrid } from '@mui/x-data-grid';
 import { useFetch } from './../hooks/useFetch';
 import axios from 'axios';
+import { PromptContext } from '../context/PromptContext';
+import { NotificationContext } from './../context/NotificationContext';
 
 import DocumentImageModal from './DocumentImageModal';
 import { Wrapper, ViewButton, ActionButtons, VerifyButton, DeleteButton } from './UserVerificationDashboard';
@@ -23,24 +25,34 @@ const HostelVerificationDashboard = () => {
         setShowModal(true)
     }
 
+    const { status, dispatch } = useContext(PromptContext);
+    const { dispatch: notificationDispatch } = useContext(NotificationContext)
     const verifyHostel = async (hostelId) => {
         const data = {
             "verified": true
         }
+        notificationDispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "Hostel successfully Verified", status: "success" } })
+        // dispatch({ type: 'PROMPT_START', payload: { display: true, message: "Are you sure you want to verify this hostel?", purpose: "warning" } })
         try {
             const response = await axios.put(`http://localhost:5000/api/hostels/update/${hostelId}`, data, { withCredentials: true })
+            dispatch({ type: 'PROMPT_END' })
             reFetchData()
         } catch (error) {
-            console.log(error)
+            dispatch({ type: 'PROMPT_END' })
+            // notificationDispatch({ type: "NOTIFICATION_START", payload: { display: true, message: `${error.response.data.error}`, status: "error" } })
         }
     }
 
     const deleteHostel = async (hostelId) => {
+      dispatch({ type: 'PROMPT_START', payload: { display: true, message: "Are you sure you want to delete this hostel?", purpose: "alert" } })
         try {
             const response = await axios.delete(`http://localhost:5000/api/hostels/delete/${hostelId}`, { withCredentials: true })
+            dispatch({ type: 'PROMPT_END' })
+            notificationDispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "Hostel successfully deleted", status: "success" } })
             reFetchData()
         } catch (error) {
-            console.log(error)
+            dispatch({ type: 'PROMPT_END' })
+            notificationDispatch({ type: "NOTIFICATION_START", payload: { display: true, message: `${error.response.data.error}`, status: "error" } })
         }
     }
 
@@ -91,7 +103,6 @@ const HostelVerificationDashboard = () => {
             columns={columns}
             pageSize={10}
             rowsPerPageOptions={[10]}
-            checkboxSelection
         />
         {showModal && <DocumentImageModal showModal={ showModal} setShowModal={ setShowModal } documentImage={ documentImage }/>}
     </Wrapper>

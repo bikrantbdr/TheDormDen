@@ -1,9 +1,11 @@
 import React from 'react'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components'
 import { DataGrid } from '@mui/x-data-grid';
 import { useFetch } from './../hooks/useFetch';
 import axios from 'axios';
+import { PromptContext } from '../context/PromptContext';
+import { NotificationContext } from './../context/NotificationContext';
 
 import { Wrapper, ViewButton, ActionButtons, VerifyButton, DeleteButton } from './UserVerificationDashboard';
 import ReviewComponentModal from './ReviewComponentModal';
@@ -33,16 +35,32 @@ const ReviewVerification = () => {
         setRows(data)
     }, [data])
 
+    const { status, dispatch } = useContext(PromptContext);
+    const { dispatch: notificationDispatch } = useContext(NotificationContext)
     const verifyReview = async (reviewId) => {
-        // do you want to verify this review?
-        await axios.put(`http://localhost:5000/api/reviews/verify/${reviewId}`)
-        reFetchData()
+        dispatch({ type: 'PROMPT_START', payload: { display: true, message: "Are you sure you want to verify this review?", purpose: "warning" } })
+        try {
+            await axios.put(`http://localhost:5000/api/reviews/verify/${reviewId}`)
+            dispatch({ type: 'PROMPT_END' })
+            notificationDispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "Review successfully Verified", status: "success" } })
+            reFetchData()
+        } catch (error) {
+            dispatch({ type: 'PROMPT_END' })
+            notificationDispatch({ type: "NOTIFICATION_START", payload: { display: true, message: `${error.response.data.error}`, status: "error" } })
+        }
     }
 
     const deleteReview = async (reviewId) => {
-        // do you want to delete this review?
-        await axios.delete(`http://localhost:5000/api/reviews/remove/${reviewId}`)
-        reFetchData()
+        dispatch({ type: 'PROMPT_START', payload: { display: true, message: "Are you sure you want to delete this review?", purpose: "alert" } })
+        try {
+            await axios.delete(`http://localhost:5000/api/reviews/remove/${reviewId}`)
+            dispatch({ type: 'PROMPT_END' })
+            notificationDispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "Review successfully deleted", status: "success" } })
+            reFetchData()
+        } catch (error) {
+            dispatch({ type: 'PROMPT_END' })
+            notificationDispatch({ type: "NOTIFICATION_START", payload: { display: true, message: `${error.response.data.error}`, status: "error" } })
+        }
     }
 
     const [cleanlinessRating, setCleanlinessRating] = useState(0)
@@ -63,21 +81,21 @@ const ReviewVerification = () => {
         {
             field: 'user',
             headerName: 'Username',
-            width: 120,
+            width: 130,
             renderCell: (params) => (
                 <>{params.row.user.username || "Anonymous"}</>)
         },
         {
             field: 'verification',
             headerName: 'Status',
-            width: 100,
+            width: 130,
             renderCell: (params) => (
                 <>{params.row.user.usertype.is_verified ? <VerifiedButton>Verified User</VerifiedButton> : <UnverifiedButton>Unverified User</UnverifiedButton>}</>)
         },
         {
             field: 'hostel',
             headerName: 'Hostel Name',
-            width: 200,
+            width: 160,
             renderCell: (params) => (
                 <>{params.row.hostel.name}</>)
         },

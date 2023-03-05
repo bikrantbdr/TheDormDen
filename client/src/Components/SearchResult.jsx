@@ -56,7 +56,7 @@ const RoomAvailableOption = styled.span`
     background-color: green;
     width: fit-content;
     border-radius: 5px;
-    padding: 2px;
+    padding: 4px;
 
     @media (max-width: 768px) {
         font-size: 1rem;
@@ -192,7 +192,7 @@ function ResultItem({ hostel }) {
             <Title>{ hostel.name }</Title>
             <Distance>Thapathali, Kathmandu</Distance>
             <Features>Free Wifi • Bathroom • 24hr Water</Features>
-            {/* <RoomAvailableOption>Rooms Available</RoomAvailableOption> */}
+            <RoomAvailableOption>For gender { hostel.for_gender === 0 ? "Male" : "Female"} </RoomAvailableOption>
             {/* <Subtitle>{ hostel.description.substring(0, 40) }...</Subtitle> */}
             {/* <CancelOption>Verified Listing</CancelOption> */}
             {/* <CancelSubtitle>By clicking at See availability button, you can check the amenities and pricing </CancelSubtitle> */}

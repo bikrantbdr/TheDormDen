@@ -4,6 +4,8 @@ import styled from 'styled-components'
 import DashboardSidebarAdmin from '../Components/DashboardSidebarAdmin'
 import AdminDashboardHomeComponent from '../Components/AdminDashboardHomeComponent'
 import NavAndSidebar from '../Components/NavAndSidebar'
+import PromptBar from '../Components/PromptBar'
+import NotificationBar from './../Components/NotificationBar';
 
 const Wrapper = styled.div`
     display: flex;
@@ -22,6 +24,8 @@ const AdminDashboardPage = () => {
     const location = useLocation()
   return (
     <>
+    <PromptBar />
+    <NotificationBar />
     <NavAndSidebar/>
     <Wrapper>
         <DashboardSidebarAdmin />

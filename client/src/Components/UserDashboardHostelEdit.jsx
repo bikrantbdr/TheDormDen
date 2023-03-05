@@ -181,7 +181,7 @@ const DeleteButton = styled.button`
 const UserDashboardHostelEdit = () => {
   const [hostel, setHostel] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [openModal, setOpenModal] = useState(true);
+  const [openModal, setOpenModal] = useState(false);
   const [openOneSeaterOption, setOpenOneSeaterOption] = useState(true)
   const [openTwoSeaterOption, setOpenTwoSeaterOption] = useState(false)
   const [openThreeSeaterOption, setOpenThreeSeaterOption] = useState(false)

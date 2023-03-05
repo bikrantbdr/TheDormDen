@@ -1,11 +1,14 @@
 import React from 'react'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components'
 import { DataGrid } from '@mui/x-data-grid';
 import { useFetch } from './../hooks/useFetch';
 import axios from 'axios';
 
 import DocumentImageModal from './DocumentImageModal';
+import PromptBar from './PromptBar';
+import { PromptContext } from '../context/PromptContext';
+import { NotificationContext } from './../context/NotificationContext';
 
 export const Wrapper = styled.div`
   height: 100%;
@@ -54,30 +57,34 @@ const UserVerificationDashboard = () => {
       setRows(data)
     }, [data])
 
+    const { status, dispatch } = useContext(PromptContext);
+    const { dispatch: notificationDispatch } = useContext(NotificationContext)
     const verifyUser = async (userId) => {
       const data = {
         "usertype.is_verified": true
       }
+      dispatch({ type: 'PROMPT_START', payload: { display: true, message: "Are you sure you want to verify this user?", purpose: "warning" } })
       try {
         const response = await axios.put(`http://localhost:5000/api/users/update/${userId}`, data, { withCredentials: true })
+        dispatch({ type: 'PROMPT_END' })
+        notificationDispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "User successfully Verified", status: "success" } })
         reFetchData()
       } catch (error) {
-        console.log(error)
+        dispatch({ type: 'PROMPT_END' })
+        notificationDispatch({ type: "NOTIFICATION_START", payload: { display: true, message: `${error.response.data.error}`, status: "error" } })
       }
     }
 
     const deleteUser = async (userId) => {
-      if (window.confirm("Are you sure you want to delete this user?")) {
-        console.log("User deleted")
-      } else {
-        return null
-      }
-
+      dispatch({ type: 'PROMPT_START', payload: { display: true, message: "Are you sure you want to delete this user?", purpose: "alert" } })
       try {
         const response = await axios.delete(`http://localhost:5000/api/users/delete/${userId}`, { withCredentials: true })
+        dispatch({ type: 'PROMPT_END' })
+        notificationDispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "User successfully Deleted", status: "success" } })
         reFetchData()
       } catch (error) {
-        console.log(error)
+        dispatch({ type: 'PROMPT_END' })
+        notificationDispatch({ type: "NOTIFICATION_START", payload: { display: true, message: `${error.response.data.error}`, status: "error" } })
       }
     }
     
@@ -87,8 +94,8 @@ const UserVerificationDashboard = () => {
     }
 
     const columns = [
-      { field: 'username', headerName: 'Username', width: 130 },
-      { field: 'email', headerName: 'Email Address', width: 200},
+      { field: 'username', headerName: 'Username', width: 180 },
+      { field: 'email', headerName: 'Email Address', width: 220},
       { 
         field: 'createdAt',
         headerName: 'Created At',
@@ -119,16 +126,17 @@ const UserVerificationDashboard = () => {
     ]
 
   return (
-    <Wrapper>
-        <DataGrid
-            rows={rows}
-            columns={columns}
-            pageSize={5}
-            rowsPerPageOptions={[10]}
-            checkboxSelection
-        />
-        {showModal && <DocumentImageModal showModal={ showModal} setShowModal={ setShowModal } documentImage={ documentImage }/>}
-    </Wrapper>
+    <>
+      <Wrapper>
+          <DataGrid
+              rows={rows}
+              columns={columns}
+              pageSize={5}
+              rowsPerPageOptions={[10]}
+          />
+          {showModal && <DocumentImageModal showModal={ showModal} setShowModal={ setShowModal } documentImage={ documentImage }/>}
+      </Wrapper>
+    </>
   )
 }
 

@@ -9,6 +9,8 @@ import { useFetch } from './../hooks/useFetch';
 import SearchMap from '../Components/SearchMap'
 import {Switch } from 'pretty-checkbox-react';
 
+import {AiFillCaretDown} from 'react-icons/ai'
+
 const Container = styled.div`
     margin-top: 20px;
     display: flex;
@@ -56,6 +58,21 @@ const Button = styled.button`
     height: 1.5rem;
 `
 
+const SortBar = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    &>div {
+      border: 1px solid gray;
+      border-radius: 5px;
+      padding: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+`
+
 function HostelSearchResultPage() {
     const location = useLocation()
     const [toggleMap, setToggleMap] = useState(false)
@@ -85,6 +102,7 @@ function HostelSearchResultPage() {
                 <Switch shape="fill" color="success" onChange={handleMap} />
                 {/* <Button onClick={handleMap}>Map</Button> */}
               </MapButtonConainer>
+              <SortBar>Sort By <div>Popularity <AiFillCaretDown /></div></SortBar>
             </SearchHeader>
           { loading ? "Loading text here please..." : !toggleMap &&(
               data.map((hostel, index) => (

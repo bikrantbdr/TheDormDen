@@ -220,7 +220,6 @@ const HostelReviewsAndComments = ({ hostelInfo }) => {
                 return null
             }
             const response = await axios.put(`http://localhost:5000/api/reviews/flag/${review_id}`, {}, { withCredentials: true })
-            console.log(response)
         } catch (err) {
             console.log(err)
         }
