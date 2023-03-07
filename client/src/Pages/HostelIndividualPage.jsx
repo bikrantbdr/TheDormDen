@@ -38,12 +38,12 @@ const HostelIndividualPage = () => {
     <>
     <Navbar />
     <Container>
-    {loading ? "loading please wait" : <><HostelImageSection images={images} longitude={longitude} latitude={latitude}/>
+    {loading ? "loading please wait" : <><HostelImageSection images={data.images} longitude={longitude} latitude={latitude}/>
     <DetailContainer>
         <Wrapper>
           <HostelDetails hostelInfo={ data }/>
           {/* reviews ra hostel_rating backend bata pass garna parxa */}
-          {/* <CustomerReview reviews={reviews} overallRating={hostel_rating} /> */}
+          {/* <CustomerReview reviews={reviews} overallRating={hostel_rating} hostelInfo={ data }/> */}
         </Wrapper>
       </DetailContainer>
       <MailList />

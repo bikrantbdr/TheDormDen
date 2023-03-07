@@ -105,8 +105,8 @@ const HostelDetails = ({ hostelInfo }) => {
   return (
     <Wrapper>
         <h1>{hostelInfo.name}</h1>
-        {/* <h2>{hostelInfo.address}</h2> */}
-        {/* <p>{hostelInfo.amenities[0]} • {hostelInfo.amenities[1]} • {hostelInfo.amenities[2]} • {hostelInfo.amenities[3]}</p> */}
+        <h2>{hostelInfo.address}</h2>
+        <p>{hostelInfo.amenities[0]} • {hostelInfo.amenities[1]} • {hostelInfo.amenities[2]} • {hostelInfo.amenities[3]}</p>
         <TabsWrapper>
             <Tabs>
                 {openDescriptionOption ? <ActiveTab>Description</ActiveTab> : <p onClick={ () => handleActiveTab("d") }>Description</p>}

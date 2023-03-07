@@ -9,6 +9,7 @@ const Wrapper = styled.div`
     justify-content: center;
     align-items: center;
     padding-left: 2rem;
+    
 `
 
 const Container = styled.div`
@@ -16,7 +17,7 @@ const Container = styled.div`
     flex-direction: column;
     gap: 8px;
     width: 100%;
-    padding: 16px;
+    padding: 24px;
     border: 1.5px solid #eaedec;
     border-radius: 4px;
     /* justify-content: center; */
@@ -60,9 +61,10 @@ const Bar = styled.div`
     background-color: #FFCB47;
 `
 
-const CustomerReview = ({reviews,overallRating}) => {
-    // const reviews = [0,1,2,3,4,5];
-    // const overallRating = 4.5;
+const CustomerReview = () => {
+    const reviews = [0,1,2,3,4,5];
+    const overallRating = 4.5;
+    // const { data, loading, error, reFetchData } = useFetch(`http://localhost:5000/api/reviews/${hostelInfo.id}`);
 
     const totalReviews = reviews.length;
     const review = [0,0,0,0,0]

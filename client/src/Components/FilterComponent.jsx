@@ -116,7 +116,7 @@ const ListPricing = styled.div`
     }
 
     & .slider__range {
-        background-color: #0892d0;
+        background-color: yellow;
     }
 `
 
