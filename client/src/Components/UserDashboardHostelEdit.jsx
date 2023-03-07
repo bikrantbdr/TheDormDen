@@ -5,7 +5,7 @@ import axios from 'axios'
 import { Checkbox } from 'pretty-checkbox-react';
 import { useCheckboxState } from 'pretty-checkbox-react';
 import { Map, Marker, Draggable } from "pigeon-maps";
-import location from '../assets/location.svg'
+import location from '../assets/location-pin.png'
 import cancelimg from '../assets/cancel.png'
 
 import '@djthoms/pretty-checkbox';
@@ -30,8 +30,9 @@ const Container = styled.div`
 const Form = styled.form`
   display: flex;
   flex-direction: column;
-  padding: 2rem 0;
+  padding: 0 0 2rem 0;
   align-items: center;
+  justify-content: center;
   height: 100%;
   width: 100%;
 `
@@ -39,7 +40,7 @@ const Row = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
-  justify-content: space-between;
+  justify-content: center;
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -86,7 +87,7 @@ const Button = styled.button`
   border-radius: 6px;
 `
 const MapContainer = styled.div`
-    width: 75%;
+    width: 100%;
     height: 25vh;
 `
 
@@ -139,6 +140,14 @@ const Heading = styled.div`
     }
 `
 
+const CheckboxDiv = styled.div`
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+`
+
 const Options = styled.div`
     display: flex;
     flex-direction: column;
@@ -181,7 +190,7 @@ const DeleteButton = styled.button`
 const UserDashboardHostelEdit = () => {
   const [hostel, setHostel] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [openModal, setOpenModal] = useState(true);
+  const [openModal, setOpenModal] = useState(false);
   const [openOneSeaterOption, setOpenOneSeaterOption] = useState(true)
   const [openTwoSeaterOption, setOpenTwoSeaterOption] = useState(false)
   const [openThreeSeaterOption, setOpenThreeSeaterOption] = useState(false)
@@ -241,11 +250,14 @@ const UserDashboardHostelEdit = () => {
             <Row>
                 <LabelInput>
                     <Label>Hostel Amenities</Label>
-                    {amenities.map(amenity => (
-                      <Checkbox value={amenity} {...checkbox} color="success" >
+                    <CheckboxDiv>
+
+                    {amenities.map((amenity,index )=> (
+                        <Checkbox value={amenity} {...checkbox} key={index} color="success" style={{width:"40%"}} >
                           {amenity}
                       </Checkbox>
                     ))}
+                    </CheckboxDiv>
                 </LabelInput>
             </Row>
             <Row>

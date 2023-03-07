@@ -24,8 +24,8 @@ const Form = styled.form`
   flex-direction: column;
   padding: 2rem 0;
   align-items: center;
-  height: 100%;
-  width: 100%;
+  min-height: 40%;
+  width: 65%;
 `
 const Row = styled.div`
   display: flex;
@@ -67,7 +67,8 @@ border-radius: 6px;
 const Button = styled.button`
   width: 35%;
   height: 2rem;
-  margin: 0.5rem;
+  padding: 0.5rem;
+  margin: 3rem;
   background-color: #D179FF;
   border: none;
   color: #fff;
@@ -85,8 +86,9 @@ const UserDashboardHomeComponent = () => {
   const [phoneNumber, setPhoneNumber] = useState("")
   const [profilePic, setProfilePic] = useState(`${Avatar}`)
   const [gender, setGender] = useState("0")
-
   const [user, setUser] = useState(null)
+
+  const [address, setAddress] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
   const baseURL = 'http://localhost:5000/api'
@@ -115,7 +117,7 @@ const UserDashboardHomeComponent = () => {
     setLastname(user.profile.last_name)
     setEmail(user.email)
     setUsername(user.username)
-
+    setAddress(user.profile.address)
     setProfilePic(user.profile.profile_picture)
     setPhoneNumber(user.profile.phone_number)
   }
@@ -135,7 +137,7 @@ const UserDashboardHomeComponent = () => {
       // profile_picture:profilePic,
       document:document,
       typeof_user:"student",
-      address:"hetauda"
+      address:address
     }
     await axios.put(`${baseURL}/users/update/${user_id}`,user,{withCredentials:true} )
     .then(res => {
@@ -194,6 +196,10 @@ const UserDashboardHomeComponent = () => {
             <LabelInput>
               <Label htmlFor="username">User Name</Label>
               <Input type="text" id="username" name="username" placeholder={username} onChange={(e)=>{setUsername(e.target.value)}} />
+            </LabelInput>
+            <LabelInput>
+              <Label htmlFor="address">Address</Label>
+              <Input type="text" id="address" name="address" placeholder={address} onChange={(e)=>{setAddress(e.target.value)}} />
             </LabelInput>
           </Row>
         </Form>

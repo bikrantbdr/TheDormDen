@@ -25,6 +25,7 @@ const Navlinks = styled.div`
 width:30%;
 display:flex;
   justify-content: center;
+  align-items: center;
   list-style: none;
   text-align: center;
 //   margin-right: -22px;
@@ -49,6 +50,30 @@ display:flex;
     color:#A761CC;
   }
 `
+const SideBtnWrap = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+const SidebarRoute = styled(Link)`
+  border-radius: 20px;
+  background: #D179FF;
+  white-space: nowrap;
+  padding: 0.5rem;
+  color: #fff;  
+  font-size: 16px;
+  outline:  none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  text-decoration: none;
+
+  &:hover {
+    transition: all 0.2s ease-in-out;
+    background: #A761CC;
+  }
+`
+
 const MobileIcon = styled.div`
   display: none;
   
@@ -87,7 +112,9 @@ const Navbar = ({toggle}) => {
         <Navlinks>
             <NavLink to="/">Home</NavLink>
             <NavLink to="/about">About</NavLink>
-            <NavLink to="/contact">Contact</NavLink>
+            <SideBtnWrap>
+              <SidebarRoute to='/'>Profile</SidebarRoute>
+          </SideBtnWrap>
         </Navlinks>
         <MobileIcon onClick={toggle}>
                     <FaBars/>

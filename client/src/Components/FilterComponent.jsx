@@ -202,11 +202,11 @@ function FilterComponent({ setUrl }) {
             <ListItem>
                 <label>Pricing Range</label>
                 <ListPricing>
-                    {/* <MultiRangeSlider
+                    <MultiRangeSlider
                         min={0}
                         max={20000}
                         onChange={({ min, max }) => setPrice({ min, max })}
-                    /> */}
+                    />
                 </ListPricing>
             </ListItem>
 

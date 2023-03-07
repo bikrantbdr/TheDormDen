@@ -192,7 +192,7 @@ function ResultItem({ hostel }) {
             <Title>{ hostel.name }</Title>
             <Distance>Thapathali, Kathmandu</Distance>
             <Features>Free Wifi • Bathroom • 24hr Water</Features>
-            {/* <RoomAvailableOption>Rooms Available</RoomAvailableOption> */}
+            <RoomAvailableOption>{hostel.for_gender}</RoomAvailableOption>
             {/* <Subtitle>{ hostel.description.substring(0, 40) }...</Subtitle> */}
             {/* <CancelOption>Verified Listing</CancelOption> */}
             {/* <CancelSubtitle>By clicking at See availability button, you can check the amenities and pricing </CancelSubtitle> */}

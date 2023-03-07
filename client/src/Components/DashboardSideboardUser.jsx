@@ -9,7 +9,8 @@ import {
     FaHotel
 } from "react-icons/fa";
 
-import {RiFeedbackLine} from "react-icons/ri"
+import {RiLockPasswordLine} from "react-icons/ri"
+import {MdOutlineRateReview} from "react-icons/md"
 
 const Wrapper = styled.div`
     flex:1;
@@ -82,7 +83,7 @@ const DashboardSidebarUser = ({user}) => {
                         </SidebarListItem>
                         <SidebarListItem to="/user/changepassword">
                             <SidebarItemDiv >
-                                <FaBed style={iconStyle} />
+                                <RiLockPasswordLine style={iconStyle} />
                                 <SidebarItemText>
                                 Change Password
                                 </SidebarItemText>
@@ -90,7 +91,7 @@ const DashboardSidebarUser = ({user}) => {
                         </SidebarListItem>
                         <SidebarListItem to="/user/reviews">
                             <SidebarItemDiv >
-                                <FaBed style={iconStyle} />
+                                <MdOutlineRateReview style={iconStyle} />
                                 <SidebarItemText>
                                 Reviews
                                 </SidebarItemText>

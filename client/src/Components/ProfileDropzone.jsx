@@ -9,8 +9,9 @@ const ProfilePicDiv = styled.div`
   height: 100px;
   width: 100px;
   border-radius: 50%;
-  // background-color: #000;
-  // overflow: hidden;
+  background-color: #000;
+   overflow: hidden;
+  object-fit: cover;
 `
 
 const ProfileDropzone = ({profilePic,setProfilePic}) => {
@@ -32,7 +33,7 @@ const ProfileDropzone = ({profilePic,setProfilePic}) => {
   return (
     <ProfilePicDiv {...getRootProps()} >
         <input {...getInputProps()} id="profilepic"/>
-        <img src={profilePic} alt="Profile Pic" style={{height:"90px", width:"90px"}}  />
+        <img src={profilePic} alt="Profile Pic" style={{height:"100%", width:"100%"}}  />
       </ProfilePicDiv>
   )
 }
