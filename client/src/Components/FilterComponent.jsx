@@ -30,6 +30,7 @@ const ListItem = styled.div`
     flex-direction: column;
     gap: 5px;
     margin-bottom: 10px;
+    position: relative;
 
     &>label {
         font-size: 0.8rem;
@@ -75,6 +76,9 @@ const LocationOptions = styled.div`
     padding: 8px 0px;
     border-radius: 5px;
     cursor: pointer;
+    position: absolute;
+    z-index: 20;
+    top: 55px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 
     &>div {
@@ -134,6 +138,9 @@ const Button = styled.button`
         background-color: #382b2f;
     }
 `
+const LocationOption = styled.div`
+    padding: 8px 16px;
+`
 
 function FilterComponent({ setUrl }) {
     const location = useLocation();
@@ -191,22 +198,28 @@ function FilterComponent({ setUrl }) {
 
             <ListItem>
                 <label>Location</label>
-                <input type="text" value={ locate } onClick={ () => setOpenLocationOptions(!openLocationOptions)} onChange={ (e) => setLocate(e.target.value) }/>
-                {openLocationOptions && (locate.length > 0) && <LocationOptions>
+                <input type="text" value={ locate }
+                onClick={ () => setOpenLocationOptions(!openLocationOptions)}
+                onBlur={ () => setTimeout(() => setOpenLocationOptions(false), 500) }
+                onChange={ (e) => setLocate(e.target.value) }/>
+
+                {openLocationOptions && (locate.length > 0) && 
+                <LocationOptions>
                     { res ? res.features.map((address) => (
-                        <div key={address.properties.place_id} onClick={ () => handleDestination(address) }>{address.properties.formatted}</div>
-                    )) : "loading please await"}
+                        <LocationOption key={address.properties.place_id} onClick={ () => handleDestination(address) }>{address.properties.formatted}</LocationOption>
+                    )) : <LocationOption>Loading</LocationOption>
+                    }
                 </LocationOptions>}
             </ListItem>
 
             <ListItem>
                 <label>Pricing Range</label>
                 <ListPricing>
-                    <MultiRangeSlider
+                    {/* <MultiRangeSlider
                         min={0}
                         max={20000}
                         onChange={({ min, max }) => setPrice({ min, max })}
-                    />
+                    /> */}
                 </ListPricing>
             </ListItem>
 

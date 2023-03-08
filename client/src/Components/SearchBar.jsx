@@ -116,6 +116,7 @@ const LocationOptions = styled.div`
     position: absolute;
     top: 72px;
     right: 160px;
+    z-index: 20;
     cursor: pointer;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 
@@ -131,6 +132,9 @@ const LocationOptions = styled.div`
         top: 220px;
         right: 25px;    
     }
+`
+const LocationOption = styled.div`
+    padding: 8px 16px;
 `
 
 function SearchBar() {
@@ -191,12 +195,16 @@ function SearchBar() {
 
         <Content>
             <label>Location</label>
-            <input type="text" placeholder='Where are you staying?' onClick={ () => setOpenLocationOptions(!openLocationOptions)} value={ location } onChange={ (e) => setLocation(e.target.value) } />
+            <input type="text" placeholder='Where are you staying?' 
+            onClick={ () => setOpenLocationOptions(!openLocationOptions)}
+            onBlur={ () => setTimeout(() => setOpenLocationOptions(false), 500) } 
+            value={ location } onChange={ (e) => setLocation(e.target.value) } />
         </Content>
-        {openLocationOptions && (location.length > 0) && <LocationOptions>
+        {openLocationOptions && (location.length > 0) &&
+        <LocationOptions>
             { res ? res.features.map((address) => (
-                <div key={address.properties.place_id} onClick={ () => handleDestination(address) }>{address.properties.formatted}</div>
-            )) : "loading please await"
+                <LocationOption key={address.properties.place_id} onClick={ () => handleDestination(address) }>{address.properties.formatted}</LocationOption>
+            )) : <LocationOption>Loading</LocationOption>
         }
         </LocationOptions>}
 
