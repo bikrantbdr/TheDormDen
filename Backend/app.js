@@ -29,10 +29,12 @@ app.use(middleware.requestLogger);
 const userRouter = require('./routers/userRouter');
 const hostelRouter = require('./routers/hostelRouter');
 const reviewRouter = require('./routers/reviewRouter');
+const analyticsRouter = require('./routers/analyticsRouter');
 
 app.use('/api/reviews', reviewRouter);
 app.use('/api/users', userRouter);
 app.use('/api/hostels', hostelRouter);
+app.use('/api/analytics', analyticsRouter);
 
 app.use((err, req, res, next) => {
     err.status = err.status || 500

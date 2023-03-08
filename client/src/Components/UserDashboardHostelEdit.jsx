@@ -13,6 +13,7 @@ import '@djthoms/pretty-checkbox';
 import {AiFillMinusSquare, AiFillPlusSquare } from 'react-icons/ai'
 import { useFetch } from './../hooks/useFetch';
 import UserDashboardOpenModalEditRoom from './UserDashboardOpenModalEditRoom';
+import UserDashboardOpenModalNewRoom from './UserDashboardOpenModalNewRoom';
 
 const Container = styled.div`
   display: flex;
@@ -52,12 +53,26 @@ const LabelInput = styled.div`
   display: flex;
   width: 40%;
   flex-direction: column;
-  gap:0.25rem;
+  gap:16px;
   margin: 0.5rem;
 `
 const Label = styled.label`
   font-size: 0.9rem;
   font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  &>button {
+    background-color: #D179FF;
+    border: none;
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border-radius: 6px;
+    padding: 0.5rem;
+    cursor: pointer;
+    }
 `
 const Input = styled.input`
   height: 2rem;
@@ -191,22 +206,60 @@ const UserDashboardHostelEdit = () => {
   const [hostel, setHostel] = useState(null);
   const [loading, setLoading] = useState(true);
   const [openModal, setOpenModal] = useState(false);
+  const [openRoomModal, setOpenRoomModal] = useState(false);
   const [openOneSeaterOption, setOpenOneSeaterOption] = useState(true)
   const [openTwoSeaterOption, setOpenTwoSeaterOption] = useState(false)
   const [openThreeSeaterOption, setOpenThreeSeaterOption] = useState(false)
   const [openFourSeaterOption, setOpenFourSeaterOption] = useState(false)
+  let localAmenities = [
+    {
+        value: 'Wifi',
+        available: hostel?.amenities?.includes('Wifi') ? true : false,
+    },
+    {
+        value: '24hr Electricity',
+        available: hostel?.amenities?.includes('24hr Electricity') ? true : false,
+    },
+    {
+        value: 'CCTV',
+        available: hostel?.amenities?.includes('CCTV') ? true : false,  
+    },
+    {
+        value: 'Laundry',
+        available: hostel?.amenities?.includes('Laundry') ? true : false,
+    },
+    { 
+        value: 'Hotwater',
+        available: hostel?.amenities?.includes('Hotwater') ? true : false,
+    },
+    { 
+        value: 'Parking',
+        available: hostel?.amenities?.includes('Parking') ? true : false,
+    },
+    { 
+        value: 'Terrace',
+        available: hostel?.amenities?.includes('Terrace') ? true : false,
+    },
+]
+    const changeAmenities = (amenity_obj) => {
+        amenity_obj.available = !amenity_obj.available
+        setHostel({...hostel, amenities: localAmenities.filter((amenity) => amenity.available).map((amenity) => amenity.value)})
+    }
+
+  const checkbox = useCheckboxState({ state: [] });
 
   useEffect(() => {
     setLoading(true)
     axios.get("http://localhost:5000/api/hostels/63dc7276e547623e0cff4a8c")
         .then(res => {
             setHostel(res.data)
+            localAmenities.forEach((amenity) => {
+                amenity.available = res.data.amenities.includes(amenity.value)
+            })
         })
         .finally(() => setLoading(false))
   }, [])
 
-  const amenities = ['Wifi', '24hr Electricity', 'CCTV', 'Laundry', 'Hotwater', 'Parking', 'Terrace'];
-  const checkbox = useCheckboxState({ state: [] });
   const [center, setCenter] = useState([27.694582657545205, 85.32046340409931]);
   const [zoom, setZoom] = useState(14);
   const [locationanchor, setAnchor] = useState([27.694582657545205, 85.32046340409931]);
@@ -252,9 +305,9 @@ const UserDashboardHostelEdit = () => {
                     <Label>Hostel Amenities</Label>
                     <CheckboxDiv>
 
-                    {amenities.map((amenity,index )=> (
-                        <Checkbox value={amenity} {...checkbox} key={index} color="success" style={{width:"40%"}} >
-                          {amenity}
+                    {localAmenities.map((amenity,index )=> (
+                        <Checkbox state={amenity.available} setState={amenity.available} onChange={ () => changeAmenities(amenity) } key={index} color="success" style={{width:"40%"}} >
+                          {amenity.value}
                       </Checkbox>
                     ))}
                     </CheckboxDiv>
@@ -278,7 +331,7 @@ const UserDashboardHostelEdit = () => {
             </Row>
             <Row>
                 {loading ? "loading please wait" : <LabelInput>
-                    <Label>Available Rooms</Label>
+                    <Label>Available Rooms<button onClick={ (e) => {e.preventDefault(); setOpenRoomModal(true)} }>Add new rooms</button></Label>
                     <AvailableRooms>
                     
                     <h2>{openOneSeaterOption ? <AiFillMinusSquare onClick={ () => setOpenOneSeaterOption(!openOneSeaterOption)} size={20}/> : <AiFillPlusSquare onClick={ () => setOpenOneSeaterOption(!openOneSeaterOption)}  size={20}/>}One Seater Rooms</h2>
@@ -366,6 +419,7 @@ const UserDashboardHostelEdit = () => {
         </Form>
         
         { openModal && <UserDashboardOpenModalEditRoom setOpenModal={ setOpenModal } hostel={ hostel } setHostel={ setHostel } roomId={ currentRoom }/>}
+        { openRoomModal && <UserDashboardOpenModalNewRoom setOpenModal={ setOpenRoomModal } hostel={ hostel } setHostel={ setHostel } />}
     </Container>
   )
 }
