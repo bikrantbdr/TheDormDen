@@ -123,7 +123,7 @@ const SearchMap = ({hostels}) => {
             overlayStatus &&
              <StyledOverlay 
              anchor={[overlayContent.location.coordinates[1], overlayContent.location.coordinates[0]]} 
-             offset={[300, 375]}
+             offset={[300, 390]}
             >
                 {/* <PropertyImage src={overlayContent.images[0] } /> */}
                 <PropertyImage src="https://res.cloudinary.com/dxhwnryud/image/upload/v1675146838/cld-sample-3.jpg" />

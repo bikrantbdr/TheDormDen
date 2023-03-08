@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { useFetch } from './../hooks/useFetch';
 import {AiOutlineStar} from 'react-icons/ai'
 import axios from 'axios';
+import { Link } from 'react-router-dom'
 
 const Container = styled.div`
     max-width: 934px;
@@ -14,8 +15,12 @@ const Container = styled.div`
         flex-direction: column;
     }
 `
+const FeaturedLink = styled(Link)`
+    text-decoration: none;
+`
 
-const FeaturedItem = styled.div`
+const FeaturedItem = styled(Link)`
+    text-decoration: none;
     flex: 1;
     position: relative;
     background-color: #382b2f4b;
@@ -107,7 +112,7 @@ function FeaturedHostels() {
         {loading? "Loading please wait" : <>
         {
             data.map((item,index) => (
-                <FeaturedItem key={index}>
+                <FeaturedItem key={index} to={`/hostels/${item.id}`} >
                     <FeaturedImage src={item.image}/>
                     <FeaturedText>
                         <FeaturedTitle>{item.name}</FeaturedTitle>
