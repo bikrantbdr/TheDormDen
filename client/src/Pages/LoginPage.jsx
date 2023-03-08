@@ -10,12 +10,12 @@ const LoginPage = () => {
     const { user_id } = useContext(AuthContext);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        if (user_id) {
-            console.log("humara jalwa hai yeha", user_id)
-            navigate('/')
-        }
-    }, [user_id])
+    // useEffect(() => {
+    //     if (user_id) {
+    //         console.log("humara jalwa hai yeha", user_id)
+    //         navigate('/')
+    //     }
+    // }, [user_id])
     
   return (
     <>

@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const Hostel = require('../models/hostel');
 const Review = require('../models/review');
+const Analytics = require('../models/analytics');
 const QueryHandler = require('../utils/queryHandler');
 const cloudinary = require("cloudinary");
 
@@ -87,6 +88,7 @@ exports.register_hostel = async (req, res, next) => {
 
         const hostel = new Hostel({
             name: body.name,
+            address: body.address,
             location: {
                 type: 'Point',
                 coordinates: [body.longitude, body.latitude]
@@ -106,6 +108,29 @@ exports.register_hostel = async (req, res, next) => {
         const savedHostel = await hostel.save();
         user.hostel_listings = user.hostel_listings.concat(savedHostel._id);
         await user.save();
+
+        // now update the analytics
+        const analytics = await Analytics.findOne({ 'date.year': new Date().getFullYear() });
+        if (analytics) {
+            const month = new Date().getMonth();
+            analytics.date.month[month].registrations += 1;
+            await analytics.save();
+        } else {
+            const newAnalytics = new Analytics({
+                date: {
+                    year: new Date().getFullYear(),
+                    month: Array.from({ length: 12 }, () => ({
+                        visits: 0,
+                        registrations: 0,
+                        interactions: 0
+                    }))
+                }
+            });
+            const month = new Date().getMonth();
+            newAnalytics.date.month[month].registrations += 1;
+            await newAnalytics.save();
+        }
+
         res.status(201).json(savedHostel);
     } catch (err) {
         next(err)
@@ -222,6 +247,29 @@ exports.update_review = async (req, res, next) => {
                 runValidators: true,
                 useFindAndModify: false
             });
+
+            // update the analytics
+            const analytics = await Analytics.findOne({ 'date.year': new Date().getFullYear() });
+            if (analytics) {
+                const month = new Date().getMonth();
+                analytics.date.month[month].interactions += 1;
+                await analytics.save();
+            } else {
+                const newAnalytics = new Analytics({
+                    date: {
+                        year: new Date().getFullYear(),
+                        month: Array.from({ length: 12 }, () => ({
+                            visits: 0,
+                            registrations: 0,
+                            interactions: 0
+                        }))
+                    }
+                });
+                const month = new Date().getMonth();
+                newAnalytics.date.month[month].interactions += 1;
+                await newAnalytics.save();
+            }
+
             res.status(200).json(savedReview);
         }
     } catch (err) {

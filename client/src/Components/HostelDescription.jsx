@@ -49,6 +49,10 @@ const RoomsContainer = styled.div`
     grid-template-columns: repeat(3, 1fr);
     gap: 8px;
     margin-bottom: 16px;
+
+    @media (max-width: 768px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
 `
 
 const Room = styled.div`

@@ -1,6 +1,7 @@
 import React from 'react'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 
 import HostelDescription from './HostelDescription';
 import HostelAmenities from './HostelAmenities';
@@ -25,6 +26,22 @@ const Wrapper = styled.div`
         font-size: 0.8rem;
         color: #b7bac6;
     }
+
+    @media (max-width: 768px) {
+        padding: 0 16px;
+
+        &>h1 {
+            font-size: 1.2rem;
+        }
+
+        &>h2 {
+            font-size: 0.8rem;
+        }
+
+        &>p {
+            font-size: 0.6rem;
+        }
+    }
 `
 
 const TabsWrapper = styled.div`
@@ -36,6 +53,12 @@ const TabsWrapper = styled.div`
     font-weight: bold;
     padding-bottom: 8px;
     border-bottom: 1.5px solid #eaedec;
+
+    @media (max-width: 768px) {
+        flex-direction: column-reverse;
+        justify-content: flex-start;
+        gap: 16px;
+    }
 `
 
 const ActiveTab = styled.div`
@@ -86,6 +109,20 @@ const HostelDetails = ({ hostelInfo }) => {
     const [openOfferOption, setOpenOfferOption] = useState(false);
     const [openReviewOption, setOpenReviewOption] = useState(true);
 
+    const [hostelAddress, setHostelAddress] = useState("");
+
+    useEffect(() => {
+        const API_KEY = "769f09ef503a44d1bcb4218675c23b0c";
+        axios.get(`https://api.geoapify.com/v1/geocode/reverse?lat=${hostelInfo.location.coordinates[1]}&lon=${hostelInfo.location.coordinates[0]}&format=json&apiKey=${API_KEY}`)
+            .then((res) => {
+                setHostelAddress(`${res.data.results[0].street}, ${res.data.results[0].city}, ${res.data.results[0].country}`);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+    }, [hostelInfo])
+
+
     const handleActiveTab = (toSetActive) => {
         if (toSetActive === "d") {
             setOpenDescriptionOption(true);
@@ -105,7 +142,7 @@ const HostelDetails = ({ hostelInfo }) => {
   return (
     <Wrapper>
         <h1>{hostelInfo.name}</h1>
-        <h2>{hostelInfo.address}</h2>
+        <h2>{hostelAddress}</h2>
         <p>{hostelInfo.amenities[0]} • {hostelInfo.amenities[1]} • {hostelInfo.amenities[2]} • {hostelInfo.amenities[3]}</p>
         <TabsWrapper>
             <Tabs>

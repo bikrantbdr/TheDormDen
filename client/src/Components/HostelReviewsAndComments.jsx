@@ -156,6 +156,19 @@ export const ReviewFooter = styled.div`
         font-weight: bold;
         cursor: pointer;
     }
+
+    @media (max-width: 768px) {
+        gap: 8px;
+
+        &>p {
+            font-size: 0.7rem;
+        }
+
+        &>button {
+            padding: 6px 10px;
+            font-size: 0.8rem;
+        }
+    }
 `
 
 
