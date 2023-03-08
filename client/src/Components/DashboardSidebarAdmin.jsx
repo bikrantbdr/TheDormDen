@@ -8,6 +8,7 @@ import {
     FaUserCheck,
     FaHotel
 } from "react-icons/fa";
+import {BsStars} from "react-icons/bs"
 
 import {RiFeedbackLine} from "react-icons/ri"
 
@@ -78,6 +79,12 @@ const DashboardSidebarAdmin = () => {
                             <SidebarItemDiv >
                                 <FaHome style={iconStyle} />
                                 <SidebarItemText>Home</SidebarItemText>
+                            </SidebarItemDiv>
+                        </SidebarListItem>
+                        <SidebarListItem to="/admin/featured">
+                            <SidebarItemDiv >
+                                <BsStars style={iconStyle} />
+                                <SidebarItemText>Featured</SidebarItemText>
                             </SidebarItemDiv>
                         </SidebarListItem>
                         <SidebarListItem to="/admin/users">

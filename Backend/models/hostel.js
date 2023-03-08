@@ -6,9 +6,13 @@ const hostelSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    featured: {
+        type: Boolean,
+        default: false
+    },
     address: {
         type: String,
-        required: true
+        required: false
     },
     document: {
         type: String,

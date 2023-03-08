@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -13,7 +13,7 @@ import FilterComponent from '../Components/FilterComponent'
 import SearchResult from '../Components/SearchResult'
 import { useFetch } from './../hooks/useFetch';
 import SearchMap from '../Components/SearchMap'
-import {Switch } from 'pretty-checkbox-react';
+import {Switch} from 'pretty-checkbox-react';
 
 import {AiFillCaretDown} from 'react-icons/ai'
 
@@ -57,16 +57,18 @@ const SearchHeader = styled.div`
       margin: 0 2px;
       padding: 8px;
       font-size: 0.8rem;
+      gap: 12px;
     }
     `
 const Title = styled.span`
     font-size: 1.2rem;
 
     @media (max-width: 768px) {
-      font-size: 0.9rem;
+      font-size: 0.8rem;
       font-weight: bold;
     }
-    `
+`
+
 const MapButtonConainer = styled.div`
     display: flex;
     align-items: center;
@@ -78,26 +80,51 @@ const Button = styled.button`
 
 const SortBar = styled.div`
     height: 90%;
+
+    @media (max-width: 768px) {
+      height: 80%;
+    }
+`
+
+const ViewFilter = styled.button`
+    display: none;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: #e1aaf66b;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #292929;
+    cursor: pointer;
+
+    @media (max-width: 768px) {
+      display: block;
+    }
 `
 
 function HostelSearchResultPage() {
     const location = useLocation()
     const [toggleMap, setToggleMap] = useState(false)
 
+    const [openModal, setOpenModal] = useState(false)
+
     const [name, setName] = useState(location.state.name)
     const [options, setOptions] = useState(location.state.options)
     const [searchLocation, setSearchLocation] = useState(location.state.location)
     const [destination, setDestination] = useState(location.state.destination)
 
-    const [url, setUrl] = useState(`http://localhost:5000/api/hostels?name=${name}&room_types=${ options === "any" ? "one_seater,two_seater,three_seater,four_seater" : options+"_seater" }&longitude=${destination.longitude || ''}&latitude=${destination.latitude || ''}`)
+    const [sort, setSort] = useState("popularity")
+
+    const [url, setUrl] = useState(`http://localhost:5000/api/hostels?name=${name}&room_types=${ options === "any" ? "one_seater,two_seater,three_seater,four_seater" : options+"_seater" }&longitude=${destination.longitude || ''}&latitude=${destination.latitude || ''}&sortBy=${sort}`)
     const { data, loading, error } = useFetch(url)
+
+    useEffect(() => {
+        setUrl(`http://localhost:5000/api/hostels?name=${name}&room_types=${ options === "any" ? "one_seater,two_seater,three_seater,four_seater" : options+"_seater" }&longitude=${destination.longitude || ''}&latitude=${destination.latitude || ''}&sortBy=${sort}`)
+    }, [sort])
 
     const handleMap = () => {
         setToggleMap(!toggleMap)
     }
-
-
-    const [sort, setSort] = React.useState(0);
 
   const handleChange = (event) => {
     setSort(event.target.value);
@@ -108,7 +135,7 @@ function HostelSearchResultPage() {
         <NavAndSidebar />
         <Container>
           <Wrapper>
-          <FilterComponent setUrl={setUrl} />
+          <FilterComponent setUrl={setUrl} setOpenModal={setOpenModal} openModal={openModal}/>
           <ResultSection>  
             <SearchHeader>
               <Title> {data.length} Results Found</Title>
@@ -129,17 +156,18 @@ function HostelSearchResultPage() {
                     label="Sort"
                     onChange={handleChange}
                   >
-                    <MenuItem value={1}>Popularity</MenuItem>
-                    <MenuItem value={2}>Price ↑</MenuItem>
-                    <MenuItem value={3}>Price ↓</MenuItem>
+                    <MenuItem value={"popularity"}>Popularity</MenuItem>
+                    <MenuItem value={"price_increasing"}>Price ↑</MenuItem>
+                    <MenuItem value={"price_decreasing"}>Price ↓</MenuItem>
                   </Select>
                 </FormControl>
               </Box>
               </SortBar>
+              <ViewFilter onClick={() => setOpenModal(true)}>Filter</ViewFilter>
             </SearchHeader>
           { loading ? "Loading text here please..." : !toggleMap &&(
               data.map((hostel, index) => (
-                <SearchResult hostel={hostel} key={index}/>
+                <SearchResult hostel={hostel} key={index} sortBy={sort}/>
               ))
           )
           }

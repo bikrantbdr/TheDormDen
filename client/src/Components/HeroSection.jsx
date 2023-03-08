@@ -34,8 +34,8 @@ function HeroSection() {
     <Container>
         <Wrapper>
             <HeroText>
-                <h1>Welcome to our hostel booking platform!</h1>
-                <p>Book your stay with us today and experience the best of your city.</p>
+                <h1>Welcome to our hostel searching platform!</h1>
+                <p>Search your stay with us today and experience the best of your city.</p>
             </HeroText>
             <SearchBar />
         </Wrapper>

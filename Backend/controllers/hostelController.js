@@ -284,7 +284,57 @@ exports.update_review = async (req, res, next) => {
 */
 exports.get_featured_hostels = async (req, res, next) => {
     try {
-        const hostels = await Hostel.find({ featured: true }).limit(3);
+        const hostels = await Hostel.find({ featured: true }).populate('owner').limit(3);
+        res.status(200).json(hostels);
+    } catch (err) {
+        next(err)
+    }
+}
+
+/* 
+    @route UNFEATURE /api/hostels/unfeatured/:id
+    @desc unfeature a hostel
+    @access Admin
+*/
+exports.unfeature_hostel = async (req, res, next) => {
+    try {
+        const hostel = await Hostel.findById(req.params.id);
+        hostel.featured = false;
+        await hostel.save();
+        res.status(200).json(hostel);
+    } catch (err) {
+        next(err)
+    }
+}
+
+/*
+    @route FEATURE /api/hostels/featured/:id
+    @desc feature a hostel
+    @access Admin
+*/
+exports.feature_hostel = async (req, res, next) => {
+    try {
+        const hostel = await Hostel.findById(req.params.id);
+        hostel.featured = true;
+        await hostel.save();
+        res.status(200).json(hostel);
+    } catch (err) {
+        next(err)
+    }
+}
+
+/*
+    @route UNFEATURE ALL /api/hostels/unfeatured
+    @desc unfeature all hostels
+    @access Admin
+*/
+exports.unfeature_all_hostels = async (req, res, next) => {
+    try {
+        const hostels = await Hostel.find({ featured: true });
+        hostels.forEach(async hostel => {
+            hostel.featured = false;
+            await hostel.save();
+        });
         res.status(200).json(hostels);
     } catch (err) {
         next(err)

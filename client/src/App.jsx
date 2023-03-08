@@ -20,6 +20,7 @@ import UserDashboardPasswordComponent from './Components/UserDashboardPasswordCo
 import UserDashboardHostelsComponent from './Components/UserDashboardHostelsComponent'
 import UserDashboardHostelEdit from './Components/UserDashboardHostelEdit';
 import NotFoundPage from './Pages/NotFoundPage'
+import AdminDashboardFeaturedHostels from './Components/AdminDashboardFeaturedHostels';
 
 const App = () => {
   return (
@@ -40,6 +41,7 @@ const App = () => {
         <Route path="feedback" element={<ReviewVerification />} />
         <Route path="users" element={<AdminDashboardUserComponent/>} />
         <Route path="hostels" element={<AdminDashboardHostelComponent/>} />
+        <Route path="featured" element={<AdminDashboardFeaturedHostels />} />
       </Route>
       <Route path="/user" element={<UserDashboardPage/>} >
         <Route path="changepassword" element={<UserDashboardPasswordComponent/>} />

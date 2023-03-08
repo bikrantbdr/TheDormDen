@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -175,25 +175,32 @@ const DetailText = styled.div`
     }
 `
 
-function ResultItem({ hostel }) {
+function ResultItem({ hostel, sortBy }) {
     const API_KEY = '769f09ef503a44d1bcb4218675c23b0c'
+
+    const [price, setPrice] = React.useState(0)
+
+    useEffect(() => {
+        if (sortBy === "price_increasing" || sortBy === "popularity") {
+            setPrice(hostel.rooms.reduce((min, room) => room.price < min ? room.price : min, hostel.rooms[0].price))
+        } else {
+            setPrice(hostel.rooms.reduce((max, room) => room.price > max ? room.price : max, hostel.rooms[0].price))
+        }
+    }, [sortBy])
 
     const [street, setStreet] = React.useState('')
     const [city, setCity] = React.useState('')
-            {
-            axios.get(`https://api.geoapify.com/v1/geocode/reverse?lat=${hostel.location.coordinates[1]}&lon=${hostel.location.coordinates[0]}&format=json&apiKey=${API_KEY}`)
-            .then((res) => {
-                // console.log(res.data.results[0].street )
-                setStreet(res.data.results[0].street)
-                setCity(res.data.results[0].city)
-            })
-            .catch((err) => {
-                console.log(err)
-            })
-            }
+    axios.get(`https://api.geoapify.com/v1/geocode/reverse?lat=${hostel.location.coordinates[1]}&lon=${hostel.location.coordinates[0]}&format=json&apiKey=${API_KEY}`)
+    .then((res) => {
+        setStreet(res.data.results[0].street)
+        setCity(res.data.results[0].city)
+    })
+    .catch((err) => {
+        console.log(err)
+    })
+
   return (
     <Container>
-        {/* {console.log(hostel)} */}
         <ImageContainer src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" />
         <Description>        
             <Title>{ hostel.name }</Title>
@@ -219,7 +226,7 @@ function ResultItem({ hostel }) {
                 <button>{ hostel.ranking.toFixed(1) }</button>
             </Rating>
             <DetailText>
-                <span>Rs.{ hostel.rooms[0].price }</span>
+                <span>Rs.{ price }</span>
                 <span>Includes taxes and fees</span>
                 <Link to={`/hostels/${hostel.id}`}>
                     <button>See availability</button>
