@@ -7,6 +7,7 @@ import { useFetch } from './../hooks/useFetch';
 import axios from 'axios';
 import { AuthContext } from './../context/AuthContext';
 import UserReviewComponent from './UserReviewComponent';
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
     display: flex;
@@ -197,8 +198,12 @@ const HostelReviewsAndComments = ({ hostelInfo }) => {
         }
     }, [data])
 
+    const navigate = useNavigate()
     const handleSubmitReview = async (e) => {
         e.preventDefault()
+        if (user_id === null) {
+            navigate("/login")
+        }
         const review = {
             cleanliness: cleanlinessRating,
             food: foodRating,
@@ -227,11 +232,7 @@ const HostelReviewsAndComments = ({ hostelInfo }) => {
 
     const reportReview = async (review_id) => {
         try {
-            if (window.confirm("Are you sure you want to report this review?")) {
-                console.log("Flagging the review")
-            } else {
-                return null
-            }
+            if (user_id === null) navigate("/login")
             const response = await axios.put(`http://localhost:5000/api/reviews/flag/${review_id}`, {}, { withCredentials: true })
         } catch (err) {
             console.log(err)

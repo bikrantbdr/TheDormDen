@@ -113,7 +113,7 @@ const Navbar = ({toggle}) => {
             <NavLink to="/">Home</NavLink>
             <NavLink to="/about">About</NavLink>
             <SideBtnWrap>
-              <SidebarRoute to='/'>Profile</SidebarRoute>
+              <SidebarRoute to='/admin'>Profile</SidebarRoute>
           </SideBtnWrap>
         </Navlinks>
         <MobileIcon onClick={toggle}>

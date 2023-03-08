@@ -1,6 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useFetch } from './../hooks/useFetch';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Container = styled.div`
     width: 100%;
@@ -19,6 +21,11 @@ const PropertyItem = styled.div`
     display: flex;
     flex-direction: column;
     gap: 4px;
+
+    &:hover {
+        transform: scale(1.1);
+        cursor: pointer;
+    }
 
     @media (max-width: 768px) {
         flex: 0 0 200px;
@@ -62,22 +69,27 @@ function HighestRatingHostels() {
         "https://images.unsplash.com/photo-1517568770283-ebb57fc0d3af?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
     ]
 
+    const navigate = useNavigate()
+    const navigateTo = (id) => {
+        navigate(`/hostels/${id}`)
+    }
+
   return (
     <Container>
-        {/* { loading ? "Loading please wait" : 
-            (data.map((hostel, index) => (
-                <PropertyItem key={index} >
-                    <PropertyImage src={ images[index] } />
-                    <PropertyName>{ hostel.name }</PropertyName>
-                    <PropertyLocation>Thapathali, Kathmandu</PropertyLocation>
-                    <PropertyPrice>Rs. { hostel.rooms[0].price }</PropertyPrice>
-                    <div>
-                        <Button>{ hostel.hostel_rating.toFixed(2) }</Button>
-                        <span>( { hostel.number_of_reviews } ratings )</span>
-                    </div>
-                </PropertyItem>
+        { loading ? "Loading please wait" : 
+            (images.map((hostel, index) => (
+                    <PropertyItem key={index} onClick={ () => navigateTo(data[index].id) }>
+                        <PropertyImage src={ images[index] } />
+                        <PropertyName>{ data[index].name }</PropertyName>
+                        <PropertyLocation>Thapathali, Kathmandu</PropertyLocation>
+                        <PropertyPrice>Rs. { data[index].rooms[0]?.price || 10000 }</PropertyPrice>
+                        <div>
+                            <Button>{ data[index].hostel_rating.toFixed(2) }</Button>
+                            <span>( { data[index].number_of_reviews } ratings )</span>
+                        </div>
+                    </PropertyItem> 
             ))
-        )} */}
+        )}
     </Container>
   )
 }
