@@ -59,9 +59,9 @@ const HomePage = () => {
           <NavAndSidebar/>
           <HeroSection/>
       <Container>
-        <Title>Featured Hostels</Title>
+        <Title>✨Featured Hostels✨</Title>
         <FeaturedHostels />
-        <Title>Hostels guests love</Title>
+        <Title>Hostels Guests love</Title>
         <HighestRatingHostels />
       </Container>
       <MailList />

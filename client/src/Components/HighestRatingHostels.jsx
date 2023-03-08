@@ -10,12 +10,7 @@ const Container = styled.div`
     gap: 20px;
 
     @media (max-width: 768px) {
-        overflow-x: scroll;
-        padding: 0 20px;
-
-        ::-webkit-scrollbar {
-            display: none;
-        }
+        flex-direction: column;
     }
 `
 

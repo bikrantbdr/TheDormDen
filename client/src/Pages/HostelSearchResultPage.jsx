@@ -2,6 +2,12 @@ import React, { useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+
 import NavAndSidebar from '../Components/NavAndSidebar'
 import FilterComponent from '../Components/FilterComponent'
 import SearchResult from '../Components/SearchResult'
@@ -38,16 +44,28 @@ const ResultSection = styled.div`
 `
 const SearchHeader = styled.div`
     display: flex;
-    height : 3rem;
+    min-height : 4rem;
     padding:1rem 0;
     justify-content: space-around;
     align-items: center;
     background-color: #e1aaf66b;
     border-radius: 10px;
     margin-bottom: 10px;
+
+    @media (max-width: 768px) {
+      border-radius: 3px;
+      margin: 0 2px;
+      padding: 8px;
+      font-size: 0.8rem;
+    }
     `
 const Title = styled.span`
     font-size: 1.2rem;
+
+    @media (max-width: 768px) {
+      font-size: 0.9rem;
+      font-weight: bold;
+    }
     `
 const MapButtonConainer = styled.div`
     display: flex;
@@ -59,18 +77,7 @@ const Button = styled.button`
 `
 
 const SortBar = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 10px;
-
-    &>div {
-      border: 1px solid gray;
-      border-radius: 5px;
-      padding: 0.5rem;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
+    height: 90%;
 `
 
 function HostelSearchResultPage() {
@@ -88,6 +95,14 @@ function HostelSearchResultPage() {
     const handleMap = () => {
         setToggleMap(!toggleMap)
     }
+
+
+    const [sort, setSort] = React.useState(0);
+
+  const handleChange = (event) => {
+    setSort(event.target.value);
+  };
+  
   return (
     <>
         <NavAndSidebar />
@@ -102,7 +117,25 @@ function HostelSearchResultPage() {
                 <Switch shape="fill" color="success" onChange={handleMap} />
                 {/* <Button onClick={handleMap}>Map</Button> */}
               </MapButtonConainer>
-              <SortBar>Sort By <div>Popularity <AiFillCaretDown /></div></SortBar>
+              <SortBar>
+
+              <Box sx={{ minWidth: 120 }}>
+                <FormControl size='small' >
+                  <InputLabel id="sort">Sort</InputLabel>
+                  <Select
+                    labelId="sort-label"
+                    id="sort"
+                    value={sort}
+                    label="Sort"
+                    onChange={handleChange}
+                  >
+                    <MenuItem value={1}>Popularity</MenuItem>
+                    <MenuItem value={2}>Price ↑</MenuItem>
+                    <MenuItem value={3}>Price ↓</MenuItem>
+                  </Select>
+                </FormControl>
+              </Box>
+              </SortBar>
             </SearchHeader>
           { loading ? "Loading text here please..." : !toggleMap &&(
               data.map((hostel, index) => (
