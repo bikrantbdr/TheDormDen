@@ -19,10 +19,12 @@ import UserDashboardPage from './Pages/UserDashboardPage';
 import UserDashboardPasswordComponent from './Components/UserDashboardPasswordComponent'
 import UserDashboardHostelsComponent from './Components/UserDashboardHostelsComponent'
 import UserDashboardHostelEdit from './Components/UserDashboardHostelEdit';
+import NotFoundPage from './Pages/NotFoundPage'
 
 const App = () => {
   return (
     <Routes>
+      <Route path="*" element={<NotFoundPage/>} />
       <Route path="/" element={<HomePage/>} />
       <Route path="/hostels" element={<HostelSearchResultPage />} />
       <Route path="/hostels/:id" element={<HostelIndividualPage />} />
