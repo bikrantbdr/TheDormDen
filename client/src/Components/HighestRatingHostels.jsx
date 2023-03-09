@@ -81,12 +81,12 @@ function HighestRatingHostels() {
             (images.map((hostel, index) => (
                     <PropertyItem key={index} onClick={ () => navigateTo(data[index].id) }>
                         <PropertyImage src={ data[index]?.images[1] } />
-                        <PropertyName>{ data[index].name }</PropertyName>
+                        <PropertyName>{ data[index]?.name }</PropertyName>
                         <PropertyLocation>Thapathali, Kathmandu</PropertyLocation>
-                        <PropertyPrice>Rs. { data[index].rooms[0]?.price || 10000 }</PropertyPrice>
+                        <PropertyPrice>Rs. { data[index]?.rooms[0]?.price || 10000 }</PropertyPrice>
                         <div>
-                            <Button>{ data[index].hostel_rating.toFixed(2) }</Button>
-                            <span>( { data[index].number_of_reviews } ratings )</span>
+                            <Button>{ data[index]?.hostel_rating.toFixed(2) }</Button>
+                            <span>( { data[index]?.number_of_reviews } ratings )</span>
                         </div>
                     </PropertyItem> 
             ))
