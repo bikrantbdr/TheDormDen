@@ -85,46 +85,14 @@ const MoreImages = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-<<<<<<< HEAD
-  z-index: 5;
-  cursor: pointer;
-`
-const Overlay = styled.div`
-  position: fixed;
-  height: 100%;
-  width: 100%;
-  top: 0;
-  left: 0;
-  background-color: #d6d5d586;
-  z-index: 19;
-  /* filter:blur(4px); */
-`
-=======
   z-index: 10;
   cursor: pointer;
 `
->>>>>>> c8d7b12e44bb6d02388e98bfcb2ae45f59b4e86a
 
 const CauroselContainer = styled.div`
 
   width: 100vw;
   height: 100vh;
-<<<<<<< HEAD
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 20;
-  /* display: flex;
-  justify-content: center;
-  align-items: center; */
-
-  `
-const CarouselImages = styled.div`
-  height: 100vh;
-  width: 90vw;
-  margin: 0 auto; 
-  z-index: 21;
-=======
   background-color: #2828287b;
   position: absolute;
   top: 0;
@@ -135,52 +103,22 @@ const CarouselImages = styled.div`
   height: 90vh;
   width: 90vw;
   margin: 0 auto;
->>>>>>> c8d7b12e44bb6d02388e98bfcb2ae45f59b4e86a
   /* margin:2rem; */
   `
 const Cancel = styled.div`
 position: absolute;
   top: 10px;
-<<<<<<< HEAD
-  right: 30px;
-=======
   left: 10px;
->>>>>>> c8d7b12e44bb6d02388e98bfcb2ae45f59b4e86a
   z-index: 30;
   height:1.5rem;
   width:1.5rem;
   background-color: #ff3232;
-<<<<<<< HEAD
-  color: #fffafa;
-  border-radius: 50%;
-  text-align: center;
-  line-height: 1.5rem;
-  z-index: 21;
-  cursor: pointer;
-
-  
-`
-const Images = styled.img`
-  height:70vh;
-  width:80%;
-  object-fit:cover;
-  margin: 15vh auto;
-  z-index: 21;
-
-  @media (max-width: 768px) {
-    height: 50vh;
-    width: 100%;
-  }
-
-`
-=======
   border-radius: 50%;
   text-align: center;
   line-height: 1.5rem;
   cursor: pointer;
   
 `
->>>>>>> c8d7b12e44bb6d02388e98bfcb2ae45f59b4e86a
 
 
 const HostelImageSection = ({images,longitude,latitude}) => {
@@ -190,14 +128,6 @@ const HostelImageSection = ({images,longitude,latitude}) => {
 
     const carouselStatusHandler = () => {
         setCarouselStatus(!carouselStatus)
-<<<<<<< HEAD
-        if(carouselStatus){
-            document.body.style.overflow = "auto"
-        }else{
-            document.body.style.overflow = "hidden"
-        }
-=======
->>>>>>> c8d7b12e44bb6d02388e98bfcb2ae45f59b4e86a
     }
 
   return (
@@ -230,27 +160,6 @@ const HostelImageSection = ({images,longitude,latitude}) => {
         </Map>
         </MapContainer>
         {
-<<<<<<< HEAD
-            carouselStatus &&
-            <>
-              <Overlay />
-              <CauroselContainer>
-                <Cancel onClick={carouselStatusHandler} >
-                  X
-                </Cancel>
-                <Carousel infiniteLoop={true}  >
-                  {
-                    images.map((image,index) => {
-                      return <CarouselImages key={index}>
-                            <Images src={image} alt="" />
-                            </CarouselImages>
-                      })
-                    }
-              </Carousel>
-
-              </CauroselContainer>
-            </>
-=======
             carouselStatus && <CauroselContainer>
               <Cancel onClick={carouselStatusHandler} >
                 X
@@ -267,7 +176,6 @@ const HostelImageSection = ({images,longitude,latitude}) => {
             </Carousel>
 
             </CauroselContainer>
->>>>>>> c8d7b12e44bb6d02388e98bfcb2ae45f59b4e86a
         }
         
 
