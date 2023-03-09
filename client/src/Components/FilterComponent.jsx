@@ -2,7 +2,7 @@ import React from 'react'
 import { useState, useEffect } from 'react';
 import styled from 'styled-components'
 import axios from 'axios';
-import MultiRangeSlider from "react-js-multi-range-sliders";
+import MultiRangeSlider from "multi-range-slider-react";
 import { useLocation } from 'react-router-dom';
 import { proxy } from '../assets/proxy';
 
@@ -219,12 +219,12 @@ function FilterComponent({ setUrl, setOpenModal, openModal }) {
     const [options, setOptions] = useState(location.state.options === "any" ? ["one","two","three","four"] : [location.state.options] );
     const [locate, setLocate] = useState(location.state.location);
     const [destination, setDestination] = useState(location.state.destination);
-    const [minValue, set_minValue] = useState(0);
-    const [maxValue, set_maxValue] = useState(20000);
+    const [minValue, setminValue] = useState(0);
+    const [maxValue, setmaxValue] = useState(20000);
     const handleInput = (e) => {
-        set_minValue(e.minValue);
-        set_maxValue(e.maxValue);
-        console.log(e.minValue, e.maxValue);
+        setminValue(e.minValue);
+        setmaxValue(e.maxValue);
+        // console.log(e.minValue, e.maxValue);
     };
 
     const [openLocationOptions, setOpenLocationOptions] = useState(false);
@@ -292,15 +292,18 @@ function FilterComponent({ setUrl, setOpenModal, openModal }) {
             <ListItem>
                 <label>Pricing Range</label>
                 <ListPricing>
-                    {/* <MultiRangeSlider
+                    <MultiRangeSlider
                         min={0}
                         max={20000}
+                        style={{ width: "200px" }}
                         minValue={minValue}
+                        ruler={"false"}
+                        barInnerColor={"#fff"}
                         maxValue={maxValue}
                         onInput={(e) => {
                             handleInput(e);
                         }}
-                    /> */}
+                    />
                 </ListPricing>
             </ListItem>
 
