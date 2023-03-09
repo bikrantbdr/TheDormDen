@@ -43,7 +43,7 @@ const OverallRatingDiv = styled.div`
     display : inline-flex;
     align-items: center;
     justify-content: center;
-    width: 80%;
+    width: 100%;
     height: 2rem;
     gap: 1rem;
     margin: 0.5rem;
@@ -60,7 +60,7 @@ const IndividualRating = styled.div`
     gap:5px;
 `
 const IndividualRatingText = styled.div`
-    flex: 1;
+    flex: 2;
 `
 
 const BarContainer = styled.div`
@@ -118,7 +118,7 @@ const CustomerReview = ({overallRating,hostelInfo}) => {
                     })
                 }
                 
-                {overallRating}
+                {overallRating.toFixed(1)}
                 </OverallRatingDiv>
 
             {review.map((item,index) => {
@@ -134,7 +134,7 @@ const CustomerReview = ({overallRating,hostelInfo}) => {
                        </BarContainer>
                         <IndividualRatingText>
 
-                          {totalReviews==0?0:(item/totalReviews)*100}%
+                          {totalReviews==0?0:((item/totalReviews)*100).toFixed(0)}%
                         </IndividualRatingText>
                     </IndividualRating>
                 )

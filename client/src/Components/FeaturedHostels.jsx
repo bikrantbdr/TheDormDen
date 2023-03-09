@@ -114,7 +114,7 @@ function FeaturedHostels() {
         {
             data.map((item,index) => (
                 <FeaturedItem key={index} to={`/hostels/${item.id}`} >
-                    <FeaturedImage src={item.image}/>
+                    <FeaturedImage src={item.images[0]}/>
                     <FeaturedText>
                         <FeaturedTitle>{item.name}</FeaturedTitle>
                         <FeaturedLocation>{ `${street[index]}, ${city[index]}` }</FeaturedLocation>
