@@ -12,6 +12,7 @@ const cloudinary = require("cloudinary");
 */
 const getToken = (req) => {
     const { token } = req.cookies;
+    console.log("token", token);
     if (token) {
         return token
     }
