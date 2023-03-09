@@ -122,7 +122,7 @@ position: absolute;
 
 
 const HostelImageSection = ({images,longitude,latitude}) => {
-    const [center, setCenter] = useState([27.694582657545205, 85.32046340409931]);
+    const [center, setCenter] = useState([latitude, longitude]);
     const [zoom, setZoom] = useState(14);
     const [carouselStatus,setCarouselStatus ] = useState(false);
 

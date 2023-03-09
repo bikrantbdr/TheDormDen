@@ -95,7 +95,7 @@ exports.register_hostel = async (req, res, next) => {
             address: body.address,
             location: {
                 type: 'Point',
-                coordinates: [body.longitude, body.latitude]
+                coordinates: [body.latitude, body.longitude]
             },
             description: body.description,
             for_gender: body.for_gender,
