@@ -203,7 +203,7 @@ const HostelRegistrationPage = () => {
         }
         const response = await axios.post(`${baseUrl}/api/hostels/register`, data, {withCredentials: true })
         if(response.statusText === "Created"){
-            navigate('/')
+            navigate('/user/hostels')
         }
         else {
             alert('Something went wrong')
