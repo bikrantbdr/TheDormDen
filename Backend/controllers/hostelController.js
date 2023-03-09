@@ -71,15 +71,18 @@ exports.register_hostel = async (req, res, next) => {
             width: 150,
             crop: "scale",
         })
-        console.log("images in cloud", imagescloud[i]);
+        // console.log("images in cloud", imagescloud[i]);
         }
         for(let i = 0; i < imagescloud.length; i++) {
             imagescloudURL[i] = imagescloud[i].secure_url;
         }
-        console.log("images in cloud URL", imagescloudURL);
+        // console.log("images in cloud URL", imagescloudURL);
+        
 
         const token = getToken(req);
         const decodedToken = jwt.verify(token, process.env.SECRET);
+
+        console.log("decodedToken", decodedToken);
 
         if (!token || !decodedToken.id) {
             return res.status(401).json({ error: 'token missing or invalid' });
