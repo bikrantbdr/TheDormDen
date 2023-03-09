@@ -218,18 +218,18 @@ const HostelReviewsAndComments = ({ hostelInfo }) => {
         if (existingReview.length > 0) {
             try {
                 const response = await axios.put(`http://localhost:5000/api/hostels/review/update/${existingReview[0].id}`, review, { withCredentials: true })
-                dispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "Review updated successfully", type: "success" } })
+                dispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "Review updated successfully", status: "success" } })
                 reFetchData()
             } catch (err) {
-                dispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "Error reviewing the hostel", type: "error" } })
+                dispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "Error reviewing the hostel", status: "error" } })
             }
         } else if (existingReview.length === 0 && comment.length > 0) {
             try {
                 const response = await axios.post(`http://localhost:5000/api/hostels/review/${hostelInfo.id}`, review, { withCredentials: true })
-                dispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "Reviewed successfully", type: "success" } })
+                dispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "Reviewed successfully", status: "success" } })
                 reFetchData()
             } catch (err) {
-                dispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "Error reviewing the hostel", type: "error" } })
+                dispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "Error reviewing the hostel", status: "error" } })
             }
         }
     }
@@ -237,14 +237,14 @@ const HostelReviewsAndComments = ({ hostelInfo }) => {
     const reportReview = async (review_id) => {
         try {
             if (user_id === null) { 
-                dispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "You must be logged in first to report a review", type: "success" } })
+                dispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "You must be logged in first to report a review", status: "success" } })
                 navigate("/login")
             }
             if(!window.confirm("Are you sure you want to report this review?")) return
             const response = await axios.put(`http://localhost:5000/api/reviews/flag/${review_id}`, {}, { withCredentials: true })
-            dispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "Reported Review successfully", type: "success" } })
+            dispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "Reported Review successfully", status: "success" } })
         } catch (err) {
-            dispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "Error reporting the review", type: "error" } })
+            dispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "Error reporting the review", status: "error" } })
         }
     }
 

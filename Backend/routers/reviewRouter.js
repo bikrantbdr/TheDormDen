@@ -16,8 +16,8 @@ const { verifyToken, verifyUser, verifyAdmin } = require('../utils/verificationH
 router.route('/user/:id').get(get_user_reviews);
 router.route('/flagged').get(get_flagged_reviews);
 router.route('/:hotelId').get(get_reviews);
-router.route('/flag/:reviewId').put(verifyUser, flag_review);
-router.route('/verify/:reviewId').put(verifyUser, verify_review);
-router.route('/remove/:reviewId/:id').delete(verifyUser, remove_review);
+router.route('/flag/:reviewId').put(flag_review);
+router.route('/verify/:reviewId').put(verify_review);
+router.route('/remove/:reviewId/:id').delete(remove_review);
 
 module.exports = router 
