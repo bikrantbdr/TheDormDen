@@ -67,7 +67,7 @@ const HomePage = () => {
         <Title>✨Featured Hostels✨</Title>
         <FeaturedHostels />
         <Title>Hostels Guests love</Title>
-        <HighestRatingHostels />
+        {/* <HighestRatingHostels /> */}
       </Container>
       <MailList />
       </HomeContainer>
