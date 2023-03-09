@@ -8,6 +8,7 @@ import axios from 'axios';
 import { AuthContext } from './../context/AuthContext';
 import UserReviewComponent from './UserReviewComponent';
 import { useNavigate } from 'react-router-dom';
+import { NotificationContext } from './../context/NotificationContext';
 
 const Container = styled.div`
     display: flex;
@@ -183,6 +184,8 @@ const HostelReviewsAndComments = ({ hostelInfo }) => {
     const [amenitiesRating, setAmenitiesRating] = useState(null)
     const [comment, setComment] = useState("")
 
+    const { dispatch } = useContext(NotificationContext)
+
     const { user_id } = useContext(AuthContext)
     useEffect(() => {
         if (data) {
@@ -202,6 +205,7 @@ const HostelReviewsAndComments = ({ hostelInfo }) => {
     const handleSubmitReview = async (e) => {
         e.preventDefault()
         if (user_id === null) {
+            dispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "You must be logged in first to submit review", type: "error" } })
             navigate("/login")
         }
         const review = {
@@ -214,28 +218,33 @@ const HostelReviewsAndComments = ({ hostelInfo }) => {
         if (existingReview.length > 0) {
             try {
                 const response = await axios.put(`http://localhost:5000/api/hostels/review/update/${existingReview[0].id}`, review, { withCredentials: true })
-                console.log(response)
+                dispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "Review updated successfully", type: "success" } })
                 reFetchData()
             } catch (err) {
-                console.log(err)
+                dispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "Error reviewing the hostel", type: "error" } })
             }
         } else if (existingReview.length === 0 && comment.length > 0) {
             try {
                 const response = await axios.post(`http://localhost:5000/api/hostels/review/${hostelInfo.id}`, review, { withCredentials: true })
-                console.log(response)
+                dispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "Reviewed successfully", type: "success" } })
                 reFetchData()
             } catch (err) {
-                console.log(err)
+                dispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "Error reviewing the hostel", type: "error" } })
             }
         }
     }
 
     const reportReview = async (review_id) => {
         try {
-            if (user_id === null) navigate("/login")
+            if (user_id === null) { 
+                dispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "You must be logged in first to report a review", type: "success" } })
+                navigate("/login")
+            }
+            if(!window.confirm("Are you sure you want to report this review?")) return
             const response = await axios.put(`http://localhost:5000/api/reviews/flag/${review_id}`, {}, { withCredentials: true })
+            dispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "Reported Review successfully", type: "success" } })
         } catch (err) {
-            console.log(err)
+            dispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "Error reporting the review", type: "error" } })
         }
     }
 

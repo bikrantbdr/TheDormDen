@@ -6,7 +6,7 @@ import { BsFillCheckCircleFill } from 'react-icons/bs';
 import { NotificationContext } from '../context/NotificationContext';
 
 
-function NotificationBar({ duration = 5000 }) {
+function NotificationBar({ duration = 3000 }) {
     const { display, message, status, dispatch } = useContext(NotificationContext);
     
     const NotificationBarWrapper = styled.div`

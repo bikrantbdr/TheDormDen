@@ -4,11 +4,12 @@ import styled from 'styled-components'
 import { DataGrid } from '@mui/x-data-grid';
 import { useFetch } from './../hooks/useFetch';
 import axios from 'axios';
-
+import { PromptContext } from '../context/PromptContext';
 import { NotificationContext } from './../context/NotificationContext';
 
 import { Wrapper, ViewButton, ActionButtons, VerifyButton, DeleteButton } from './UserVerificationDashboard';
 import ReviewComponentModal from './ReviewComponentModal';
+import { AuthContext } from '../context/AuthContext';
 
 const VerifiedButton = styled.button`
     padding: 5px;
@@ -26,35 +27,27 @@ const UnverifiedButton = styled.button`
     background-color: rgba(255, 165, 0, 0.151);
 `
 
-const ReviewVerification = () => {
+const UserDashBoardComment = () => {
     const [showModal, setShowModal] = useState(false);
     const [rows, setRows] = useState([])
-    const { data, loading, error, reFetchData } = useFetch(`http://localhost:5000/api/reviews/flagged`)
+    const { user_id } = useContext(AuthContext);
+    const { data, loading, error, reFetchData } = useFetch(`http://localhost:5000/api/reviews/user/${user_id}`)
 
     useEffect(() => {
         setRows(data)
+        console.log(data)
     }, [data])
 
+    const { status, dispatch } = useContext(PromptContext);
     const { dispatch: notificationDispatch } = useContext(NotificationContext)
-    const verifyReview = async (reviewId) => {
-        try {
-            if (!window.confirm("Are you sure you want to verify this review?")) return
-            await axios.put(`http://localhost:5000/api/reviews/verify/${reviewId}`, {withCredentials: true})
-            notificationDispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "Review successfully Verified", status: "success" } })
-            reFetchData()
-        } catch (error) {
-            notificationDispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "Error verifying review", status: "error" } })
-        }
-    }
 
     const deleteReview = async (reviewId) => {
         try {
-            if (!window.confirm("Are you sure you want to delete this review?")) return
-            await axios.delete(`http://localhost:5000/api/reviews/remove/${reviewId}/gib`, {withCredentials: true})
+            await axios.delete(`http://localhost:5000/api/reviews/remove/${reviewId}/${user_id}`, {withCredentials: true})
             notificationDispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "Review successfully deleted", status: "success" } })
             reFetchData()
         } catch (error) {
-            notificationDispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "Error deleting review", status: "error" } })
+            notificationDispatch({ type: "NOTIFICATION_START", payload: { display: true, message: `${error.response.data.error}`, status: "error" } })
         }
     }
 
@@ -114,7 +107,6 @@ const ReviewVerification = () => {
             width: 160,
             renderCell: (params) => (
               <ActionButtons>
-                <VerifyButton onClick={() => verifyReview(params.row.id)}>Verify</VerifyButton>
                 <DeleteButton onClick={() => deleteReview(params.row.id)}>Delete</DeleteButton>
               </ActionButtons>
             )
@@ -134,4 +126,4 @@ const ReviewVerification = () => {
   )
 }
 
-export default ReviewVerification
+export default UserDashBoardComment

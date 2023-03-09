@@ -56,7 +56,6 @@ exports.get_users = async (req, res, next) => {
 exports.get_user = async (req, res, next) => {
     try {
         const user = await User.findById(req.params.id).populate("hostel_listings")
-        console.log(user);
         res.status(200).json(user);
     } catch(err) {
         next(err)

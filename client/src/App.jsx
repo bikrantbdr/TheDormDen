@@ -24,6 +24,7 @@ import NotFoundPage from './Pages/NotFoundPage'
 import AdminDashboardFeaturedHostels from './Components/AdminDashboardFeaturedHostels';
 
 import jwt_decode from "jwt-decode";
+import UserDashBoardComment from './Components/UserDashBoardComment'
     
 const App = () => {
     const { user_id, token } = useContext(AuthContext);
@@ -72,6 +73,7 @@ const App = () => {
         <Route path="changepassword" element={<UserDashboardPasswordComponent/>} />
         <Route path="hostels" element={<UserDashboardHostelsComponent/>} />
         <Route path="hostels/:id" element={<UserDashboardHostelEdit />} />
+        <Route path='reviews' element={<UserDashBoardComment/>} />
       </Route>
     </Routes>
   )

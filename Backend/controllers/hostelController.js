@@ -202,7 +202,6 @@ exports.post_review = async (req, res, next) => {
             user: user._id,
             hostel: hostel._id
         })
-        console.log(review);
 
         const savedReview = await review.save();
         hostel.reviews = hostel.reviews.concat(savedReview._id);

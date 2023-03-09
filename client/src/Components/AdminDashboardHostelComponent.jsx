@@ -1,10 +1,11 @@
-import {useEffect, useState} from 'react'
+import {useContext, useEffect, useState} from 'react'
 import styled from 'styled-components'
 import axios from 'axios'
 
 import { DataGrid } from '@mui/x-data-grid';
 import { Link } from "react-router-dom";
 import {AiOutlineDelete as DeleteOutline } from "react-icons/ai";
+import { NotificationContext } from '../context/NotificationContext';
 
 
 const Wrapper = styled.div`
@@ -15,7 +16,7 @@ const Wrapper = styled.div`
   align-items: center;
 `
 const Container = styled.div`
-  width: 80%;
+  width: 100%;
   height: 100%;
 `
 
@@ -48,6 +49,8 @@ const AdminDashboardHostelComponent = () => {
   const [error, setError] = useState(false)
   const baseURL = 'http://localhost:5000'
 
+  const { dispatch } = useContext(NotificationContext)
+
   useEffect(() => {
     const fetchHostels = async () => {
       try {
@@ -70,7 +73,7 @@ const AdminDashboardHostelComponent = () => {
   
   const columns = [
     {field:"name",headerName:"Hostel",width:200},
-    { field: "hostel_rating", headerName: "Rating", width: 200,
+    { field: "hostel_rating", headerName: "Rating", width: 60,
       renderCell: (params) => (
         <span> {Math.floor(params.row.hostel_rating)} </span>
       )},
@@ -124,6 +127,10 @@ const AdminDashboardHostelComponent = () => {
   ];
 
   const handleDelete = (id) => {
+    if (!window.confirm("Are you sure you want to delete this hostel?")) {
+      return;
+    }
+    dispatch({ type: "NOTIFICATION_START", payload: { status: "success", message: "Hostel was deleted successfully" } });
     setHostels(hostels.filter(item => item.id !== id));
   };
 

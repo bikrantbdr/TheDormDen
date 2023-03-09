@@ -9,6 +9,7 @@ import MailList from './../Components/MailList';
 import CustomerReview from '../Components/CustomerReview'
 import { useFetch } from './../hooks/useFetch';
 import { useParams } from 'react-router-dom'
+import NotificationBar from '../Components/NotificationBar'
 
 const DetailContainer = styled.div`
   display: flex;
@@ -36,6 +37,7 @@ const HostelIndividualPage = () => {
     const [latitude,setLatitude] = useState(27.694582657545205)
   return (
     <>
+    <NotificationBar />
     <Navbar />
     <Container>
     {loading ? "loading please wait" : <><HostelImageSection images={data.images} longitude={longitude} latitude={latitude}/>

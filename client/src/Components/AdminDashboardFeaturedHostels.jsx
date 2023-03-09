@@ -8,6 +8,7 @@ import axios from 'axios';
 import { ViewButton } from './UserVerificationDashboard';
 import { AiTwotoneStar } from 'react-icons/ai';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
+import { NotificationContext } from '../context/NotificationContext';
 
 const Wrapper = styled.div`
     height: 100%;
@@ -86,6 +87,8 @@ const AdminDashboardFeaturedHostels = () => {
     
     const {data, loading, error} = useFetch(`http://localhost:5000/api/hostels/all`)
     const { data: featuredData, loading: featuredLoading, error: featuredError, reFetchData } = useFetch(`http://localhost:5000/api/hostels/featured`)
+
+    const { dispatch } = useContext(NotificationContext)
     
     useEffect(() => {
         setRows(data)
@@ -128,31 +131,40 @@ const AdminDashboardFeaturedHostels = () => {
 
     const unfeaturehostel = async (id) => {
         try {
+            if (!window.confirm("Are you sure you want to remove this hostel from featured?")) {
+                return
+            }
             const res = await axios.post(`http://localhost:5000/api/hostels/unfeatured/${id}`, { withCredentials: true })
-            console.log(res)
+            dispatch({type: "NOTIFICATION_START", payload: {status: "success", message: "Hostel removed from featured successfully"}})
             reFetchData()
         } catch (error) {
-            console.log(error)
+            dispatch({type: "NOTIFICATION_END", payload: {status: "error", message: "Hostel could not be removed from featured"}})
         }
     }
 
     const unfeatureAll = async () => {
         try {
+            if(!window.confirm("Are you sure you want to remove all featured hostels?")) {
+                return
+            }
             const res = await axios.post(`http://localhost:5000/api/hostels/unfeatured`, { withCredentials: true })
-            console.log(res)
+            dispatch({type: "NOTIFICATION_START", payload: {status: "success", message: "All featured hostels removed successfully"}})
             reFetchData()
         } catch (error) {
-            console.log(error)
+            dispatch({type: "NOTIFICATION_START", payload: {status: "error", message: "All featured hostels could not be removed"}})
         }
     }
 
     const featurehostel = async (id) => {
         try {
+            if (!window.confirm("Are you sure you want to feature this hostel?")) {
+                return
+            }
             const res = await axios.post(`http://localhost:5000/api/hostels/featured/${id}`, { withCredentials: true })
-            console.log(res)
+            dispatch({type: "NOTIFICATION_START", payload: {status: "success", message: "Hostel featured successfully"}})
             reFetchData()
         } catch (error) {
-            console.log(error)
+            dispatch({type: "NOTIFICATION_END", payload: {status: "error", message: "Hostel could not be featured"}})
         }
     }
 

@@ -1,10 +1,11 @@
-import { useState,useEffect } from "react";
+import { useState,useEffect, useContext } from "react";
 import styled from 'styled-components'
 import axios from 'axios'
 
 import { DataGrid } from '@mui/x-data-grid';
 import { Link } from "react-router-dom";
 import {AiOutlineDelete as DeleteOutline } from "react-icons/ai";
+import { NotificationContext } from "../context/NotificationContext";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -14,7 +15,7 @@ const Wrapper = styled.div`
   align-items: center;
 `
 const Container = styled.div`
-  width: 80%;
+  width: 100%;
   height: 100%;
 `
 
@@ -41,17 +42,13 @@ const Edit = styled.button`
     font-weight: 500;
 `
 
-
-
-
-
-
-
 const AdminDashboardUserComponent = () => {
   const [users, setUsers] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
   const baseURL = 'http://localhost:5000'
+
+  const { dispatch } = useContext(NotificationContext)
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -137,7 +134,11 @@ const AdminDashboardUserComponent = () => {
   ];
 
   const handleDelete = (id) => {
+    if (!window.confirm("Do you want to delete this user?")) {
+      return
+    }
     setUsers(users.filter(item => item.id !== id));
+    dispatch({ type: 'NOTIFICATION_START', payload: { message: 'User Deleted Successfully', status: 'success' } });
   };
 
 
