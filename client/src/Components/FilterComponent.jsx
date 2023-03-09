@@ -187,10 +187,7 @@ const CloseButton = styled.span`
         display: block;
     }
 `
-
-
-function FilterComponent({ setUrl, setOpenModal, openModal }) {
-    const SearchSection = styled.div`
+const SearchSection = styled.div`
         flex: 1;
         padding: 1.5rem;
         border-radius: 10px;
@@ -200,7 +197,7 @@ function FilterComponent({ setUrl, setOpenModal, openModal }) {
         height: fit-content;
 
         @media (max-width: 768px) {
-            display: ${openModal ? "flex": "none"};
+            display: ${({openModal}) => (openModal ? 'flex' : 'none')};
             position: fixed;
             top: 0;
             left: 0;
@@ -213,13 +210,22 @@ function FilterComponent({ setUrl, setOpenModal, openModal }) {
             justify-content: center;
         }
     `
+
+function FilterComponent({ setUrl, setOpenModal, openModal }) {
+    
     const location = useLocation();
 
     const [name, setName] = useState(location.state.name);
     const [options, setOptions] = useState(location.state.options === "any" ? ["one","two","three","four"] : [location.state.options] );
     const [locate, setLocate] = useState(location.state.location);
     const [destination, setDestination] = useState(location.state.destination);
-    const [price, setPrice] = useState(null);
+    const [minValue, set_minValue] = useState(0);
+    const [maxValue, set_maxValue] = useState(20000);
+    const handleInput = (e) => {
+        set_minValue(e.minValue);
+        set_maxValue(e.maxValue);
+        console.log(e.minValue, e.maxValue);
+    };
 
     const [openLocationOptions, setOpenLocationOptions] = useState(false);
 
@@ -254,7 +260,7 @@ function FilterComponent({ setUrl, setOpenModal, openModal }) {
       };
 
     const handleSearch = () => {
-        const url = `${proxy}/api/hostels?name=${name}&room_types=${ options.map((option) => option+"_seater" ) }&longitude=${destination.longitude}&latitude=${destination.latitude}&price_lower=${price.min || 0}&price_upper=${price.max || 20000}`
+        const url = `${proxy}/api/hostels?name=${name}&room_types=${ options.map((option) => option+"_seater" ) }&longitude=${destination.longitude}&latitude=${destination.latitude}&price_lower=${minValue || 0}&price_upper=${maxValue|| 20000}`
         setUrl(url)
     }
 
@@ -286,11 +292,15 @@ function FilterComponent({ setUrl, setOpenModal, openModal }) {
             <ListItem>
                 <label>Pricing Range</label>
                 <ListPricing>
-                    <MultiRangeSlider
+                    {/* <MultiRangeSlider
                         min={0}
                         max={20000}
-                        onChange={({ min, max }) => setPrice({ min, max })}
-                    />
+                        minValue={minValue}
+                        maxValue={maxValue}
+                        onInput={(e) => {
+                            handleInput(e);
+                        }}
+                    /> */}
                 </ListPricing>
             </ListItem>
 
