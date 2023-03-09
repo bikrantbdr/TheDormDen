@@ -69,6 +69,7 @@ const AdminDashboardHomeComponent = () => {
     },
     {
       name: "Oct",
+<<<<<<< HEAD
       
     },
     {
@@ -77,6 +78,17 @@ const AdminDashboardHomeComponent = () => {
     {
       name: "Dec",
       
+=======
+      "Active User": 1000,
+    },
+    {
+      name: "Nov",
+      "Active User": 4000,
+    },
+    {
+      name: "Dec",
+      "Active User": 3000,
+>>>>>>> c8d7b12e44bb6d02388e98bfcb2ae45f59b4e86a
     },
   ];
   return (
