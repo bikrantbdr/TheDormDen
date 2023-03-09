@@ -66,12 +66,12 @@ const NumberWrapper = styled.div`
     align-items: center;
     gap: 30px;
     background-color: #eee;
-    font-size: 34px;
+    font-size: 1rem;
     padding: 10px;
     border-radius: 4px;
 
     &>button {
-        font-size: 34px;
+        font-size: 1rem;
         padding: none;
         border: none;
     }
@@ -88,22 +88,26 @@ const FeaturesWrapper = styled.div`
 `
 
 const Minus = styled.button`
-    color: #000;
+    color: #D179FF;
     cursor: pointer;
 
     &:hover {
-        color: #999;
+        color: #A761CC;
     }
+`
+const Text = styled.p`
+    font-size: 1rem;
+    text-transform: capitalize;
 `
 
 const Number = styled.span``
 
 const Plus = styled.button`
-    color: #000;
+    color: #D179FF;
     cursor: pointer;
 
     &:hover {
-        color: #999;
+        color: #A761CC;
     }
 `
 
@@ -186,7 +190,10 @@ const UserDashboardOpenModalEditRoom = ({setOpenModal, hostel, setHostel, roomId
                 <FeaturesWrapper>
                     {features.map((feature, index) => (
                         <Checkbox state={feature.available} setState={feature.available} onChange={ () => changeFeatureValue(feature) } key={index} color="success" >
+                            <Text>
+                            
                             {feature.value}
+                            </Text>
                         </Checkbox>
                         ))}
                 </FeaturesWrapper>
