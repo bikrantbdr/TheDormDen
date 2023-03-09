@@ -73,12 +73,12 @@ exports.register_user = async (req, res, next) => {
     
         const profilecloud = await cloudinary.v2.uploader.upload(body.profile_picture, {
             folder: "avatars",
-            width: 150,
+            width: 1020,
             crop: "scale",
           });
         const documentcloud = await cloudinary.v2.uploader.upload(body.document, {
             folder: "studentdocuments",
-            width: 150,
+            width: 1020,
             crop: "scale",
           });
     
@@ -174,7 +174,7 @@ exports.update_user = async (req, res, next) => {
             } else {
                 const profilecloud = await cloudinary.v2.uploader.upload(body.profile_picture, {
                     folder: "avatars",
-                    width: 150,
+                    width: 1020,
                     crop: "scale",
                 });
                 SecureURL = profilecloud.secure_url;

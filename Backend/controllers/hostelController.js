@@ -61,14 +61,14 @@ exports.register_hostel = async (req, res, next) => {
 
         const documentcloud = await cloudinary.v2.uploader.upload(body.document, {
             folder: "Hosteldocuments",
-            width: 150,
+            width: 1020,
             crop: "scale",
           });
 
         for(let i = 0; i < body.images.length; i++) {
         imagescloud[i] = await cloudinary.v2.uploader.upload(body.images[i], {
             folder: "hostelimages",
-            width: 150,
+            width: 1020,
             crop: "scale",
         })
         // console.log("images in cloud", imagescloud[i]);
