@@ -76,6 +76,18 @@ const Button = styled.button`
   font-size: 1rem;
   font-weight: 600;
   border-radius: 6px;
+
+  &:hover {
+    cursor: pointer;
+    background-color: #dea0ff;
+    opacity: 0.8;
+  }
+`
+const SucessDiv = styled.div`
+  color: #94ff79;
+`
+const ErrorDiv = styled.div`
+  color: #ff7979;
 `
 
 const UserDashboardHomeComponent = () => {
@@ -92,6 +104,8 @@ const UserDashboardHomeComponent = () => {
   const [address, setAddress] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
+  const [errorMessage, setErrorMessage] = useState("")
+  const [successMessage, setSuccessMessage] = useState("")
   const baseURL = proxy
   const {user_id} = useContext(AuthContext)
 
@@ -125,7 +139,7 @@ const UserDashboardHomeComponent = () => {
 
   const handleUpdate = async (e) => {
     e.preventDefault()
-    console.log(typeof(profilePic))
+    // console.log(typeof(profilePic))
     const user = 
     {
       username:username,
@@ -135,7 +149,7 @@ const UserDashboardHomeComponent = () => {
       last_name:lastname,
       gender:gender,
       phone_number:phoneNumber,
-      // profile_picture:profilePic,
+      profile_picture:profilePic,
       document:document,
       typeof_user:"student",
       address:address
@@ -143,9 +157,12 @@ const UserDashboardHomeComponent = () => {
     await axios.put(`${baseURL}/api/users/update/${user_id}`,user,{withCredentials:true} )
     .then(res => {
         // console.log(res);
+        setSuccessMessage("Profile Updated")
+
     })
     .catch(err => {
         // console.log(err);
+        setErrorMessage(err.message)
     })
   }
 
@@ -205,6 +222,8 @@ const UserDashboardHomeComponent = () => {
           </Row>
         </Form>
         <Button onClick={handleUpdate}>Update</Button>
+        {successMessage && <SucessDiv>{successMessage}</SucessDiv>}
+        {errorMessage && <ErrorDiv>{errorMessage}</ErrorDiv>}
         </>
       )}
     </Container>

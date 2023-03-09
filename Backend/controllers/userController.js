@@ -160,7 +160,7 @@ exports.update_user = async (req, res, next) => {
     try{
         const body = req.body;    
         console.log("body passed", body);
-        const SecureURL = ""
+        let SecureURL = ""
         const token = getToken(req);
         const decodedToken = jwt.verify(token, process.env.SECRET);
         if (!token || !decodedToken.id) {
