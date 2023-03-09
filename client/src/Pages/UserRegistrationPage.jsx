@@ -1,7 +1,7 @@
 import React,{useState, useEffect} from 'react'
 import styled from 'styled-components'
 import axios from "axios"
-
+import { useNavigate } from 'react-router'
 
 import Avatar from '../assets/avatar.png'
 import DocumentDropzone from '../Components/DocumentDropzone'
@@ -125,6 +125,7 @@ const UserRegistrationPage = () => {
   const [profilePic, setProfilePic] = useState(`${Avatar}`)
   const [document, setDocument] = useState("")
   const baseUrl = proxy
+  const navigate = useNavigate()
 
 
   useEffect(() => {
@@ -148,12 +149,14 @@ const UserRegistrationPage = () => {
       typeof_user:"student",
       address:"hetauda"
     }
-    await axios.post(`${baseUrl}/api/users/register/$`,user)
+    await axios.post(`${baseUrl}/api/users/register`,user)
     .then(res => {
         // console.log(res);
+        navigate('/login')
     })
     .catch(err => {
         // console.log(err);
+        alert("Something went wrong")
     })
   }
 

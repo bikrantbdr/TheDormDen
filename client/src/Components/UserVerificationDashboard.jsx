@@ -64,7 +64,7 @@ const UserVerificationDashboard = () => {
       }
       try {
         if (!window.confirm("Are you sure you want to verify this user?")) return
-        const response = await axios.put(`${proxy}/api/users/update/${userId}`, data, { withCredentials: true })
+        const response = await axios.put(`${proxy}/api/users/verify/${userId}`, data, { withCredentials: true })
         notificationDispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "User successfully Verified", status: "success" } })
         reFetchData()
       } catch (error) {

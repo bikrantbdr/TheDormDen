@@ -342,6 +342,24 @@ exports.get_unverified_users = async (req, res, next) => {
 }
 
 /* 
+    @route GET /api/users/verify/:id
+    @desc Verify a user
+    @access Private
+*/
+exports.verify_user = async (req, res, next) => {
+    try {
+        const user = await User.findByIdAndUpdate(req.params.id, { 'usertype.is_verified': true }, {
+            new: true,
+            runValidators: true,
+            useFindAndModify: false
+        });
+        res.status(200).json(user);
+    } catch(err) {
+        next(err)
+    }
+}
+
+/* 
     @route DELETE /api/users/delete/:id
     @desc Delete a user
     @access Private

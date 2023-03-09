@@ -98,7 +98,7 @@ function FeaturedHostels() {
         data.map((item,index) => {
             axios.get(`https://api.geoapify.com/v1/geocode/reverse?lat=${item.location.coordinates[1]}&lon=${item.location.coordinates[0]}&format=json&apiKey=${API_KEY}`)
             .then((res) => {
-                // console.log(res.data.results[0].street )
+                console.log(res.data.results[0].street, res.data.results[0].city )
                 setStreet( prev => [...prev, res.data.results[0].street] )
                 setCity( prev => [...prev, res.data.results[0].city] )
             })
