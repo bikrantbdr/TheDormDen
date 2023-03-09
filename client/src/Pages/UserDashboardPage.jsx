@@ -8,6 +8,7 @@ import { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../context/AuthContext'
 import { Helmet } from 'react-helmet'
 import { proxy } from '../assets/proxy'
+import NotificationBar from './../Components/NotificationBar';
 
 const Wrapper = styled.div`
     display: flex;
@@ -41,6 +42,7 @@ const UserDashboardPage = () => {
         <title>Dormden | UserDashboard</title>
         <meta name="description" content="User Dashboard to manage their accound, change password, view their review and their hostel listings" />
     </Helmet>
+    <NotificationBar />
     <NavAndSidebar/>
     <Wrapper>
         {user? 

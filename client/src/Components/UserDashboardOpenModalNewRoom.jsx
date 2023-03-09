@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { AiFillMinusSquare, AiFillPlusSquare } from 'react-icons/ai';
 import { Checkbox } from 'pretty-checkbox-react';
 import '@djthoms/pretty-checkbox';
+import { v4 as uuidv4 } from 'uuid';
 
 const Modal = styled.div`
     display: block; /* Hidden by default */
@@ -148,7 +149,8 @@ const UserDashboardOpenModalNewRoom = ({setOpenModal, hostel, setHostel, roomId}
         direct_sunlight: false,
         room_type: "one_seater",
         room_number: null,
-        availability: false
+        availability: false,
+        id: uuidv4()
     })
 
     let features = [

@@ -209,7 +209,6 @@ const HostelRegistrationPage = () => {
         <title>Dorm | Register Hostel</title>
         <meta name="description" content="Register your hostel to be showcased in ur web portal" />
     </Helmet>
-        <NavAndSidebar/>
         <Container>
             <TitleDiv>
                 Hostel Registration

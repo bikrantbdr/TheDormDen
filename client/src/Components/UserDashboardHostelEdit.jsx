@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {useState, useEffect} from 'react'
 import styled from 'styled-components'
 import axios from 'axios'
@@ -15,6 +15,8 @@ import { useFetch } from './../hooks/useFetch';
 import UserDashboardOpenModalEditRoom from './UserDashboardOpenModalEditRoom';
 import UserDashboardOpenModalNewRoom from './UserDashboardOpenModalNewRoom';
 import { proxy } from '../assets/proxy';
+import { useParams } from 'react-router-dom';
+import { NotificationContext } from '../context/NotificationContext';
 
 const Container = styled.div`
   display: flex;
@@ -203,6 +205,18 @@ const DeleteButton = styled.button`
     cursor: pointer;
 `
 
+const SubmitButton = styled.button`
+    margin-top: 2rem;
+    padding: 12px 24px;
+    background-color: #386bc0;
+    border: none;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 6px;
+    cursor: pointer;
+`
+
 const UserDashboardHostelEdit = () => {
   const [hostel, setHostel] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -248,15 +262,20 @@ const UserDashboardHostelEdit = () => {
     }
 
   const checkbox = useCheckboxState({ state: [] });
+  const hostelId = useParams().id;
 
   useEffect(() => {
     setLoading(true)
-    axios.get(`${proxy}/api/hostels/63dc7276e547623e0cff4a8c`)
+    axios.get(`${proxy}/api/hostels/${hostelId}`)
         .then(res => {
             setHostel(res.data)
             localAmenities.forEach((amenity) => {
                 amenity.available = res.data.amenities.includes(amenity.value)
             })
+            setLatitude(res.data.location.coordinates[1])
+            setLongitude(res.data.location.coordinates[0])
+            setAnchor([res.data.location.coordinates[1], res.data.location.coordinates[0]])
+            setCenter([res.data.location.coordinates[1], res.data.location.coordinates[0]])
         })
         .finally(() => setLoading(false))
   }, [])
@@ -266,7 +285,7 @@ const UserDashboardHostelEdit = () => {
   const [locationanchor, setAnchor] = useState([27.694582657545205, 85.32046340409931]);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
-
+  const { dispatch } = useContext(NotificationContext);
     const onmapclickhandler = async(e) => {
         setAnchor(e.latLng)
         setLatitude(e.latLng[0])
@@ -285,20 +304,38 @@ const UserDashboardHostelEdit = () => {
         setHostel({...hostel, rooms: afterDeletion})
     }
 
+    const submitEditInformation = (e) => {
+        e.preventDefault()
+        const updateInformation = {
+            name: hostel.name,
+            description: hostel.description,
+            amenities: hostel.amenities,
+            rooms: hostel.rooms,
+            "location.coordinates": [latitude, longitude]
+        }
+        axios.put(`${proxy}/api/hostels/update/${hostelId}`, updateInformation, { withCredentials: true})
+            .then(res => {
+                dispatch({type: 'NOTIFICATION_START', payload: {display:true, message: "Hostel Information Updated", status: "success"}})
+            })
+            .catch(err => {
+                dispatch({type: 'NOTIFICATION_START', payload: {display:true, message: "Hostel Information Update Failed", status: "error"}})
+            })
+    }
+
   return (
     <Container>
         <Form>
             <Row>
-                <LabelInput>
+                {loading ? "loading please wait" :<LabelInput>
                     <Label>Hostel Name</Label>
-                    <Input type="text" placeholder="Hostel Name" />
-                </LabelInput>
+                    <Input type="text" placeholder="Hostel Name" value={hostel.name} onChange={(e) => setHostel({...hostel, name: e.target.value})}/>
+                </LabelInput>}
             </Row>
             <Row>
-                <LabelInput>
+                {loading? "loading please wait" :<LabelInput>
                     <Label>Hostel Description</Label>
-                    <Description type="text" placeholder="Hostel Address" row="20" column="20"/>
-                </LabelInput>
+                    <Description type="text" placeholder="Hostel Address" row="20" column="20" value={hostel.description} onChange={ (e) => setHostel({...hostel, description: e.target.value})}/>
+                </LabelInput>}
             </Row>
 
             <Row>
@@ -416,6 +453,10 @@ const UserDashboardHostelEdit = () => {
                     </RoomsContainer>}
                     </AvailableRooms>
                 </LabelInput>}
+            </Row>
+
+            <Row>
+                <SubmitButton onClick={ submitEditInformation }>Submit Information</SubmitButton>
             </Row>
         </Form>
         

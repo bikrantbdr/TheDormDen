@@ -30,6 +30,7 @@
     "recharts": "^2.4.3",
     "styled-components": "^5.3.6",
     "universal-cookie": "^4.0.4",
+    "uuid": "^9.0.0",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -47,7 +48,7 @@
   },
   "browserslist": {
     "production": [
-      ">0.2%",  
+      ">0.2%",
       "not dead",
       "not op_mini all"
     ],
@@ -57,7 +58,6 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:5000/api",
   "reactSnap": {
     "inlineCss": true
   }

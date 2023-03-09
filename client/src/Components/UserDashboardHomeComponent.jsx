@@ -101,7 +101,7 @@ const UserDashboardHomeComponent = () => {
         setError(false)
         setUser([])
         setLoading(true)
-        const response = await axios.get(`${baseURL}/users/${user_id}`)
+        const response = await axios.get(`${baseURL}/api/users/${user_id}`)
         setUser(response.data)
         Autofillhandle(response.data)
       } catch (error) {
@@ -140,7 +140,7 @@ const UserDashboardHomeComponent = () => {
       typeof_user:"student",
       address:address
     }
-    await axios.put(`${baseURL}/users/update/${user_id}`,user,{withCredentials:true} )
+    await axios.put(`${baseURL}/api/users/update/${user_id}`,user,{withCredentials:true} )
     .then(res => {
         // console.log(res);
     })

@@ -13,8 +13,8 @@ const LoginPage = () => {
   return (
     <>
     <Helmet>
-        <title>My Title</title>
-        <meta name="description" content="Helmet application" />
+        <title>Dormden | Login</title>
+        <meta name="description" content="Login to dormden application" />
     </Helmet>
       <NotificationBar />
       <NavAndSidebar />

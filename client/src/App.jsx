@@ -60,7 +60,6 @@ const App = () => {
       <Route path="/forgotpassword/success" element={<ForgotPasswordSentSuccess/>} />
       <Route path="/newpassword/:tokenId" element={<SetNewPassword />} />
       <Route path="/register/user" element={<UserRegistrationPage/>} />
-      <Route path="/register/hostel" element={<HostelRegistrationPage/>} />
       <Route path="/admin" element={<AdminProtectedRoute><AdminDashboardPage/></AdminProtectedRoute>} >
         <Route path="userverification" element={<UserVerificationDashboard />} />
         <Route path="hostelverification" element={<HostelVerificationDashboard />} />
@@ -74,6 +73,7 @@ const App = () => {
         <Route path="hostels" element={<UserDashboardHostelsComponent/>} />
         <Route path="hostels/:id" element={<UserDashboardHostelEdit />} />
         <Route path='reviews' element={<UserDashBoardComment/>} />
+        <Route path="register/hostel" element={<HostelRegistrationPage/>} />
       </Route>
     </Routes>
   )

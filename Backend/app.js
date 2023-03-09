@@ -19,6 +19,7 @@ mongoose.connect(config.MONGODB_URI)
 })
 
 app.use(cors({credentials: true, origin: 'https://dormden.me'}));
+// app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 app.use(express.json({limit: '25mb'}));
 app.use(cookie_parser());
 app.use(middleware.requestLogger);
