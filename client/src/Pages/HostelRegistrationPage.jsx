@@ -194,11 +194,12 @@ const HostelRegistrationPage = () => {
             images: hostelGallery
         }
         const response = await axios.post(`${baseUrl}/api/hostels/register`, data, {withCredentials: true })
-        if(response.status === 200){
+        if(response.statusText === "Created"){
             navigate('/')
         }
         else {
             alert('Something went wrong')
+            
         }
     }
   return (
