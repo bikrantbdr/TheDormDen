@@ -1,5 +1,5 @@
 import React from 'react';
-import { hydrate, render } from "react-dom";
+import ReactDOM from 'react-dom';
 import App from './App';
 import './index.css';
 import {BrowserRouter} from 'react-router-dom';
@@ -19,10 +19,5 @@ const APP =(
     </AuthContextProvider>
 )
 
-const root = document.getElementById("root");
-
-if (root.hasChildNodes()) {
-    hydrate(APP, root);
-} else {
-    render(APP, root);
-}
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(APP);
