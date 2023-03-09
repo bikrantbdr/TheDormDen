@@ -106,22 +106,22 @@ const FeaturesWrapper = styled.div`
 `
 
 const Minus = styled.button`
-    color: #000;
+    color: #D179FF;
     cursor: pointer;
 
     &:hover {
-        color: #999;
+        color: #A761CC;
     }
 `
 
 const Number = styled.span``
 
 const Plus = styled.button`
-    color: #000;
+    color: #D179FF;
     cursor: pointer;
 
     &:hover {
-        color: #999;
+        color: #A761CC;
     }
 `
 

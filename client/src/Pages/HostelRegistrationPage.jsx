@@ -155,6 +155,12 @@ const Button = styled.button`
     color: #fff;
     font-size: 1rem;
     font-weight: 600;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #D179FF;
+        opacity: 0.8;
+    }
 `
 const MapContainer = styled.div`
     width: 100%;

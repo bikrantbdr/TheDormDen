@@ -23,7 +23,7 @@ router.get("/checkadmin", verifyAdmin, (req, res) => {
 });
 
 router.route('/').get(get_users);
-router.route('/verify/:id').put(verify_user);
+router.route('/verify/:id').put (verify_user);
 router.route('/unverified').get(get_unverified_users);
 router.route('/:id').get(get_user);
 router.route('/register').post(register_user);
