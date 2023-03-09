@@ -12,9 +12,9 @@ const Container = styled.div`
     height: 85vh;
     width: 80vw;
     margin: 0rem auto;
-    background-color: #F8F8F8;
-    border-radius: 18px;
-    border: 1px solid #382B2F;
+    /* background-color: #F8F8F8; */
+    /* border-radius: 18px; */
+    /* border: 1px solid #382B2F; */
 `
 const LabelInput = styled.div`
   display: flex;

@@ -21,9 +21,9 @@ const Container = styled.div`
     height: 85vh;
     width: 80vw;
     margin: 0rem auto;
-    background-color: #F8F8F8;
+    /* background-color: #F8F8F8;
     border-radius: 18px;
-    border: 1px solid #382B2F;
+    border: 1px solid #382B2F; */
 
     @media (max-width: 768px) {
         width: 100%;
@@ -130,7 +130,7 @@ const Images = styled.div`
     margin: 0.5rem 0;
     width: 90%;
     height:30%;
-    background-color: #fff;
+    background-color: #d2d2d2a1;
 `
 const ImageContainer = styled.div`
     display: flex;
