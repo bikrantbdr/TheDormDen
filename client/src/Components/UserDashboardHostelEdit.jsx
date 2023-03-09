@@ -133,27 +133,37 @@ const AvailableRooms = styled.div`
 
 const RoomsContainer = styled.div`
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 8px;
     margin-bottom: 16px;
+
+    @media (max-width: 768px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
 `
 
 const Room = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    padding: 12px;
+    justify-content: space-evenly;
+    gap: 9px;
+    padding: 8px;
     border: 1.5px solid #eaedec;
     border-radius: 4px;
+
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.1), 0 2px 3px rgba(0,0,0,0.1);
 `
 
 const Heading = styled.div`
-    &>h1 {
+   &>h1 {
         font-size: 1.2rem;
+        padding: 0 0 5px 0;
+        border-bottom: 1.5px solid #eaedec;
     }
 
     &>p {
         font-size: 0.8rem;
+        padding: 5px 0 0 0 ;
         color: #b7bac6;
     }
 `
@@ -372,17 +382,17 @@ const UserDashboardHostelEdit = () => {
                     <Label>Available Rooms<button onClick={ (e) => {e.preventDefault(); setOpenRoomModal(true)} }>Add new rooms</button></Label>
                     <AvailableRooms>
                     
-                    <h2>{openOneSeaterOption ? <AiFillMinusSquare onClick={ () => setOpenOneSeaterOption(!openOneSeaterOption)} size={20}/> : <AiFillPlusSquare onClick={ () => setOpenOneSeaterOption(!openOneSeaterOption)}  size={20}/>}One Seater Rooms</h2>
+                    <h2><div>{openOneSeaterOption ? <AiFillMinusSquare onClick={ () => setOpenOneSeaterOption(!openOneSeaterOption)} size={20}  color={"#A761CC"}/> : <AiFillPlusSquare onClick={ () => setOpenOneSeaterOption(!openOneSeaterOption)}  size={20} color={"#D179FF"}/>}</div>One Seater Rooms</h2>
                     {openOneSeaterOption && <RoomsContainer>
                         {hostel.rooms.filter(room => room.room_type === 'one_seater').map(room => {
                             return (<Room key={room.id}>
                                 <Heading>
                                     <h1>Room No. {room.room_number}</h1>
-                                    <p>{room.balcony ? 'balcony • ' : ''} {room.attached_bathroom ? 'attached bathroom • ' : ''} {room.direct_sunlight ? 'direct sunlight • ' : ''}</p>
+                                    <p>{room.balcony ? 'Balcony ' : ''} {room.attached_bathroom ? '• Attached bathroom ' : ''} {room.direct_sunlight ? ' • Direct sunlight' : ''}</p>
                                 </Heading>
                                 <Options>
-                                    <p><small>available seats </small>( {room.available_seats || 0} )</p>
-                                    <p><small>price </small>Rs. {room.price}</p>
+                                    <p><small>Available seats </small>( {room.available_seats || 0} )</p>
+                                    <p><small>Price </small>Rs. {room.price}</p>
                                 </Options>
                                 <div style={{display: "flex", gap: "10px"}}>
                                     <EditButton onClick={ (e) => editRoomDetails(e, room.id) }>Edit</EditButton>
@@ -392,17 +402,17 @@ const UserDashboardHostelEdit = () => {
                         })}
                     </RoomsContainer>}
 
-                    <h2>{openTwoSeaterOption ? <AiFillMinusSquare onClick={ () => setOpenTwoSeaterOption(!openTwoSeaterOption)}  size={20}/> : <AiFillPlusSquare onClick={ () => setOpenTwoSeaterOption(!openTwoSeaterOption)} size={20}/>} Two Seater Rooms</h2>
+                    <h2><div>{openTwoSeaterOption ? <AiFillMinusSquare onClick={ () => setOpenTwoSeaterOption(!openTwoSeaterOption)}  size={20}  color={"#A761CC"}/> : <AiFillPlusSquare onClick={ () => setOpenTwoSeaterOption(!openTwoSeaterOption)} size={20} color={"#D179FF"}/>}</div> Two Seater Rooms</h2>
                     {openTwoSeaterOption && <RoomsContainer>
                         {hostel.rooms.filter(room => room.room_type === 'two_seater').map(room => {
                             return (<Room key={room.id}>
                                 <Heading>
                                     <h1>Room No. {room.room_number}</h1>
-                                    <p>{room.balcony ? 'balcony • ' : ''} {room.attached_bathroom ? 'attached bathroom • ' : ''} {room.direct_sunlight ? 'direct sunlight • ' : ''}</p>
+                                    <p>{room.balcony ? 'Balcony ' : ''} {room.attached_bathroom ? '• Attached bathroom ' : ''} {room.direct_sunlight ? ' • Direct sunlight' : ''}</p>
                                 </Heading>
                                 <Options>
-                                    <p><small>available seats </small>( {room.available_seats || 0} )</p>
-                                    <p><small>price </small>Rs. {room.price}</p>
+                                    <p><small>Available seats </small>( {room.available_seats || 0} )</p>
+                                    <p><small>Price </small>Rs. {room.price}</p>
                                 </Options>
                                 <div style={{display: "flex", gap: "10px"}}>
                                     <EditButton onClick={ (e) => editRoomDetails(e, room.id) }>Edit</EditButton>
@@ -412,17 +422,17 @@ const UserDashboardHostelEdit = () => {
                         })}
                     </RoomsContainer>}
         
-                    <h2>{openThreeSeaterOption ? <AiFillMinusSquare onClick={ () => setOpenThreeSeaterOption(!openThreeSeaterOption)}  size={20}/> : <AiFillPlusSquare onClick={ () => setOpenThreeSeaterOption(!openThreeSeaterOption)} size={20}/>} Three Seater Rooms</h2>
+                    <h2><div>{openThreeSeaterOption ? <AiFillMinusSquare onClick={ () => setOpenThreeSeaterOption(!openThreeSeaterOption)}  size={20}  color={"#A761CC"}/> : <AiFillPlusSquare onClick={ () => setOpenThreeSeaterOption(!openThreeSeaterOption)} size={20} color={"#D179FF"}/>}</div> Three Seater Rooms</h2>
                     {openThreeSeaterOption && <RoomsContainer>
                         {hostel.rooms.filter(room => room.room_type === 'three_seater').map(room => {
                             return (<Room key={room.id}>
                                 <Heading>
                                     <h1>Room No. {room.room_number}</h1>
-                                    <p>{room.balcony ? 'balcony • ' : ''} {room.attached_bathroom ? 'attached bathroom • ' : ''} {room.direct_sunlight ? 'direct sunlight • ' : ''}</p>
+                                    <p>{room.balcony ? 'Balcony ' : ''} {room.attached_bathroom ? '• Attached bathroom ' : ''} {room.direct_sunlight ? ' • Direct sunlight' : ''}</p>
                                 </Heading>
                                 <Options>
-                                    <p><small>available seats </small>( {room.available_seats || 0} )</p>
-                                    <p><small>price </small>Rs. {room.price}</p>
+                                    <p><small>Available seats </small>( {room.available_seats || 0} )</p>
+                                    <p><small>Price </small>Rs. {room.price}</p>
                                 </Options>
                                 <div style={{display: "flex", gap: "10px"}}>
                                     <EditButton onClick={ (e) => editRoomDetails(e, room.id) }>Edit</EditButton>
@@ -432,17 +442,17 @@ const UserDashboardHostelEdit = () => {
                         })}
                     </RoomsContainer>}
 
-                    <h2>{openFourSeaterOption ? <AiFillMinusSquare onClick={ () => setOpenFourSeaterOption(!openFourSeaterOption)}  size={20}/> : <AiFillPlusSquare onClick={ () => setOpenFourSeaterOption(!openFourSeaterOption)} size={20}/>} Four Seater Rooms</h2>
+                    <h2><div>{openFourSeaterOption ? <AiFillMinusSquare onClick={ () => setOpenFourSeaterOption(!openFourSeaterOption)}  size={20}  color={"#A761CC"}/> : <AiFillPlusSquare onClick={ () => setOpenFourSeaterOption(!openFourSeaterOption)} size={20} color={"#D179FF"}/>}</div> Four Seater Rooms</h2>
                     {openFourSeaterOption && <RoomsContainer>
                         {hostel.rooms.filter(room => room.room_type === 'four_seater').map(room => {
                             return (<Room key={room._id}>
                                 <Heading>
                                     <h1>Room No. {room.room_number}</h1>
-                                    <p>{room.balcony ? 'balcony • ' : ''} {room.attached_bathroom ? 'attached bathroom • ' : ''} {room.direct_sunlight ? 'direct sunlight • ' : ''}</p>
+                                    <p>{room.balcony ? 'Balcony ' : ''} {room.attached_bathroom ? '• Attached bathroom ' : ''} {room.direct_sunlight ? ' • Direct sunlight' : ''}</p>
                                 </Heading>
                                 <Options>
-                                    <p><small>available seats </small>( {room.available_seats || 0} )</p>
-                                    <p><small>price </small>Rs. {room.price}</p>
+                                    <p><small>Available seats </small>( {room.available_seats || 0} )</p>
+                                    <p><small>Price </small>Rs. {room.price}</p>
                                 </Options>
                                 <div style={{display: "flex", gap: "10px"}}>
                                     <EditButton onClick={ (e) => editRoomDetails(e, room.id) }>Edit</EditButton>

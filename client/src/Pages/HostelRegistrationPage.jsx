@@ -124,7 +124,8 @@ const Images = styled.div`
     /* justify-content: center; */
     padding-left: 10px;
     align-items: center;
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
+    overflow-x: scroll;
     gap: 0.5rem;
     margin: 0.5rem 0;
     width: 90%;

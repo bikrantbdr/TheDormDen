@@ -12,6 +12,11 @@ const Wrapper = styled.div`
     /* align-items: center; */
     padding-top: 8rem;
     padding-left: 2rem;
+
+    @media (max-width: 768px) {
+        padding-top: 1rem;
+        padding-left: 0;
+    }
     
 `
 
@@ -125,10 +130,11 @@ const CustomerReview = ({overallRating,hostelInfo}) => {
                        { index + 1 } star
                         </IndividualRatingText>
                        <BarContainer>
-                            <Bar style={{width: `${(item/totalReviews)*100}%`}}/>
+                            <Bar style={{width: `${totalReviews==0?0:(item/totalReviews)*100}%`}}/>
                        </BarContainer>
                         <IndividualRatingText>
-                          {Math.round(item/totalReviews * 100)}%
+
+                          {totalReviews==0?0:(item/totalReviews)*100}%
                         </IndividualRatingText>
                     </IndividualRating>
                 )

@@ -66,12 +66,12 @@ const NumberWrapper = styled.div`
     align-items: center;
     gap: 30px;
     background-color: #eee;
-    font-size: 34px;
+    font-size: 1rem;
     padding: 10px;
     border-radius: 4px;
 
     &>button {
-        font-size: 34px;
+        font-size: 1rem;
         padding: none;
         border: none;
     }
@@ -81,7 +81,7 @@ const NumberWrapper = styled.div`
         outline: none;
         border: none;
         background-color: transparent;
-        font-size: 34px;
+        font-size: 1rem;
         font-weight: bold;
     }
 
@@ -90,7 +90,7 @@ const NumberWrapper = styled.div`
         outline: none;
         border: none;
         background-color: transparent;
-        font-size: 34px;
+        font-size: 1rem;
         font-weight: bold;
     }
 `
@@ -98,7 +98,7 @@ const NumberWrapper = styled.div`
 const FeaturesWrapper = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 1rem;
     background-color: #eee;
     font-size: 20px;
     padding: 10px;
@@ -108,6 +108,7 @@ const FeaturesWrapper = styled.div`
 const Minus = styled.button`
     color: #D179FF;
     cursor: pointer;
+    height: 1rem;
 
     &:hover {
         color: #A761CC;
@@ -116,9 +117,15 @@ const Minus = styled.button`
 
 const Number = styled.span``
 
+const Text = styled.span`
+    font-size: 1rem;
+    text-transform: capitalize;
+`
+
 const Plus = styled.button`
     color: #D179FF;
     cursor: pointer;
+    height: 1rem;
 
     &:hover {
         color: #A761CC;
@@ -133,7 +140,7 @@ const SubmitButton = styled.button`
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 34px;
+    font-size: 1rem;
     font-weight: bold;
     margin: 4px 2px;
     cursor: pointer;
@@ -243,7 +250,9 @@ const UserDashboardOpenModalNewRoom = ({setOpenModal, hostel, setHostel, roomId}
                 <FeaturesWrapper>
                     {features.map((feature, index) => (
                         <Checkbox state={feature.available} setState={feature.available} onChange={ () => changeFeatureValue(feature) } key={index} color="success" >
+                            <Text>
                             {feature.value}
+                            </Text>
                         </Checkbox>
                         ))}
                 </FeaturesWrapper>

@@ -142,7 +142,7 @@ const HostelDetails = ({ hostelInfo }) => {
   return (
     <Wrapper>
         <h1>{hostelInfo.name}</h1>
-        <h2>{hostelAddress}</h2>
+        {/* <h2>{hostelAddress}</h2> */}
         <p>{hostelInfo.amenities[0]} • {hostelInfo.amenities[1]} • {hostelInfo.amenities[2]} • {hostelInfo.amenities[3]}</p>
         <TabsWrapper>
             <Tabs>
