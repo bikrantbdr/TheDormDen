@@ -159,8 +159,8 @@ hostelSchema.methods.compute_rating = function(overall_rating) {
 
 // after deleting review from hostel compute rating
 hostelSchema.methods.compute_rating_after_delete = function(overall_rating) {
-    this.hostel_rating = (this.hostel_rating * (this.reviews.length+1) - overall_rating) / (this.reviews.length);
-    this.number_of_reviews = this.reviews.length;
+    this.hostel_rating = (this.hostel_rating * (this.reviews.length) - overall_rating) / (this.reviews.length-1);
+    this.number_of_reviews = this.reviews.length-1;
 }
 
 hostelSchema.methods.compute_ranking = async function() {
