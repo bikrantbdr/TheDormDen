@@ -9,6 +9,7 @@ import { NotificationContext } from './../context/NotificationContext';
 
 import { Wrapper, ViewButton, ActionButtons, VerifyButton, DeleteButton } from './UserVerificationDashboard';
 import ReviewComponentModal from './ReviewComponentModal';
+import { proxy } from '../assets/proxy';
 
 const VerifiedButton = styled.button`
     padding: 5px;
@@ -29,7 +30,7 @@ const UnverifiedButton = styled.button`
 const ReviewVerification = () => {
     const [showModal, setShowModal] = useState(false);
     const [rows, setRows] = useState([])
-    const { data, loading, error, reFetchData } = useFetch(`http://localhost:5000/api/reviews/flagged`)
+    const { data, loading, error, reFetchData } = useFetch(`${proxy}/api/reviews/flagged`)
 
     useEffect(() => {
         setRows(data)
@@ -39,7 +40,7 @@ const ReviewVerification = () => {
     const verifyReview = async (reviewId) => {
         try {
             if (!window.confirm("Are you sure you want to verify this review?")) return
-            await axios.put(`http://localhost:5000/api/reviews/verify/${reviewId}`, {withCredentials: true})
+            await axios.put(`${proxy}/api/reviews/verify/${reviewId}`, {withCredentials: true})
             notificationDispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "Review successfully Verified", status: "success" } })
             reFetchData()
         } catch (error) {
@@ -50,7 +51,7 @@ const ReviewVerification = () => {
     const deleteReview = async (reviewId) => {
         try {
             if (!window.confirm("Are you sure you want to delete this review?")) return
-            await axios.delete(`http://localhost:5000/api/reviews/remove/${reviewId}/gib`, {withCredentials: true})
+            await axios.delete(`${proxy}/api/reviews/remove/${reviewId}/gib`, {withCredentials: true})
             notificationDispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "Review successfully deleted", status: "success" } })
             reFetchData()
         } catch (error) {

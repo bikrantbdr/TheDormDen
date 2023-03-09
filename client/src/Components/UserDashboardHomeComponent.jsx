@@ -5,6 +5,7 @@ import ProfileDropzone from './ProfileDropzone'
 import styled from 'styled-components'
 import axios from 'axios'
 import Avatar from '../assets/avatar.png'
+import { proxy } from '../assets/proxy'
 
 const Container = styled.div`
   display: flex;
@@ -91,7 +92,7 @@ const UserDashboardHomeComponent = () => {
   const [address, setAddress] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
-  const baseURL = 'http://localhost:5000/api'
+  const baseURL = proxy
   const {user_id} = useContext(AuthContext)
 
   useEffect(() => {

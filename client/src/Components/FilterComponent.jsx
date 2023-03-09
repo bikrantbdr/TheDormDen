@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import axios from 'axios';
 import MultiRangeSlider from "react-js-multi-range-sliders";
 import { useLocation } from 'react-router-dom';
+import { proxy } from '../assets/proxy';
 
 const SearchTitle = styled.h1`
     font-size: 1.2rem;
@@ -253,7 +254,7 @@ function FilterComponent({ setUrl, setOpenModal, openModal }) {
       };
 
     const handleSearch = () => {
-        const url = `http://localhost:5000/api/hostels?name=${name}&room_types=${ options.map((option) => option+"_seater" ) }&longitude=${destination.longitude}&latitude=${destination.latitude}&price_lower=${price.min || 0}&price_upper=${price.max || 20000}`
+        const url = `${proxy}/api/hostels?name=${name}&room_types=${ options.map((option) => option+"_seater" ) }&longitude=${destination.longitude}&latitude=${destination.latitude}&price_lower=${price.min || 0}&price_upper=${price.max || 20000}`
         setUrl(url)
     }
 
@@ -285,11 +286,11 @@ function FilterComponent({ setUrl, setOpenModal, openModal }) {
             <ListItem>
                 <label>Pricing Range</label>
                 <ListPricing>
-                    {/* <MultiRangeSlider
+                    <MultiRangeSlider
                         min={0}
                         max={20000}
                         onChange={({ min, max }) => setPrice({ min, max })}
-                    /> */}
+                    />
                 </ListPricing>
             </ListItem>
 

@@ -10,6 +10,7 @@ import { NotificationContext } from './../context/NotificationContext';
 import { Wrapper, ViewButton, ActionButtons, VerifyButton, DeleteButton } from './UserVerificationDashboard';
 import ReviewComponentModal from './ReviewComponentModal';
 import { AuthContext } from '../context/AuthContext';
+import { proxy } from '../assets/proxy';
 
 const VerifiedButton = styled.button`
     padding: 5px;
@@ -31,7 +32,7 @@ const UserDashBoardComment = () => {
     const [showModal, setShowModal] = useState(false);
     const [rows, setRows] = useState([])
     const { user_id } = useContext(AuthContext);
-    const { data, loading, error, reFetchData } = useFetch(`http://localhost:5000/api/reviews/user/${user_id}`)
+    const { data, loading, error, reFetchData } = useFetch(`${proxy}/api/reviews/user/${user_id}`)
 
     useEffect(() => {
         setRows(data)
@@ -43,7 +44,7 @@ const UserDashBoardComment = () => {
 
     const deleteReview = async (reviewId) => {
         try {
-            await axios.delete(`http://localhost:5000/api/reviews/remove/${reviewId}/${user_id}`, {withCredentials: true})
+            await axios.delete(`${proxy}/api/reviews/remove/${reviewId}/${user_id}`, {withCredentials: true})
             notificationDispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "Review successfully deleted", status: "success" } })
             reFetchData()
         } catch (error) {

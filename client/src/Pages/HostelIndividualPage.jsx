@@ -10,6 +10,7 @@ import { useFetch } from './../hooks/useFetch';
 import { useParams } from 'react-router-dom'
 import {Helmet} from "react-helmet";
 import NavAndSidebar from '../Components/NavAndSidebar'
+import { proxy } from '../assets/proxy';
 
 const DetailContainer = styled.div`
   display: flex;
@@ -34,7 +35,7 @@ const Wrapper = styled.div`
 
 const HostelIndividualPage = () => {
     const hostelId = useParams().id
-    const { data, loading, error } = useFetch(`http://localhost:5000/api/hostels/${hostelId}`)
+    const { data, loading, error } = useFetch(`${proxy}/api/hostels/${hostelId}`)
 
     const [images,setImages] = useState([background,background,background,background,background])
     const [longitude,setLongitude] = useState(85.32046340409931)

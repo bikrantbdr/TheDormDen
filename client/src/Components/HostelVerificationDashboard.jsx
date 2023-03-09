@@ -9,10 +9,11 @@ import { NotificationContext } from './../context/NotificationContext';
 
 import DocumentImageModal from './DocumentImageModal';
 import { Wrapper, ViewButton, ActionButtons, VerifyButton, DeleteButton } from './UserVerificationDashboard';
+import { proxy } from '../assets/proxy';
 
 const HostelVerificationDashboard = () => {
     const [rows, setRows] = useState([])
-    const { data, loading, error, reFetchData } = useFetch(`http://localhost:5000/api/hostels/unverified`)
+    const { data, loading, error, reFetchData } = useFetch(`${proxy}/api/hostels/unverified`)
 
     useEffect(() => {
         setRows(data)
@@ -32,7 +33,7 @@ const HostelVerificationDashboard = () => {
         }
         try {
           if (!window.confirm("Are you sure you want to verify this hostel?")) return
-            const response = await axios.put(`http://localhost:5000/api/hostels/update/${hostelId}`, data, { withCredentials: true })
+            const response = await axios.put(`${proxy}/api/hostels/update/${hostelId}`, data, { withCredentials: true })
             notificationDispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "Hostel successfully Verified", status: "success" } })
             reFetchData()
         } catch (error) {
@@ -43,7 +44,7 @@ const HostelVerificationDashboard = () => {
     const deleteHostel = async (hostelId) => {
         try {
             if (!window.confirm("Are you sure you want to delete this hostel?")) return
-            const response = await axios.delete(`http://localhost:5000/api/hostels/delete/${hostelId}`, { withCredentials: true })
+            const response = await axios.delete(`${proxy}/api/hostels/delete/${hostelId}`, { withCredentials: true })
             notificationDispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "Hostel successfully deleted", status: "success" } })
             reFetchData()
         } catch (error) {

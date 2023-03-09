@@ -2,6 +2,7 @@ import {useState,useEffect, useContext} from 'react'
 import styled from 'styled-components'
 import axios from 'axios'
 import { AuthContext } from '../context/AuthContext'
+import { proxy } from '../assets/proxy'
 
 const Container = styled.div`
     display: flex;
@@ -80,7 +81,7 @@ const UserDashboardPasswordComponent = () => {
     const [confirmpassword, setConfirmPassword] = useState('')
     const [error, setError] = useState('')
     const [confirm, setConfirm] = useState(false)
-    const baseURL = 'http://localhost:5000'
+    const baseURL = proxy
     const { user_id } = useContext(AuthContext)
 
     const submitHandler = (e) => {

@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { useFetch } from './../hooks/useFetch';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { proxy } from '../assets/proxy';
 
 const Container = styled.div`
     width: 100%;
@@ -59,7 +60,7 @@ const Button = styled.button`
 `
 
 function HighestRatingHostels() {
-    const { data, loading, error } = useFetch("http://localhost:5000/api/hostels/all")
+    const { data, loading, error } = useFetch(`${proxy}/api/hostels/all`)
 
     const images = [
         "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
@@ -79,7 +80,7 @@ function HighestRatingHostels() {
         { loading ? "Loading please wait" : 
             (images.map((hostel, index) => (
                     <PropertyItem key={index} onClick={ () => navigateTo(data[index].id) }>
-                        <PropertyImage src={ images[index] } />
+                        <PropertyImage src={ data[index]?.images[1] } />
                         <PropertyName>{ data[index].name }</PropertyName>
                         <PropertyLocation>Thapathali, Kathmandu</PropertyLocation>
                         <PropertyPrice>Rs. { data[index].rooms[0]?.price || 10000 }</PropertyPrice>

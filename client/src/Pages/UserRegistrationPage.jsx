@@ -8,6 +8,7 @@ import DocumentDropzone from '../Components/DocumentDropzone'
 import ProfileDropzone from '../Components/ProfileDropzone'
 import NavAndSidebar from '../Components/NavAndSidebar'
 import {Helmet} from "react-helmet";
+import { proxy } from '../assets/proxy'
 
 
 const Container = styled.div`
@@ -123,7 +124,7 @@ const UserRegistrationPage = () => {
   const [phoneNumber, setPhoneNumber] = useState("")
   const [profilePic, setProfilePic] = useState(`${Avatar}`)
   const [document, setDocument] = useState("")
-  const baseUrl = 'http://localhost:5000'
+  const baseUrl = proxy
 
 
   useEffect(() => {

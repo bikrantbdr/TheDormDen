@@ -7,7 +7,7 @@ import axios from 'axios'
 import { DataGrid } from '@mui/x-data-grid';
 import { Link } from "react-router-dom";
 import {AiOutlineDelete as DeleteOutline } from "react-icons/ai";
-
+import { proxy } from '../assets/proxy'
 
 const Wrapper = styled.div`
     display: flex;
@@ -51,7 +51,7 @@ const UserDashboardHostelsComponent = () => {
 
     useEffect(() => {
         console.log(user_id)
-        axios.get(`http://localhost:5000/api/users/${user_id}`)
+        axios.get(`${proxy}/api/users/${user_id}`)
         .then(res => {
             setHostels(res.data.hostel_listings)
             console.log(res.data.hostel_listings)

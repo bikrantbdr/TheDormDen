@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import {FaStar, FaStarHalfAlt} from 'react-icons/fa'
 import {AiOutlineStar} from 'react-icons/ai'
 import { useFetch } from '../hooks/useFetch'
+import { proxy } from '../assets/proxy'
  
 const Wrapper = styled.div`
     flex: 1.15;
@@ -72,7 +73,7 @@ const Bar = styled.div`
 `
 
 const CustomerReview = ({overallRating,hostelInfo}) => {
-    const { data, loading, error, reFetchData } = useFetch(`http://localhost:5000/api/reviews/${hostelInfo.id}`);
+    const { data, loading, error, reFetchData } = useFetch(`${proxy}/api/reviews/${hostelInfo.id}`);
     console.log(data)
 
     const totalReviews = data.length;

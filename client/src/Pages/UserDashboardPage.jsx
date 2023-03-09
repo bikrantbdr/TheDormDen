@@ -7,6 +7,7 @@ import axios from 'axios'
 import { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../context/AuthContext'
 import { Helmet } from 'react-helmet'
+import { proxy } from '../assets/proxy'
 
 const Wrapper = styled.div`
     display: flex;
@@ -23,7 +24,7 @@ const UserDashboardPage = () => {
     // console.log(user_id)
     useEffect(() => {
         console.log(user_id)
-        axios.get(`http://localhost:5000/api/users/${user_id}`)
+        axios.get(`${proxy}/api/users/${user_id}`)
         .then(res => {
             setUser(res.data)
             console.log(res.data)

@@ -14,6 +14,7 @@ import {AiFillMinusSquare, AiFillPlusSquare } from 'react-icons/ai'
 import { useFetch } from './../hooks/useFetch';
 import UserDashboardOpenModalEditRoom from './UserDashboardOpenModalEditRoom';
 import UserDashboardOpenModalNewRoom from './UserDashboardOpenModalNewRoom';
+import { proxy } from '../assets/proxy';
 
 const Container = styled.div`
   display: flex;
@@ -250,7 +251,7 @@ const UserDashboardHostelEdit = () => {
 
   useEffect(() => {
     setLoading(true)
-    axios.get("http://localhost:5000/api/hostels/63dc7276e547623e0cff4a8c")
+    axios.get(`${proxy}/api/hostels/63dc7276e547623e0cff4a8c`)
         .then(res => {
             setHostel(res.data)
             localAmenities.forEach((amenity) => {

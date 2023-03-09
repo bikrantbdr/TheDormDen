@@ -10,6 +10,7 @@ import { IoArrowBackOutline } from 'react-icons/io5'
 import InputComponent from '../Components/InputComponent'
 import NotificationBar from '../Components/NotificationBar'
 import { Helmet } from "react-helmet";
+import { proxy } from '../assets/proxy'
 
 export const BackButton = styled.p`
     font-weight: bold;
@@ -54,7 +55,7 @@ const ForgotPasswordPage = () => {
                 const data = {
                     email: values.email
                 }
-                const response = await axios.put("http://localhost:5000/api/users/update/password/forgot", data)
+                const response = await axios.put(`${proxy}/api/users/update/password/forgot`, data)
                 dispatch({ type: "NOTIFICATION_START", payload: { message: "Reset token sent successfully!", status: "success" } })
                 navigate("/forgotpassword/success", { state: { email: values.email } })
             }

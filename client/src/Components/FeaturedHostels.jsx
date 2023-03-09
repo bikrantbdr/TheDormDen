@@ -4,6 +4,7 @@ import { useFetch } from './../hooks/useFetch';
 import {AiOutlineStar} from 'react-icons/ai'
 import axios from 'axios';
 import { Link } from 'react-router-dom'
+import { proxy } from '../assets/proxy';
 
 const Container = styled.div`
     max-width: 934px;
@@ -87,7 +88,7 @@ const FeaturedRating = styled.div`
 `
 
 function FeaturedHostels() {
-    const { data, loading, error } = useFetch("http://localhost:5000/api/hostels/featured")
+    const { data, loading, error } = useFetch(`${proxy}/api/hostels/featured`)
     const API_KEY = '769f09ef503a44d1bcb4218675c23b0c'
 
     const [street, setStreet] = React.useState([])

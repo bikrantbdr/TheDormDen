@@ -6,6 +6,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import { Link } from "react-router-dom";
 import {AiOutlineDelete as DeleteOutline } from "react-icons/ai";
 import { NotificationContext } from "../context/NotificationContext";
+import { proxy } from "../assets/proxy";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -46,7 +47,7 @@ const AdminDashboardUserComponent = () => {
   const [users, setUsers] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
-  const baseURL = 'http://localhost:5000'
+  const baseURL = proxy
 
   const { dispatch } = useContext(NotificationContext)
 

@@ -10,6 +10,7 @@ import NavAndSidebar from '../Components/NavAndSidebar'
 import HosteldocsDropzone from '../Components/HosteldocsDropzone';
 import ImageDropzone from '../Components/ImageDropzone';
 import {Helmet} from "react-helmet";
+import { proxy } from '../assets/proxy';
 
 
 const Container = styled.div`
@@ -172,7 +173,7 @@ const HostelRegistrationPage = () => {
     const [verified, setVerified] = useState(false)
     const [document, setDocument] = useState(null)
     const [hostelGallery, setHostelGallery] = useState([])
-    const baseUrl = 'http://localhost:5000'
+    const baseUrl = proxy
 
     const navigate = useNavigate();
 

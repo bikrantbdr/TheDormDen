@@ -125,8 +125,8 @@ const SearchMap = ({hostels}) => {
              anchor={[overlayContent.location.coordinates[1], overlayContent.location.coordinates[0]]} 
              offset={[300, 390]}
             >
-                {/* <PropertyImage src={overlayContent.images[0] } /> */}
-                <PropertyImage src="https://res.cloudinary.com/dxhwnryud/image/upload/v1675146838/cld-sample-3.jpg" />
+                <PropertyImage src={overlayContent.images[0] } />
+                {/* <PropertyImage src="https://res.cloudinary.com/dxhwnryud/image/upload/v1675146838/cld-sample-3.jpg" /> */}
                 <PropertyName>{ overlayContent.name }</PropertyName>
                 <PropertyLocation>{displayStreet}</PropertyLocation>
                 <PropertyPrice>Rs. { overlayContent.rooms[0].price }</PropertyPrice>

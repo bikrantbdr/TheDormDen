@@ -17,6 +17,7 @@ import {Switch} from 'pretty-checkbox-react';
 
 import {AiFillCaretDown} from 'react-icons/ai'
 import {Helmet} from "react-helmet";
+import { proxy } from '../assets/proxy';
 
 const Container = styled.div`
     margin-top: 20px;
@@ -116,11 +117,11 @@ function HostelSearchResultPage() {
 
     const [sort, setSort] = useState("popularity")
 
-    const [url, setUrl] = useState(`http://localhost:5000/api/hostels?name=${name}&room_types=${ options === "any" ? "one_seater,two_seater,three_seater,four_seater" : options+"_seater" }&longitude=${destination.longitude || ''}&latitude=${destination.latitude || ''}&sortBy=${sort}`)
+    const [url, setUrl] = useState(`${proxy}/api/hostels?name=${name}&room_types=${ options === "any" ? "one_seater,two_seater,three_seater,four_seater" : options+"_seater" }&longitude=${destination.longitude || ''}&latitude=${destination.latitude || ''}&sortBy=${sort}`)
     const { data, loading, error } = useFetch(url)
 
     useEffect(() => {
-        setUrl(`http://localhost:5000/api/hostels?name=${name}&room_types=${ options === "any" ? "one_seater,two_seater,three_seater,four_seater" : options+"_seater" }&longitude=${destination.longitude || ''}&latitude=${destination.latitude || ''}&sortBy=${sort}`)
+        setUrl(`${proxy}/api/hostels?name=${name}&room_types=${ options === "any" ? "one_seater,two_seater,three_seater,four_seater" : options+"_seater" }&longitude=${destination.longitude || ''}&latitude=${destination.latitude || ''}&sortBy=${sort}`)
     }, [sort])
 
     const handleMap = () => {
