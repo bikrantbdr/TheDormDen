@@ -6,6 +6,7 @@ import AdminDashboardHomeComponent from '../Components/AdminDashboardHomeCompone
 import NavAndSidebar from '../Components/NavAndSidebar'
 import PromptBar from '../Components/PromptBar'
 import NotificationBar from './../Components/NotificationBar';
+import {Helmet} from "react-helmet";
 
 const Wrapper = styled.div`
     display: flex;
@@ -24,6 +25,10 @@ const AdminDashboardPage = () => {
     const location = useLocation()
   return (
     <>
+    <Helmet>
+        <title>Dorm den | Dahbboard</title>
+        <meta name="description" content="Admin dashboard pannel to manage hostels and view analytics" />
+    </Helmet>
     <PromptBar />
     <NotificationBar />
     <NavAndSidebar/>

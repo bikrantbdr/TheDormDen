@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const Hostel = require('../models/hostel');
 const Review = require('../models/review');
+const Analytics = require('../models/analytics');
 const QueryHandler = require('../utils/queryHandler');
 const cloudinary = require("cloudinary");
 
@@ -11,6 +12,7 @@ const cloudinary = require("cloudinary");
 */
 const getToken = (req) => {
     const { token } = req.cookies;
+    console.log("token", token);
     if (token) {
         return token
     }
@@ -59,25 +61,28 @@ exports.register_hostel = async (req, res, next) => {
 
         const documentcloud = await cloudinary.v2.uploader.upload(body.document, {
             folder: "Hosteldocuments",
-            width: 150,
+            width: 1020,
             crop: "scale",
           });
 
         for(let i = 0; i < body.images.length; i++) {
         imagescloud[i] = await cloudinary.v2.uploader.upload(body.images[i], {
             folder: "hostelimages",
-            width: 150,
+            width: 1020,
             crop: "scale",
         })
-        console.log("images in cloud", imagescloud[i]);
+        // console.log("images in cloud", imagescloud[i]);
         }
         for(let i = 0; i < imagescloud.length; i++) {
             imagescloudURL[i] = imagescloud[i].secure_url;
         }
-        console.log("images in cloud URL", imagescloudURL);
+        // console.log("images in cloud URL", imagescloudURL);
+        
 
         const token = getToken(req);
         const decodedToken = jwt.verify(token, process.env.SECRET);
+
+        console.log("decodedToken", decodedToken);
 
         if (!token || !decodedToken.id) {
             return res.status(401).json({ error: 'token missing or invalid' });
@@ -87,9 +92,10 @@ exports.register_hostel = async (req, res, next) => {
 
         const hostel = new Hostel({
             name: body.name,
+            address: body.address,
             location: {
                 type: 'Point',
-                coordinates: [body.longitude, body.latitude]
+                coordinates: [body.latitude, body.longitude]
             },
             description: body.description,
             for_gender: body.for_gender,
@@ -106,6 +112,29 @@ exports.register_hostel = async (req, res, next) => {
         const savedHostel = await hostel.save();
         user.hostel_listings = user.hostel_listings.concat(savedHostel._id);
         await user.save();
+
+        // now update the analytics
+        const analytics = await Analytics.findOne({ 'date.year': new Date().getFullYear() });
+        if (analytics) {
+            const month = new Date().getMonth();
+            analytics.date.month[month].registrations += 1;
+            await analytics.save();
+        } else {
+            const newAnalytics = new Analytics({
+                date: {
+                    year: new Date().getFullYear(),
+                    month: Array.from({ length: 12 }, () => ({
+                        visits: 0,
+                        registrations: 0,
+                        interactions: 0
+                    }))
+                }
+            });
+            const month = new Date().getMonth();
+            newAnalytics.date.month[month].registrations += 1;
+            await newAnalytics.save();
+        }
+
         res.status(201).json(savedHostel);
     } catch (err) {
         next(err)
@@ -177,7 +206,6 @@ exports.post_review = async (req, res, next) => {
             user: user._id,
             hostel: hostel._id
         })
-        console.log(review);
 
         const savedReview = await review.save();
         hostel.reviews = hostel.reviews.concat(savedReview._id);
@@ -222,6 +250,29 @@ exports.update_review = async (req, res, next) => {
                 runValidators: true,
                 useFindAndModify: false
             });
+
+            // update the analytics
+            const analytics = await Analytics.findOne({ 'date.year': new Date().getFullYear() });
+            if (analytics) {
+                const month = new Date().getMonth();
+                analytics.date.month[month].interactions += 1;
+                await analytics.save();
+            } else {
+                const newAnalytics = new Analytics({
+                    date: {
+                        year: new Date().getFullYear(),
+                        month: Array.from({ length: 12 }, () => ({
+                            visits: 0,
+                            registrations: 0,
+                            interactions: 0
+                        }))
+                    }
+                });
+                const month = new Date().getMonth();
+                newAnalytics.date.month[month].interactions += 1;
+                await newAnalytics.save();
+            }
+
             res.status(200).json(savedReview);
         }
     } catch (err) {
@@ -236,7 +287,57 @@ exports.update_review = async (req, res, next) => {
 */
 exports.get_featured_hostels = async (req, res, next) => {
     try {
-        const hostels = await Hostel.find({ featured: true }).limit(3);
+        const hostels = await Hostel.find({ featured: true }).populate('owner').limit(3);
+        res.status(200).json(hostels);
+    } catch (err) {
+        next(err)
+    }
+}
+
+/* 
+    @route UNFEATURE /api/hostels/unfeatured/:id
+    @desc unfeature a hostel
+    @access Admin
+*/
+exports.unfeature_hostel = async (req, res, next) => {
+    try {
+        const hostel = await Hostel.findById(req.params.id);
+        hostel.featured = false;
+        await hostel.save();
+        res.status(200).json(hostel);
+    } catch (err) {
+        next(err)
+    }
+}
+
+/*
+    @route FEATURE /api/hostels/featured/:id
+    @desc feature a hostel
+    @access Admin
+*/
+exports.feature_hostel = async (req, res, next) => {
+    try {
+        const hostel = await Hostel.findById(req.params.id);
+        hostel.featured = true;
+        await hostel.save();
+        res.status(200).json(hostel);
+    } catch (err) {
+        next(err)
+    }
+}
+
+/*
+    @route UNFEATURE ALL /api/hostels/unfeatured
+    @desc unfeature all hostels
+    @access Admin
+*/
+exports.unfeature_all_hostels = async (req, res, next) => {
+    try {
+        const hostels = await Hostel.find({ featured: true });
+        hostels.forEach(async hostel => {
+            hostel.featured = false;
+            await hostel.save();
+        });
         res.status(200).json(hostels);
     } catch (err) {
         next(err)

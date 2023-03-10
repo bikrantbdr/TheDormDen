@@ -8,6 +8,7 @@ import { NotificationContext } from '../context/NotificationContext'
 import { BackButton } from '../Pages/ForgotPasswordPage'
 import InputComponent from '../Components/InputComponent'
 import { IoArrowBackOutline } from 'react-icons/io5'
+import { proxy } from '../assets/proxy'
 
 const SetNewPassword = () => {
     const { tokenId } = useParams()
@@ -54,8 +55,7 @@ const SetNewPassword = () => {
                 const data = {
                     new_password: values.password
                 }
-                console.log(`http://localhost:5000/api/users/update/password/reset/${tokenId}`)
-                const response = await axios.put(`http://localhost:5000/api/users/update/password/reset/${tokenId}`, data)
+                const response = await axios.put(`${proxy}/api/users/update/password/reset/${tokenId}`, data)
                 dispatch({ type: "NOTIFICATION_START", payload: { message: "Password was successfully reset!", status: "success" } })
                 navigate("/login")
             }

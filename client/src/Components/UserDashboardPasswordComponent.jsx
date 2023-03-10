@@ -2,6 +2,7 @@ import {useState,useEffect, useContext} from 'react'
 import styled from 'styled-components'
 import axios from 'axios'
 import { AuthContext } from '../context/AuthContext'
+import { proxy } from '../assets/proxy'
 
 const Container = styled.div`
     display: flex;
@@ -11,9 +12,9 @@ const Container = styled.div`
     height: 85vh;
     width: 80vw;
     margin: 0rem auto;
-    background-color: #F8F8F8;
-    border-radius: 18px;
-    border: 1px solid #382B2F;
+    /* background-color: #F8F8F8; */
+    /* border-radius: 18px; */
+    /* border: 1px solid #382B2F; */
 `
 const LabelInput = styled.div`
   display: flex;
@@ -80,7 +81,7 @@ const UserDashboardPasswordComponent = () => {
     const [confirmpassword, setConfirmPassword] = useState('')
     const [error, setError] = useState('')
     const [confirm, setConfirm] = useState(false)
-    const baseURL = 'http://localhost:5000'
+    const baseURL = proxy
     const { user_id } = useContext(AuthContext)
 
     const submitHandler = (e) => {

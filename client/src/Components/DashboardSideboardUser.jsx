@@ -97,7 +97,7 @@ const DashboardSidebarUser = ({user}) => {
                                 </SidebarItemText>
                             </SidebarItemDiv>
                         </SidebarListItem>
-                        {console.log(user)}
+                        
                         {user.hostel_listings !== null && user.hostel_listings.length > 0 &&
                         <SidebarListItem to="/user/hostels">
                             <SidebarItemDiv >
@@ -108,6 +108,14 @@ const DashboardSidebarUser = ({user}) => {
                             </SidebarItemDiv>
                         </SidebarListItem>
                         }
+                        <SidebarListItem to="/user/register/hostel">
+                            <SidebarItemDiv >
+                                <FaHotel style={iconStyle} />
+                                <SidebarItemText>
+                                Register a Hostel
+                                </SidebarItemText>
+                            </SidebarItemDiv>
+                        </SidebarListItem>
                     </SidebarList>
                 </SidebarMenu>
             </Container>

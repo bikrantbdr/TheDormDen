@@ -7,9 +7,7 @@ import {AuthContextProvider} from "./context/AuthContext";
 import {NotificationContextProvider} from "./context/NotificationContext";
 import {PromptContextProvider} from "./context/PromptContext";
 
-
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
+const APP =(
     <AuthContextProvider>
         <NotificationContextProvider>
             <PromptContextProvider>
@@ -19,4 +17,7 @@ root.render(
             </PromptContextProvider>
         </NotificationContextProvider>
     </AuthContextProvider>
-);
+)
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(APP);

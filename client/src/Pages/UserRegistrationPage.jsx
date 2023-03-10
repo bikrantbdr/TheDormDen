@@ -1,12 +1,14 @@
 import React,{useState, useEffect} from 'react'
 import styled from 'styled-components'
 import axios from "axios"
-
+import { useNavigate } from 'react-router'
 
 import Avatar from '../assets/avatar.png'
 import DocumentDropzone from '../Components/DocumentDropzone'
 import ProfileDropzone from '../Components/ProfileDropzone'
 import NavAndSidebar from '../Components/NavAndSidebar'
+import {Helmet} from "react-helmet";
+import { proxy } from '../assets/proxy'
 
 
 const Container = styled.div`
@@ -106,6 +108,12 @@ const Button = styled.button`
   font-size: 1rem;
   font-weight: 600;
   border-radius: 6px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #D179FF;
+    opacity: 0.8;
+  }
 `
 
 
@@ -122,7 +130,8 @@ const UserRegistrationPage = () => {
   const [phoneNumber, setPhoneNumber] = useState("")
   const [profilePic, setProfilePic] = useState(`${Avatar}`)
   const [document, setDocument] = useState("")
-  const baseUrl = 'http://localhost:5000'
+  const baseUrl = proxy
+  const navigate = useNavigate()
 
 
   useEffect(() => {
@@ -146,18 +155,24 @@ const UserRegistrationPage = () => {
       typeof_user:"student",
       address:"hetauda"
     }
-    await axios.post(`${baseUrl}/api/users/register/$`,user)
+    await axios.post(`${baseUrl}/api/users/register`,user)
     .then(res => {
         // console.log(res);
+        navigate('/login')
     })
     .catch(err => {
         // console.log(err);
+        alert("Something went wrong")
     })
   }
 
 
   return (
     <>
+    <Helmet>
+        <title>Dormden | User Registration </title>
+        <meta name="description" content="Register your account here with your auth id" />
+    </Helmet>
     <NavAndSidebar/>
     <Container>
       <TitleDiv>

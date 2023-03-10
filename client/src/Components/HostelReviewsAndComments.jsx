@@ -7,6 +7,9 @@ import { useFetch } from './../hooks/useFetch';
 import axios from 'axios';
 import { AuthContext } from './../context/AuthContext';
 import UserReviewComponent from './UserReviewComponent';
+import { useNavigate } from 'react-router-dom';
+import { NotificationContext } from './../context/NotificationContext';
+import { proxy } from '../assets/proxy';
 
 const Container = styled.div`
     display: flex;
@@ -65,6 +68,7 @@ const Star = styled.div`
         content: '★★★★★';
         background: linear-gradient(90deg, #fc0 var(--percent), lightgray var(--percent));
         -webkit-background-clip: text;
+        background-clip: text;
         -webkit-text-fill-color: transparent;
     }
 `
@@ -156,11 +160,24 @@ export const ReviewFooter = styled.div`
         font-weight: bold;
         cursor: pointer;
     }
+
+    @media (max-width: 768px) {
+        gap: 8px;
+
+        &>p {
+            font-size: 0.7rem;
+        }
+
+        &>button {
+            padding: 6px 10px;
+            font-size: 0.8rem;
+        }
+    }
 `
 
 
 const HostelReviewsAndComments = ({ hostelInfo }) => {
-    const { data, loading, error, reFetchData } = useFetch(`http://localhost:5000/api/reviews/${hostelInfo.id}`);
+    const { data, loading, error, reFetchData } = useFetch(`${proxy}/api/reviews/${hostelInfo.id}`);
     
     const [existingReview, setExistingReview] = useState([])
     const [cleanlinessRating, setCleanlinessRating] = useState(null)
@@ -168,6 +185,8 @@ const HostelReviewsAndComments = ({ hostelInfo }) => {
     const [staffRating, setStaffRating] = useState(null)
     const [amenitiesRating, setAmenitiesRating] = useState(null)
     const [comment, setComment] = useState("")
+
+    const { dispatch } = useContext(NotificationContext)
 
     const { user_id } = useContext(AuthContext)
     useEffect(() => {
@@ -184,8 +203,13 @@ const HostelReviewsAndComments = ({ hostelInfo }) => {
         }
     }, [data])
 
+    const navigate = useNavigate()
     const handleSubmitReview = async (e) => {
         e.preventDefault()
+        if (user_id === null) {
+            dispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "You must be logged in first to submit review", type: "error" } })
+            navigate("/login")
+        }
         const review = {
             cleanliness: cleanlinessRating,
             food: foodRating,
@@ -195,33 +219,34 @@ const HostelReviewsAndComments = ({ hostelInfo }) => {
         }
         if (existingReview.length > 0) {
             try {
-                const response = await axios.put(`http://localhost:5000/api/hostels/review/update/${existingReview[0].id}`, review, { withCredentials: true })
-                console.log(response)
+                const response = await axios.put(`${proxy}/api/hostels/review/update/${existingReview[0].id}`, review, { withCredentials: true })
+                dispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "Review updated successfully", status: "success" } })
                 reFetchData()
             } catch (err) {
-                console.log(err)
+                dispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "Error reviewing the hostel", status: "error" } })
             }
         } else if (existingReview.length === 0 && comment.length > 0) {
             try {
-                const response = await axios.post(`http://localhost:5000/api/hostels/review/${hostelInfo.id}`, review, { withCredentials: true })
-                console.log(response)
+                const response = await axios.post(`${proxy}/api/hostels/review/${hostelInfo.id}`, review, { withCredentials: true })
+                dispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "Reviewed successfully", status: "success" } })
                 reFetchData()
             } catch (err) {
-                console.log(err)
+                dispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "Error reviewing the hostel", status: "error" } })
             }
         }
     }
 
     const reportReview = async (review_id) => {
         try {
-            if (window.confirm("Are you sure you want to report this review?")) {
-                console.log("Flagging the review")
-            } else {
-                return null
+            if (user_id === null) { 
+                dispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "You must be logged in first to report a review", status: "success" } })
+                navigate("/login")
             }
-            const response = await axios.put(`http://localhost:5000/api/reviews/flag/${review_id}`, {}, { withCredentials: true })
+            if(!window.confirm("Are you sure you want to report this review?")) return
+            const response = await axios.put(`${proxy}/api/reviews/flag/${review_id}`, {}, { withCredentials: true })
+            dispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "Reported Review successfully", status: "success" } })
         } catch (err) {
-            console.log(err)
+            dispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "Error reporting the review", status: "error" } })
         }
     }
 

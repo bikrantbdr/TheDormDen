@@ -16,6 +16,19 @@ exports.get_reviews = async (req, res, next) => {
 }
 
 /*
+    @desc gets all the reviews for a user
+    @access Public
+*/
+exports.get_user_reviews = async (req, res, next) => {
+    try {
+        const reviews = await Review.find({ user: req.params.id }).populate('user hostel');
+        res.status(200).json(reviews);
+    } catch (err) {
+        next(err)
+    }
+}
+
+/*
     @desc flags review as inappropriate
     @access Private
 */
@@ -65,10 +78,13 @@ exports.verify_review = async (req, res, next) => {
 exports.remove_review = async (req, res, next) => {
     try {
         const review = await Review.findById(req.params.reviewId);
+        console.log(review.hostel)
         await User.findByIdAndUpdate(review.user, { $pull: { reviews: review._id } });
         await Hostel.findByIdAndUpdate(review.hostel, { $pull: { reviews: review._id } });
-        await Hostel.findById(review.hostel).compute_rating_after_delete(review.overall_rating);
-        await Hostel.findById(review.hostel).compute_ranking();   
+        const hostel = await Hostel.findById(review.hostel)
+        hostel.compute_rating_after_delete(review.overall_rating);
+        hostel.compute_ranking();
+        await hostel.save();
         await review.remove();
         res.status(200).json({ message: 'Review removed' });
     } catch(err) {

@@ -6,6 +6,7 @@ import HeroSection from '../Components/HeroSection'
 import FeaturedHostels from '../Components/FeaturedHostels'
 import HighestRatingHostels from './../Components/HighestRatingHostels';
 import MailList from '../Components/MailList'
+import {Helmet} from "react-helmet";
 
 
 const HomeContainer = styled.div`
@@ -52,6 +53,10 @@ const Title = styled.h1`
 const HomePage = () => {
   return (
     <>
+    <Helmet>
+        <title>Dorm Den</title>
+        <meta name="description" content="Web portal to compare and contrast different hostels around the kathmandu valley" />
+    </Helmet>
       <HomeContainer>
           <HomeBackground>
               <img src="" alt="" />
@@ -59,9 +64,9 @@ const HomePage = () => {
           <NavAndSidebar/>
           <HeroSection/>
       <Container>
-        <Title>Featured Hostels</Title>
+        <Title>Featured Hostels✨</Title>
         <FeaturedHostels />
-        <Title>Hostels guests love</Title>
+        <Title>Hostels Guests love❤️</Title>
         <HighestRatingHostels />
       </Container>
       <MailList />

@@ -56,7 +56,6 @@ exports.get_users = async (req, res, next) => {
 exports.get_user = async (req, res, next) => {
     try {
         const user = await User.findById(req.params.id).populate("hostel_listings")
-        console.log(user);
         res.status(200).json(user);
     } catch(err) {
         next(err)
@@ -74,12 +73,12 @@ exports.register_user = async (req, res, next) => {
     
         const profilecloud = await cloudinary.v2.uploader.upload(body.profile_picture, {
             folder: "avatars",
-            width: 150,
+            width: 1020,
             crop: "scale",
           });
         const documentcloud = await cloudinary.v2.uploader.upload(body.document, {
             folder: "studentdocuments",
-            width: 150,
+            width: 1020,
             crop: "scale",
           });
     
@@ -161,7 +160,7 @@ exports.update_user = async (req, res, next) => {
     try{
         const body = req.body;    
         console.log("body passed", body);
-        const SecureURL = ""
+        let SecureURL = ""
         const token = getToken(req);
         const decodedToken = jwt.verify(token, process.env.SECRET);
         if (!token || !decodedToken.id) {
@@ -175,7 +174,7 @@ exports.update_user = async (req, res, next) => {
             } else {
                 const profilecloud = await cloudinary.v2.uploader.upload(body.profile_picture, {
                     folder: "avatars",
-                    width: 150,
+                    width: 1020,
                     crop: "scale",
                 });
                 SecureURL = profilecloud.secure_url;
@@ -337,6 +336,24 @@ exports.get_unverified_users = async (req, res, next) => {
     try {
         const users = await User.find({ 'usertype.is_verified': false });
         res.status(200).json(users);
+    } catch(err) {
+        next(err)
+    }
+}
+
+/* 
+    @route GET /api/users/verify/:id
+    @desc Verify a user
+    @access Private
+*/
+exports.verify_user = async (req, res, next) => {
+    try {
+        const user = await User.findByIdAndUpdate(req.params.id, { 'usertype.is_verified': true }, {
+            new: true,
+            runValidators: true,
+            useFindAndModify: false
+        });
+        res.status(200).json(user);
     } catch(err) {
         next(err)
     }

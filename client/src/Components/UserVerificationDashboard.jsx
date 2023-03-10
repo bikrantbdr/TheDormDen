@@ -6,9 +6,8 @@ import { useFetch } from './../hooks/useFetch';
 import axios from 'axios';
 
 import DocumentImageModal from './DocumentImageModal';
-import PromptBar from './PromptBar';
-import { PromptContext } from '../context/PromptContext';
 import { NotificationContext } from './../context/NotificationContext';
+import { proxy } from '../assets/proxy';
 
 export const Wrapper = styled.div`
   height: 100%;
@@ -51,40 +50,37 @@ const UserVerificationDashboard = () => {
     const [documentImage, setDocumentImage] = useState(null)
 
     const [rows, setRows] = useState([])
-    const { data, loading, error, reFetchData } = useFetch(`http://localhost:5000/api/users/unverified`)
+    const { data, loading, error, reFetchData } = useFetch(`${proxy}/api/users/unverified`)
 
     useEffect(() => {
       setRows(data)
     }, [data])
 
-    const { status, dispatch } = useContext(PromptContext);
+
     const { dispatch: notificationDispatch } = useContext(NotificationContext)
     const verifyUser = async (userId) => {
       const data = {
         "usertype.is_verified": true
       }
-      dispatch({ type: 'PROMPT_START', payload: { display: true, message: "Are you sure you want to verify this user?", purpose: "warning" } })
       try {
-        const response = await axios.put(`http://localhost:5000/api/users/update/${userId}`, data, { withCredentials: true })
-        dispatch({ type: 'PROMPT_END' })
+        if (!window.confirm("Are you sure you want to verify this user?")) return
+        const response = await axios.put(`${proxy}/api/users/verify/${userId}`, data, { withCredentials: true })
         notificationDispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "User successfully Verified", status: "success" } })
         reFetchData()
       } catch (error) {
-        dispatch({ type: 'PROMPT_END' })
-        notificationDispatch({ type: "NOTIFICATION_START", payload: { display: true, message: `${error.response.data.error}`, status: "error" } })
+        notificationDispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "User couldn't be verified", status: "error" } })
       }
     }
 
     const deleteUser = async (userId) => {
-      dispatch({ type: 'PROMPT_START', payload: { display: true, message: "Are you sure you want to delete this user?", purpose: "alert" } })
+
       try {
-        const response = await axios.delete(`http://localhost:5000/api/users/delete/${userId}`, { withCredentials: true })
-        dispatch({ type: 'PROMPT_END' })
+        if (!window.confirm("Are you sure you want to delete this user?")) return
+        const response = await axios.delete(`${proxy}/api/users/delete/${userId}`, { withCredentials: true })
         notificationDispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "User successfully Deleted", status: "success" } })
         reFetchData()
       } catch (error) {
-        dispatch({ type: 'PROMPT_END' })
-        notificationDispatch({ type: "NOTIFICATION_START", payload: { display: true, message: `${error.response.data.error}`, status: "error" } })
+        notificationDispatch({ type: "NOTIFICATION_START", payload: { display: true, message: "User couldn't be deleted", status: "error" } })
       }
     }
     

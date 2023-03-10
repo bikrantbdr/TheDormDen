@@ -5,6 +5,7 @@ import ProfileDropzone from './ProfileDropzone'
 import styled from 'styled-components'
 import axios from 'axios'
 import Avatar from '../assets/avatar.png'
+import { proxy } from '../assets/proxy'
 
 const Container = styled.div`
   display: flex;
@@ -14,7 +15,7 @@ const Container = styled.div`
   height: 100%;
   width: 80vw;
   margin: auto auto;
-  background-color: #f8f8f8;
+  /* background-color: #f8f8f8; */
   border-radius: 8px;
   /* border: 1px solid #382b2f; */
 `
@@ -75,6 +76,18 @@ const Button = styled.button`
   font-size: 1rem;
   font-weight: 600;
   border-radius: 6px;
+
+  &:hover {
+    cursor: pointer;
+    background-color: #dea0ff;
+    opacity: 0.8;
+  }
+`
+const SucessDiv = styled.div`
+  color: #94ff79;
+`
+const ErrorDiv = styled.div`
+  color: #ff7979;
 `
 
 const UserDashboardHomeComponent = () => {
@@ -91,7 +104,9 @@ const UserDashboardHomeComponent = () => {
   const [address, setAddress] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
-  const baseURL = 'http://localhost:5000/api'
+  const [errorMessage, setErrorMessage] = useState("")
+  const [successMessage, setSuccessMessage] = useState("")
+  const baseURL = proxy
   const {user_id} = useContext(AuthContext)
 
   useEffect(() => {
@@ -100,7 +115,7 @@ const UserDashboardHomeComponent = () => {
         setError(false)
         setUser([])
         setLoading(true)
-        const response = await axios.get(`${baseURL}/users/${user_id}`)
+        const response = await axios.get(`${baseURL}/api/users/${user_id}`)
         setUser(response.data)
         Autofillhandle(response.data)
       } catch (error) {
@@ -124,7 +139,7 @@ const UserDashboardHomeComponent = () => {
 
   const handleUpdate = async (e) => {
     e.preventDefault()
-    console.log(typeof(profilePic))
+    // console.log(typeof(profilePic))
     const user = 
     {
       username:username,
@@ -134,17 +149,20 @@ const UserDashboardHomeComponent = () => {
       last_name:lastname,
       gender:gender,
       phone_number:phoneNumber,
-      // profile_picture:profilePic,
+      profile_picture:profilePic,
       document:document,
       typeof_user:"student",
       address:address
     }
-    await axios.put(`${baseURL}/users/update/${user_id}`,user,{withCredentials:true} )
+    await axios.put(`${baseURL}/api/users/update/${user_id}`,user,{withCredentials:true} )
     .then(res => {
         // console.log(res);
+        setSuccessMessage("Profile Updated")
+
     })
     .catch(err => {
         // console.log(err);
+        setErrorMessage(err.message)
     })
   }
 
@@ -204,6 +222,8 @@ const UserDashboardHomeComponent = () => {
           </Row>
         </Form>
         <Button onClick={handleUpdate}>Update</Button>
+        {successMessage && <SucessDiv>{successMessage}</SucessDiv>}
+        {errorMessage && <ErrorDiv>{errorMessage}</ErrorDiv>}
         </>
       )}
     </Container>

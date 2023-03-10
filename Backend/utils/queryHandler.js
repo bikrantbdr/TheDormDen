@@ -41,7 +41,7 @@ class QueryHandler {
 
     filter() {
         const queryFiltered = { ...this.queryString };
-        const removeFields = ['name', 'limit', 'page'];
+        const removeFields = ['name', 'limit', 'page', 'sortBy'];
 
         removeFields.forEach(param => delete queryFiltered[param]);
         
@@ -82,8 +82,15 @@ class QueryHandler {
     }
 
     sort() {
-        // console.log(this.query)
-        this.query = this.query.sort({ ranking: -1 });
+        if (this.queryString.sortBy === 'popularity') {
+            this.query = this.query.sort({ ranking : -1 });
+        } else if (this.queryString.sortBy === 'price_increasing') {
+            this.query = this.query.sort({ "rooms.price" : 1 });
+        } else if (this.queryString.sortBy === 'price_decreasing') {
+            this.query = this.query.sort({ "rooms.price" : -1 });
+        } else {
+            this.query = this.query.sort({ ranking : -1 });
+        }
         return this;
     }
 

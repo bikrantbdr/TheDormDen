@@ -8,7 +8,6 @@ const verifyToken = (req, res, next) => {
     try {
         const user = jwt.verify(token, process.env.SECRET)
         req.user = user
-        console.log(req.user)
         next()
     } catch (error) {
         next(CreateError("Token is not valid!", 401))
@@ -17,7 +16,7 @@ const verifyToken = (req, res, next) => {
 
 const verifyUser = (req, res, next) => {
     verifyToken(req, res, () => {
-        if ((req.user.id == req.params.id) || req.user.isAdmin) {
+        if ((req.user.id.toString() === req.params.id.toString()) || req.user.isAdmin) {
             next()
         } else {
             return next(CreateError("You are not allowed to perform this action!", 403))

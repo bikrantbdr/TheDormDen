@@ -4,10 +4,13 @@ import { Map, Marker, Draggable } from "pigeon-maps";
 import axios from 'axios';
 import location from '../assets/location.svg'
 import cancelimg from '../assets/cancel.png'
+import { useNavigate } from 'react-router-dom';
 
 import NavAndSidebar from '../Components/NavAndSidebar'
 import HosteldocsDropzone from '../Components/HosteldocsDropzone';
 import ImageDropzone from '../Components/ImageDropzone';
+import {Helmet} from "react-helmet";
+import { proxy } from '../assets/proxy';
 
 
 const Container = styled.div`
@@ -18,9 +21,9 @@ const Container = styled.div`
     height: 85vh;
     width: 80vw;
     margin: 0rem auto;
-    background-color: #F8F8F8;
+    /* background-color: #F8F8F8;
     border-radius: 18px;
-    border: 1px solid #382B2F;
+    border: 1px solid #382B2F; */
 
     @media (max-width: 768px) {
         width: 100%;
@@ -121,12 +124,13 @@ const Images = styled.div`
     /* justify-content: center; */
     padding-left: 10px;
     align-items: center;
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
+    overflow-x: scroll;
     gap: 0.5rem;
     margin: 0.5rem 0;
     width: 90%;
     height:30%;
-    background-color: #fff;
+    background-color: #d2d2d2a1;
 `
 const ImageContainer = styled.div`
     display: flex;
@@ -152,6 +156,12 @@ const Button = styled.button`
     color: #fff;
     font-size: 1rem;
     font-weight: 600;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #D179FF;
+        opacity: 0.8;
+    }
 `
 const MapContainer = styled.div`
     width: 100%;
@@ -170,7 +180,9 @@ const HostelRegistrationPage = () => {
     const [verified, setVerified] = useState(false)
     const [document, setDocument] = useState(null)
     const [hostelGallery, setHostelGallery] = useState([])
-    const baseUrl = 'http://localhost:5000'
+    const baseUrl = proxy
+
+    const navigate = useNavigate();
 
 
     const onmapclickhandler = async(e) => {
@@ -189,12 +201,21 @@ const HostelRegistrationPage = () => {
             document: document,
             images: hostelGallery
         }
-        const response = await axios.post(`${baseUrl}/api/hostels/register`, data)
-        console.log(response)
+        const response = await axios.post(`${baseUrl}/api/hostels/register`, data, {withCredentials: true })
+        if(response.statusText === "Created"){
+            navigate('/user/hostels')
+        }
+        else {
+            alert('Something went wrong')
+            
+        }
     }
   return (
     <>
-        <NavAndSidebar/>
+    <Helmet>
+        <title>Dorm | Register Hostel</title>
+        <meta name="description" content="Register your hostel to be showcased in ur web portal" />
+    </Helmet>
         <Container>
             <TitleDiv>
                 Hostel Registration

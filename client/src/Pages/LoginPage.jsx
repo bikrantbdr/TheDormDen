@@ -1,26 +1,23 @@
 import React from 'react'
 import { useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
-import Navbar from './../Components/Navbar';
+import NavAndSidebar from './../Components/NavAndSidebar';
 import LoginForm from './../Components/LoginForm';
 import NotificationBar from '../Components/NotificationBar';
 import { AuthContext } from './../context/AuthContext';
 
-const LoginPage = () => {
-    const { user_id } = useContext(AuthContext);
-    const navigate = useNavigate();
+import {Helmet} from "react-helmet";
 
-    useEffect(() => {
-        if (user_id) {
-            console.log("humara jalwa hai yeha", user_id)
-            navigate('/')
-        }
-    }, [user_id])
+const LoginPage = () => {
     
   return (
     <>
+    <Helmet>
+        <title>Dormden | Login</title>
+        <meta name="description" content="Login to dormden application" />
+    </Helmet>
       <NotificationBar />
-      <Navbar />
+      <NavAndSidebar />
       <LoginForm />
     </>
   )

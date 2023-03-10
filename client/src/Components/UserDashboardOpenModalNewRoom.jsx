@@ -1,10 +1,10 @@
 import React from 'react'
 import { useState } from 'react';
 import styled from 'styled-components';
-import { AiFillMinusSquare, AiFillPlusCircle, AiFillPlusSquare } from 'react-icons/ai';
+import { AiFillMinusSquare, AiFillPlusSquare } from 'react-icons/ai';
 import { Checkbox } from 'pretty-checkbox-react';
-import { useCheckboxState } from 'pretty-checkbox-react';
 import '@djthoms/pretty-checkbox';
+import { v4 as uuidv4 } from 'uuid';
 
 const Modal = styled.div`
     display: block; /* Hidden by default */
@@ -75,12 +75,30 @@ const NumberWrapper = styled.div`
         padding: none;
         border: none;
     }
+
+    &>input {
+        width: 100%;
+        outline: none;
+        border: none;
+        background-color: transparent;
+        font-size: 1rem;
+        font-weight: bold;
+    }
+
+    &>select {
+        width: 100%;
+        outline: none;
+        border: none;
+        background-color: transparent;
+        font-size: 1rem;
+        font-weight: bold;
+    }
 `
 
 const FeaturesWrapper = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 1rem;
     background-color: #eee;
     font-size: 20px;
     padding: 10px;
@@ -90,80 +108,122 @@ const FeaturesWrapper = styled.div`
 const Minus = styled.button`
     color: #D179FF;
     cursor: pointer;
+    height: 1rem;
 
     &:hover {
         color: #A761CC;
     }
-`
-const Text = styled.p`
-    font-size: 1rem;
-    text-transform: capitalize;
 `
 
 const Number = styled.span``
 
+const Text = styled.span`
+    font-size: 1rem;
+    text-transform: capitalize;
+`
+
 const Plus = styled.button`
     color: #D179FF;
     cursor: pointer;
+    height: 1rem;
 
     &:hover {
         color: #A761CC;
     }
 `
 
-const UserDashboardOpenModalEditRoom = ({setOpenModal, hostel, setHostel, roomId}) => {
-    const [room, setRoom] = useState(hostel.rooms.find(room => room.id === roomId))
+const SubmitButton = styled.button`
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1rem;
+    font-weight: bold;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+`
+
+const UserDashboardOpenModalNewRoom = ({setOpenModal, hostel, setHostel, roomId}) => {
+    const [room, setRoom] = useState({
+        available_seats: 0,
+        price: 10000,
+        attached_bathroom: false,
+        balcony: false,
+        direct_sunlight: false,
+        room_type: "one_seater",
+        room_number: null,
+        availability: false,
+        id: uuidv4()
+    })
 
     let features = [
         {
             value: "balcony",
-            available: room["balcony"]
+            available: false
         },
         {   
             value: "attached_bathroom",
-            available: room["attached_bathroom"]
+            available: false
         },
         {
             value: "direct_sunlight",
-            available: room["direct_sunlight"]
+            available: false
         }
     ]
     
-    const checkbox = useCheckboxState({ state: [] });
-    
     const changeFeatureValue = (feature) => {
-        setRoom({...room, [feature.value]: !room[feature.value]})
-        setHostel({...hostel, rooms: hostel.rooms.map(room => room.id === roomId ? {...room, [feature.value]: !room[feature.value]} : room)})
+        feature.available = !feature.available
+        setRoom({...room, [feature.value]: feature.available})
     }
 
     const handlePlus = (type) => {
         if (type === "price") {
             setRoom({...room, price: room.price + 500})
-            setHostel({...hostel, rooms: hostel.rooms.map(room => room.id === roomId ? {...room, price: room.price + 500} : room)})
         } else if (type === "available_seats") {
-            setRoom({...room, available_seats: room.available_seats + 1})
-            setHostel({...hostel, rooms: hostel.rooms.map(room => room.id === roomId ? {...room, available_seats: room.available_seats + 1} : room)})
+            setRoom({...room, available_seats: room.available_seats + 1, availability: true})
         }
     }
 
     const handleMinus = (type) => {
         if (type === "price") {
             setRoom({...room, price: room.price - 500})
-            setHostel({...hostel, rooms: hostel.rooms.map(room => room.id === roomId ? {...room, price: room.price - 500} : room)})
         } else if (type === "available_seats") {
-            setRoom({...room, available_seats: room.available_seats - 1})
-            setHostel({...hostel, rooms: hostel.rooms.map(room => room.id === roomId ? {...room, available_seats: room.available_seats - 1} : room)})
+            if (room.available_seats <= 0) setRoom({...room, availability: false})
+            setRoom({...room, available_seats: room.available_seats - 1, availability: true})
         }
     }
+
+    const submitRoom = () => {
+        setHostel({...hostel, rooms: [...hostel.rooms, room]})
+        setOpenModal(false)
+    }
+
 
   return (
     <Modal>
         <ModalContent>
             <CloseButton onClick={ () => setOpenModal(false)}>&times;</CloseButton>
+
+            <ComponentContainer>
+                <h4>Room Type</h4>
+                <NumberWrapper>
+                    <select value={room.room_type} onChange={ (e) => setRoom({...room, room_type: e.target.value}) } >
+                        <option value="one_seater" selected>One Seater</option>
+                        <option value="two_seater">Two Seater</option>
+                        <option value="three_seater">Three Seater</option>
+                        <option value="four_seater">Four Seater</option>
+                    </select>
+                </NumberWrapper>
+            </ComponentContainer>        
+            
             <ComponentContainer>
                 <h4>Room Number</h4>
                 <NumberWrapper>
-                    <h3>{room.room_number}</h3>
+                    <input type="text" value={room.room_number} onChange={ (e) => setRoom({...room, room_number: e.target.value}) } />
                 </NumberWrapper>
             </ComponentContainer>
 
@@ -191,17 +251,17 @@ const UserDashboardOpenModalEditRoom = ({setOpenModal, hostel, setHostel, roomId
                     {features.map((feature, index) => (
                         <Checkbox state={feature.available} setState={feature.available} onChange={ () => changeFeatureValue(feature) } key={index} color="success" >
                             <Text>
-                            
                             {feature.value}
                             </Text>
                         </Checkbox>
                         ))}
                 </FeaturesWrapper>
             </ComponentContainer>
-
+            
+            <SubmitButton onClick={ submitRoom }>Add Room</SubmitButton>
         </ModalContent>
     </Modal>
   )
 }
 
-export default UserDashboardOpenModalEditRoom
+export default UserDashboardOpenModalNewRoom

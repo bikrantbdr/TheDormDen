@@ -6,7 +6,8 @@ import { IoArrowBackOutline } from 'react-icons/io5'
 import axios from 'axios'
 import styled from 'styled-components'
 import NotificationBar from '../Components/NotificationBar';
-
+import { Helmet } from "react-helmet";
+import { proxy } from '../assets/proxy';
 const Subtitle = styled.p`
     font-weight: bold;
     color: #6e6e70;
@@ -46,7 +47,7 @@ const ForgotPasswordSentSuccess = () => {
                 const data = {
                     email: email
                 }
-                const response = await axios.put("http://localhost:5000/api/users/update/password/forgot", data)
+                const response = await axios.put(`${proxy}/api/users/update/password/forgot`, data)
                 alert("Email sent")
             }
         } catch (error) {
@@ -55,6 +56,10 @@ const ForgotPasswordSentSuccess = () => {
     }
   return (
     <>
+    <Helmet>
+        <title>DOrm den | Token sent</title>
+        <meta name="description" content="Password reset token was sent sucessfully" />
+    </Helmet>
         <NotificationBar />
         <Container>
             <FormContainer style={{width: "240px", gap: "24px"}}>

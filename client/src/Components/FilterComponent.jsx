@@ -2,27 +2,18 @@ import React from 'react'
 import { useState, useEffect } from 'react';
 import styled from 'styled-components'
 import axios from 'axios';
-import MultiRangeSlider from "react-js-multi-range-sliders";
+import MultiRangeSlider from "multi-range-slider-react";
 import { useLocation } from 'react-router-dom';
-
-const SearchSection = styled.div`
-    flex: 1;
-    padding: 1.5rem;
-    border-radius: 10px;
-    background-color: #D179FF;
-    position: sticky;
-    top: 65px;
-    height: fit-content;
-
-    @media (max-width: 768px) {
-        display: none;
-    }
-`
+import { proxy } from '../assets/proxy';
 
 const SearchTitle = styled.h1`
     font-size: 1.2rem;
     margin-bottom: 10px;
     color: #ffffff;
+
+    @media (max-width: 768px) {
+        font-size: 2rem;
+    }
 `
 
 const ListItem = styled.div`
@@ -30,6 +21,7 @@ const ListItem = styled.div`
     flex-direction: column;
     gap: 5px;
     margin-bottom: 10px;
+    position: relative;
 
     &>label {
         font-size: 0.8rem;
@@ -49,6 +41,21 @@ const ListItem = styled.div`
         background-color: #fff;
         padding: 5px;
     }
+
+    @media (max-width: 768px) {
+
+        &>label {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        &>input {
+            height: 40px;
+            padding: 10px;
+            font-size: 1rem;
+        }
+    }
 `
 
 const ListOptions = styled.div`
@@ -65,6 +72,13 @@ const ListOptions = styled.div`
     &>input {
         width: 40px;
     }
+
+    @media (max-width: 768px) {
+        &>span {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+    }
 `
 
 const LocationOptions = styled.div`
@@ -75,6 +89,9 @@ const LocationOptions = styled.div`
     padding: 8px 0px;
     border-radius: 5px;
     cursor: pointer;
+    position: absolute;
+    z-index: 20;
+    top: 55px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 
     &>div {
@@ -85,9 +102,9 @@ const LocationOptions = styled.div`
         background-color: #f4f2f2;
     }
 
-    @media (max-width: 768px) {
-        top: 220px;
-        right: 25px;    
+    @media (max-width: 425px) {
+        top: 70px;
+        right: 0px;
     }
 `
 
@@ -133,16 +150,82 @@ const Button = styled.button`
     &:hover {
         background-color: #382b2f;
     }
+
+    @media (max-width: 768px) {
+        padding: 1rem;
+        font-size: 1.2rem;
+        font-weight: 600;
+    }
+`
+const LocationOption = styled.div`
+    padding: 8px 16px;
 `
 
-function FilterComponent({ setUrl }) {
+const CloseButton = styled.span`
+    display: none;
+    background-color: crimson;
+    width: 48px;
+    height: 48px;
+    text-align: center;
+    line-height: 48px;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 34px;
+    font-weight: bold;
+    position: absolute;
+    z-index: 20;
+    top: 10px;
+    right: 5px;
+
+    &:hover, &:focus {
+        background-color: #999;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+        display: block;
+    }
+`
+const SearchSection = styled.div`
+        flex: 1;
+        padding: 1.5rem;
+        border-radius: 10px;
+        background-color: #D179FF;
+        position: sticky;
+        top: 65px;
+        height: fit-content;
+
+        @media (max-width: 768px) {
+            display: ${({openModal}) => (openModal ? 'flex' : 'none')};
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 0;
+            z-index: 10;
+
+            flex-direction: column;
+            justify-content: center;
+        }
+    `
+
+function FilterComponent({ setUrl, setOpenModal, openModal }) {
+    
     const location = useLocation();
 
     const [name, setName] = useState(location.state.name);
     const [options, setOptions] = useState(location.state.options === "any" ? ["one","two","three","four"] : [location.state.options] );
     const [locate, setLocate] = useState(location.state.location);
     const [destination, setDestination] = useState(location.state.destination);
-    const [price, setPrice] = useState(null);
+    const [minValue, setminValue] = useState(0);
+    const [maxValue, setmaxValue] = useState(20000);
+    const handleInput = (e) => {
+        setminValue(e.minValue);
+        setmaxValue(e.maxValue);
+        // console.log(e.minValue, e.maxValue);
+    };
 
     const [openLocationOptions, setOpenLocationOptions] = useState(false);
 
@@ -177,12 +260,13 @@ function FilterComponent({ setUrl }) {
       };
 
     const handleSearch = () => {
-        const url = `http://localhost:5000/api/hostels?name=${name}&room_types=${ options.map((option) => option+"_seater" ) }&longitude=${destination.longitude}&latitude=${destination.latitude}` // &price_lower=${price.min || 0}&price_upper=${price.max || 20000}
+        const url = `${proxy}/api/hostels?name=${name}&room_types=${ options.map((option) => option+"_seater" ) }&longitude=${destination.longitude}&latitude=${destination.latitude}&price_lower=${minValue || 0}&price_upper=${maxValue|| 20000}`
         setUrl(url)
     }
 
   return (
     <SearchSection>
+            <CloseButton onClick={ () => setOpenModal(false)}>&times;</CloseButton>
             <SearchTitle>Filter</SearchTitle>
             <ListItem>
                 <label>Name</label>
@@ -191,11 +275,17 @@ function FilterComponent({ setUrl }) {
 
             <ListItem>
                 <label>Location</label>
-                <input type="text" value={ locate } onClick={ () => setOpenLocationOptions(!openLocationOptions)} onChange={ (e) => setLocate(e.target.value) }/>
-                {openLocationOptions && (locate.length > 0) && <LocationOptions>
+                <input type="text" value={ locate }
+                onClick={ () => setOpenLocationOptions(!openLocationOptions)}
+                onBlur={ () => setTimeout(() => setOpenLocationOptions(false), 500) }
+                onChange={ (e) => setLocate(e.target.value) }/>
+
+                {openLocationOptions && (locate.length > 0) && 
+                <LocationOptions>
                     { res ? res.features.map((address) => (
-                        <div key={address.properties.place_id} onClick={ () => handleDestination(address) }>{address.properties.formatted}</div>
-                    )) : "loading please await"}
+                        <LocationOption key={address.properties.place_id} onClick={ () => handleDestination(address) }>{address.properties.formatted}</LocationOption>
+                    )) : <LocationOption>Loading</LocationOption>
+                    }
                 </LocationOptions>}
             </ListItem>
 
@@ -205,7 +295,14 @@ function FilterComponent({ setUrl }) {
                     <MultiRangeSlider
                         min={0}
                         max={20000}
-                        onChange={({ min, max }) => setPrice({ min, max })}
+                        style={{ width: "200px" }}
+                        minValue={minValue}
+                        ruler={"false"}
+                        barInnerColor={"#fff"}
+                        maxValue={maxValue}
+                        onInput={(e) => {
+                            handleInput(e);
+                        }}
                     />
                 </ListPricing>
             </ListItem>

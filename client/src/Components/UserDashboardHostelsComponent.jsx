@@ -7,7 +7,7 @@ import axios from 'axios'
 import { DataGrid } from '@mui/x-data-grid';
 import { Link } from "react-router-dom";
 import {AiOutlineDelete as DeleteOutline } from "react-icons/ai";
-
+import { proxy } from '../assets/proxy'
 
 const Wrapper = styled.div`
     display: flex;
@@ -22,24 +22,34 @@ const Container = styled.div`
 `
 const Edit = styled.button`
     border: none;
-    border-radius: 10px;
-    padding: 8px 20px;
+    border-radius: 4px;
+    padding: 4px 12px;
     background-color: #3bb077;
     color: white;
     cursor: pointer;
-    margin-right: 20px;
+    margin-left: 12px;
     font-weight: 500;
 `
 const Verified = styled.button`
-    border: 1px solid #3bb077;
+    border: 1px solid green;
     border-radius: 10px;
     padding: 8px 20px;  
 `
 const Notverified = styled.button`
     border-radius: 10px;
     padding: 8px 20px;
-    border:1px solid #ff0000;
+    border:1px solid crimson;
+    color: #000;
+`
+
+const EditButton = styled.button`
+    border: none;
+    border-radius: 4px;
+    font-weight: 500;
+    padding: 4px 12px;
+    background-color: orange;
     color: white;
+    cursor: pointer;
 `
 
 const UserDashboardHostelsComponent = () => {
@@ -51,7 +61,7 @@ const UserDashboardHostelsComponent = () => {
 
     useEffect(() => {
         console.log(user_id)
-        axios.get(`http://localhost:5000/api/users/${user_id}`)
+        axios.get(`${proxy}/api/users/${user_id}`)
         .then(res => {
             setHostels(res.data.hostel_listings)
             console.log(res.data.hostel_listings)
@@ -64,7 +74,7 @@ const UserDashboardHostelsComponent = () => {
 
     const columns = [
         {field:"name",headerName:"Hostel",width:200},
-        { field: "hostel_rating", headerName: "Rating", width: 200,
+        { field: "hostel_rating", headerName: "Rating", width: 80,
           renderCell: (params) => (
             <span> {Math.floor(params.row.hostel_rating)} </span>
           )},
@@ -99,6 +109,9 @@ const UserDashboardHostelsComponent = () => {
           renderCell: (params) => {
             return (
               <>
+                <Link to={"/user/hostels/" + params.row.id}>
+                  <EditButton>Edit</EditButton>
+                </Link>
                 <Link to={"/hostels/" + params.row.id}>
                   <Edit>View</Edit>
                 </Link>

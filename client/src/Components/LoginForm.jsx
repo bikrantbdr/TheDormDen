@@ -4,6 +4,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 
+import { proxy } from '../assets/proxy';
+
 import InputComponent from './InputComponent';
 import { AuthContext } from '../context/AuthContext';
 import { NotificationContext } from '../context/NotificationContext';
@@ -68,6 +70,7 @@ const RegistrationButtonLink = styled(Link)`
 `
 
 const LoginForm = () => {
+    console.log(proxy)
     const [values, setValues] = useState({
         username: "",
         password: ""
@@ -105,7 +108,7 @@ const LoginForm = () => {
         e.preventDefault()
         dispatch({ type: "LOGIN_START" })
         try {
-            const response = await axios.post("http://localhost:5000/api/users/login", values)
+            const response = await axios.post(`${proxy}/api/users/login`, values)
             const userObject = {
                 username: response.data.username,
                 user_id: response.data.id,

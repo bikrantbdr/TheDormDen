@@ -6,6 +6,9 @@ import styled from 'styled-components'
 import axios from 'axios'
 import { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../context/AuthContext'
+import { Helmet } from 'react-helmet'
+import { proxy } from '../assets/proxy'
+import NotificationBar from './../Components/NotificationBar';
 
 const Wrapper = styled.div`
     display: flex;
@@ -22,7 +25,7 @@ const UserDashboardPage = () => {
     // console.log(user_id)
     useEffect(() => {
         console.log(user_id)
-        axios.get(`http://localhost:5000/api/users/${user_id}`)
+        axios.get(`${proxy}/api/users/${user_id}`)
         .then(res => {
             setUser(res.data)
             console.log(res.data)
@@ -35,6 +38,11 @@ const UserDashboardPage = () => {
     const location = useLocation()
   return (
     <>
+    <Helmet>
+        <title>Dormden | UserDashboard</title>
+        <meta name="description" content="User Dashboard to manage their accound, change password, view their review and their hostel listings" />
+    </Helmet>
+    <NotificationBar />
     <NavAndSidebar/>
     <Wrapper>
         {user? 

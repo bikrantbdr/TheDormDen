@@ -18,7 +18,8 @@ mongoose.connect(config.MONGODB_URI)
     logger.error('error connecting to MongoDB: ', error.message)
 })
 
-app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
+app.use(cors({credentials: true, origin: 'https://dormden.me'}));
+// app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
 app.use(express.json({limit: '25mb'}));
 app.use(cookie_parser());
 app.use(middleware.requestLogger);
@@ -29,10 +30,12 @@ app.use(middleware.requestLogger);
 const userRouter = require('./routers/userRouter');
 const hostelRouter = require('./routers/hostelRouter');
 const reviewRouter = require('./routers/reviewRouter');
+const analyticsRouter = require('./routers/analyticsRouter');
 
 app.use('/api/reviews', reviewRouter);
 app.use('/api/users', userRouter);
 app.use('/api/hostels', hostelRouter);
+app.use('/api/analytics', analyticsRouter);
 
 app.use((err, req, res, next) => {
     err.status = err.status || 500
