@@ -20,6 +20,7 @@ import UserDashboardPage from './Pages/UserDashboardPage';
 import UserDashboardPasswordComponent from './Components/UserDashboardPasswordComponent'
 import UserDashboardHostelsComponent from './Components/UserDashboardHostelsComponent'
 import UserDashboardHostelEdit from './Components/UserDashboardHostelEdit';
+import Aboutus from './Pages/Aboutus'
 import NotFoundPage from './Pages/NotFoundPage'
 import AdminDashboardFeaturedHostels from './Components/AdminDashboardFeaturedHostels';
 
@@ -72,9 +73,8 @@ const App = () => {
         <Route path="changepassword" element={<UserDashboardPasswordComponent/>} />
         <Route path="hostels" element={<UserDashboardHostelsComponent/>} />
         <Route path="hostels/:id" element={<UserDashboardHostelEdit />} />
-        <Route path='reviews' element={<UserDashBoardComment/>} />
-        <Route path="register/hostel" element={<HostelRegistrationPage/>} />
       </Route>
+      
     </Routes>
   )
 }

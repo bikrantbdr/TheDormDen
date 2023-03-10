@@ -157,6 +157,7 @@ const HostelImageSection = ({images,longitude,latitude}) => {
         anchor={[latitude, longitude]} 
         color="#f40d0d"
       />
+      {console.log(latitude,longitude)}
         </Map>
         </MapContainer>
         {
