@@ -1,8 +1,7 @@
-import React,{useState} from 'react'
+import React,{useEffect, useState} from 'react'
 import styled from 'styled-components'
 import HostelImageSection from '../Components/HostelImageSection'
 
-import background from '../assets/background.png'
 import HostelDetails from './../Components/HostelDetails';
 import MailList from './../Components/MailList';
 import CustomerReview from '../Components/CustomerReview'
@@ -36,10 +35,6 @@ const Wrapper = styled.div`
 const HostelIndividualPage = () => {
     const hostelId = useParams().id
     const { data, loading, error } = useFetch(`${proxy}/api/hostels/${hostelId}`)
-
-    const [images,setImages] = useState([background,background,background,background,background])
-    const [longitude,setLongitude] = useState(85.32046340409931)
-    const [latitude,setLatitude] = useState(27.694582657545205)
   return (
     <>
     <Helmet>
@@ -48,7 +43,7 @@ const HostelIndividualPage = () => {
     </Helmet>
     <NavAndSidebar />
     <Container>
-    {loading ? "loading please wait" : <><HostelImageSection images={data.images} longitude={longitude} latitude={latitude}/>
+    {loading ? "loading please wait" : <><HostelImageSection images={data.images} longitude={data.location.coordinates[1]} latitude={data.location.coordinates[0]}/>
     <DetailContainer>
         <Wrapper>
           <HostelDetails hostelInfo={ data }/>
