@@ -19,6 +19,7 @@ import UserDashboardPage from './Pages/UserDashboardPage';
 import UserDashboardPasswordComponent from './Components/UserDashboardPasswordComponent'
 import UserDashboardHostelsComponent from './Components/UserDashboardHostelsComponent'
 import UserDashboardHostelEdit from './Components/UserDashboardHostelEdit';
+import Aboutus from './Pages/Aboutus'
 
 const App = () => {
   return (
@@ -43,7 +44,9 @@ const App = () => {
         <Route path="changepassword" element={<UserDashboardPasswordComponent/>} />
         <Route path="hostels" element={<UserDashboardHostelsComponent/>} />
         <Route path="hostels/:id" element={<UserDashboardHostelEdit />} />
+        <Route path="/about" element={<Aboutus/>}/>
       </Route>
+      
     </Routes>
   )
 }
